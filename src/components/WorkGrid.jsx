@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Leaf, Stethoscope, School, HelpingHand, Droplets, Heart, Shirt, Soup } from "lucide-react";
-import { useLanguage } from "../context/LanguageContext";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const icons = [HelpingHand, Heart, School, Stethoscope, Leaf, Droplets, Shirt, Soup];
 const spans = ["md:col-span-2", "", "md:row-span-2", "", "", "md:col-span-2", "", ""];

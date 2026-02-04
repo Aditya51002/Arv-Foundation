@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Sparkles, Droplet, Recycle } from "lucide-react";
-import { useLanguage } from "../context/LanguageContext";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const icons = [Sparkles, Recycle, Droplet];
 

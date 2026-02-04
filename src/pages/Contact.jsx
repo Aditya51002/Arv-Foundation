@@ -1,6 +1,6 @@
-import SectionHeading from "../components/SectionHeading";
-import ContactSection from "../components/ContactSection";
-import { useLanguage } from "../context/LanguageContext";
+import SectionHeading from "../components/SectionHeading.jsx";
+import ContactSection from "../components/ContactSection.jsx";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const Contact = () => {
   const { lang } = useLanguage();

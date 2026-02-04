@@ -1,6 +1,6 @@
-import SectionHeading from "../components/SectionHeading";
-import FounderCard from "../components/FounderCard";
-import { useLanguage } from "../context/LanguageContext";
+import SectionHeading from "../components/SectionHeading.jsx";
+import FounderCard from "../components/FounderCard.jsx";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const Founder = () => {
   const { lang } = useLanguage();

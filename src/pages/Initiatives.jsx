@@ -1,6 +1,6 @@
-import SectionHeading from "../components/SectionHeading";
-import InitiativesGrid from "../components/InitiativesGrid";
-import { useLanguage } from "../context/LanguageContext";
+import SectionHeading from "../components/SectionHeading.jsx";
+import InitiativesGrid from "../components/InitiativesGrid.jsx";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const Initiatives = () => {
   const { lang } = useLanguage();

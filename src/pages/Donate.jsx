@@ -1,10 +1,10 @@
-import SectionHeading from "../components/SectionHeading";
-import { useLanguage } from "../context/LanguageContext";
+import SectionHeading from "../components/SectionHeading.jsx";
+import { useLanguage } from "../context/LanguageContext.jsx";
 import { motion } from "framer-motion";
 import { HeartHandshake, HandHeart } from "lucide-react";
 
 const Donate = () => {
-  const { t, lang } = useLanguage();
+  const { lang } = useLanguage();
 
   const cards = [
     {

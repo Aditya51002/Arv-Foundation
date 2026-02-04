@@ -1,4 +1,4 @@
-import { useLanguage } from "../context/LanguageContext";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const Footer = () => {
   const { t } = useLanguage();

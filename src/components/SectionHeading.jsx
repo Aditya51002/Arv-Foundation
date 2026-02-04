@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 
-const SectionHeading = ({ title, eyebrow, align = "left" }: { title: string; eyebrow?: string; align?: "left" | "center" }) => {
+const SectionHeading = ({ title, eyebrow, align = "left" }) => {
   return (
-    <div className={`${align === "center" ? "text-center" : "text-left"} space-y-2`}> 
+    <div className={`${align === "center" ? "text-center" : "text-left"} space-y-2`}>
       {eyebrow && <span className="badge">{eyebrow}</span>}
       <motion.h2
         initial={{ opacity: 0, y: 10 }}

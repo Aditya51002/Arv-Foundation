@@ -1,6 +1,6 @@
-import SectionHeading from "../components/SectionHeading";
-import WorkGrid from "../components/WorkGrid";
-import { useLanguage } from "../context/LanguageContext";
+import SectionHeading from "../components/SectionHeading.jsx";
+import WorkGrid from "../components/WorkGrid.jsx";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const Work = () => {
   const { lang } = useLanguage();

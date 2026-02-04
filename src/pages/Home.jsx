@@ -1,7 +1,7 @@
-import Hero from "../components/Hero";
-import SectionHeading from "../components/SectionHeading";
-import WorkGrid from "../components/WorkGrid";
-import { useLanguage } from "../context/LanguageContext";
+import Hero from "../components/Hero.jsx";
+import SectionHeading from "../components/SectionHeading.jsx";
+import WorkGrid from "../components/WorkGrid.jsx";
+import { useLanguage } from "../context/LanguageContext.jsx";
 import { motion } from "framer-motion";
 
 const Home = () => {

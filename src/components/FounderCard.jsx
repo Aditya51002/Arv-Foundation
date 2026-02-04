@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useLanguage } from "../context/LanguageContext";
+import { useLanguage } from "../context/LanguageContext.jsx";
 import { Quote, ShieldCheck } from "lucide-react";
 
 const FounderCard = () => {

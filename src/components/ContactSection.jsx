@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Mail, Phone, MessageCircle } from "lucide-react";
-import { useLanguage } from "../context/LanguageContext";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const ContactSection = () => {
   const { t, lang } = useLanguage();

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Languages, Menu, X, HeartHandshake } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLanguage } from "../context/LanguageContext";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const navItemVariants = {
   hidden: { opacity: 0, y: -6 },
@@ -14,7 +14,7 @@ const Navbar = () => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path) => location.pathname === path;
 
   return (
     <motion.header
