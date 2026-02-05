@@ -8,15 +8,15 @@ const Home = () => {
   const { t, lang } = useLanguage();
 
   return (
-    <div className="pb-14 space-y-12">
+    <div className="glass-card p-6 border border-white/10 pb-14 space-y-12">
       <Hero />
 
       <section className="section-shell space-y-6">
         <SectionHeading
-          eyebrow={lang === "hi" ? "हमारा उद्देश्य" : "Our Purpose"}
+          // eyebrow={lang === "hi" ? "हमारा उद्देश्य" : "Our Purpose"}
           title={lang === "hi" ? "उम्मीद के साथ सेवा" : "Serving with Hope"}
         />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="glass-card shine-border p-4 ">
           {[t.about.who, t.about.mission, t.about.vision].map((text, idx) => (
             <motion.div
               key={idx}
@@ -34,7 +34,7 @@ const Home = () => {
 
       <section className="section-shell space-y-6">
         <SectionHeading
-          eyebrow={lang === "hi" ? "हमारे प्रयास" : "Our Work"}
+          // eyebrow={lang === "hi" ? "हमारे प्रयास" : "Our Work"}
           title={lang === "hi" ? "जमीनी प्रभाव" : "Ground-Level Impact"}
         />
         <WorkGrid />

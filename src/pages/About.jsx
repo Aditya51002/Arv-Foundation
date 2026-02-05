@@ -11,6 +11,7 @@ const About = () => {
   ];
 
   return (
+   <div className="glass-card p-6 border border-white/10 pb-14 space-y-12">
     <div className="section-shell space-y-6 pb-12">
       <SectionHeading
         eyebrow={lang === "hi" ? "परिचय" : "About"}
@@ -31,6 +32,7 @@ const About = () => {
           </motion.div>
         ))}
       </div>
+    </div>
     </div>
   );
 };
