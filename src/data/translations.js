@@ -6,7 +6,8 @@ export const translations = {
       { key: "work", path: "/work" },
       { key: "initiatives", path: "/initiatives" },
       { key: "donate", path: "/donate" },
-      { key: "contact", path: "/contact" }
+      { key: "contact", path: "/contact" },
+      { key: "partners", path: "/partners"}
     ],
     navCtaDonate: "Donate",
     navToggleLabel: "Language",
@@ -103,7 +104,8 @@ export const translations = {
       { key: "work", path: "/work" },
       { key: "initiatives", path: "/initiatives" },
       { key: "donate", path: "/donate" },
-      { key: "contact", path: "/contact" }
+      { key: "contact", path: "/contact" },
+      { key: "partners", path: "/partners"}
     ],
     navCtaDonate: "दान",
     navToggleLabel: "भाषा",

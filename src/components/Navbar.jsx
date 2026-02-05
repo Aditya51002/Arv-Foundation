@@ -59,6 +59,7 @@ const Navbar = () => {
                     {link.key === "initiatives" && (lang === "hi" ? "पहल" : "Initiatives")}
                     {link.key === "donate" && (lang === "hi" ? "दान" : "Donate")}
                     {link.key === "contact" && (lang === "hi" ? "संपर्क" : "Contact")}
+                    {link.key === "partners" && (lang === "hi" ? "साथी" : "Partners")}
                   </Link>
                 </motion.div>
               ))}
@@ -124,6 +125,7 @@ const Navbar = () => {
                       {link.key === "initiatives" && (lang === "hi" ? "पहल" : "Initiatives")}
                       {link.key === "donate" && (lang === "hi" ? "दान" : "Donate")}
                       {link.key === "contact" && (lang === "hi" ? "संपर्क" : "Contact")}
+                      {link.key === "partners" && (lang === "hi" ? "साथी" : "Partners")}
                     </Link>
                   ))}
                 </div>

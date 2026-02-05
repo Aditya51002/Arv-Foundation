@@ -9,6 +9,7 @@ import Initiatives from "./pages/Initiatives.jsx";
 import Donate from "./pages/Donate.jsx";
 import Contact from "./pages/Contact.jsx";
 import Founder from "./pages/Founder.jsx";
+import Partners from "./pages/Partners.jsx";
 
 const ScrollToTop = () => {
 	const { pathname } = useLocation();
@@ -31,6 +32,7 @@ const AppShell = () => {
 					<Route path="/donate" element={<Donate />} />
 					<Route path="/contact" element={<Contact />} />
 					<Route path="/founder" element={<Founder />} />
+          <Route path="/partners" element={<Partners/>}/>
 				</Routes>
 			</main>
 			<Footer />
