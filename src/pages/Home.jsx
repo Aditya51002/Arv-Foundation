@@ -13,28 +13,30 @@ const Home = () => {
 
       <section className="section-shell space-y-6">
         <SectionHeading
-          eyebrow={lang === "hi" ? "हमारा उद्देश्य" : "Our Purpose"}
+          // eyebrow={lang === "hi" ? "हमारा उद्देश्य" : "Our Purpose"}
           title={lang === "hi" ? "उम्मीद के साथ सेवा" : "Serving with Hope"}
         />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[t.about.who, t.about.mission, t.about.vision].map((text, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-70px" }}
-              transition={{ duration: 0.45, delay: idx * 0.05 }}
-              className="glass-card p-5 border border-white/10"
-            >
-              <p className={`text-sm leading-relaxed text-white/80 ${lang === "hi" ? "font-devanagari" : ""}`}>{text}</p>
-            </motion.div>
-          ))}
+        <div className="glass-card p-6 border border-white/10 pb-14 space-y-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[t.about.who, t.about.mission, t.about.vision].map((text, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-70px" }}
+                transition={{ duration: 0.45, delay: idx * 0.05 }}
+                className="glass-card p-5 border border-white/10"
+              >
+                <p className={`text-sm leading-relaxed text-white/80 ${lang === "hi" ? "font-devanagari" : ""}`}>{text}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="section-shell space-y-6">
         <SectionHeading
-          eyebrow={lang === "hi" ? "हमारे प्रयास" : "Our Work"}
+          // eyebrow={lang === "hi" ? "हमारे प्रयास" : "Our Work"}
           title={lang === "hi" ? "जमीनी प्रभाव" : "Ground-Level Impact"}
         />
         <WorkGrid />
