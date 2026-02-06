@@ -2,6 +2,15 @@ import { motion } from "framer-motion";
 import { Sparkles, Droplet, Recycle } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
 
+function slugify(s) {
+  return s
+    .toString()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
 const icons = [Sparkles, Recycle, Droplet];
 
 const InitiativesGrid = () => {
@@ -13,6 +22,7 @@ const InitiativesGrid = () => {
         const Icon = icons[idx % icons.length];
         return (
           <motion.div
+            id={slugify(item.title)}
             key={item.title}
             whileHover={{ y: -3 }}
             initial={{ opacity: 0, y: 14 }}

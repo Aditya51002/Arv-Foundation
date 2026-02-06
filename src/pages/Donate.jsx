@@ -8,6 +8,7 @@ const Donate = () => {
 
   const cards = [
     {
+      id: "make-a-gift",
       icon: HeartHandshake,
       title: lang === "hi" ? "दान करें" : "Make a Gift",
       text:
@@ -16,6 +17,7 @@ const Donate = () => {
           : "Your support fuels food, education, healthcare, and shelter programs."
     },
     {
+      id: "volunteer",
       icon: HandHeart,
       title: lang === "hi" ? "स्वयंसेवक बनें" : "Volunteer",
       text:
@@ -36,6 +38,7 @@ const Donate = () => {
           const Icon = card.icon;
           return (
             <motion.div
+              id={card.id}
               key={card.title}
               initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Languages, Menu, X, HeartHandshake } from "lucide-react";
+import { Languages, Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
 import { useLanguage } from "../context/LanguageContext.jsx";
 
 const navItemVariants = {
@@ -13,6 +14,27 @@ const Navbar = () => {
   const { t, lang, toggleLanguage } = useLanguage();
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const navRef = useRef(null);
+
+  useEffect(() => {
+    function handleDocClick(e) {
+      if (navRef.current && !navRef.current.contains(e.target)) {
+        setActiveDropdown(null);
+      }
+    }
+
+    function handleEsc(e) {
+      if (e.key === "Escape") setActiveDropdown(null);
+    }
+
+    document.addEventListener("click", handleDocClick);
+    document.addEventListener("keydown", handleEsc);
+    return () => {
+      document.removeEventListener("click", handleDocClick);
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, []);
 
   const isActive = (path) => location.pathname === path;
 
@@ -27,41 +49,89 @@ const Navbar = () => {
         <div className="glass rounded-2xl px-4 py-3 md:px-6 md:py-4 border border-white/10">
           <div className="flex items-center justify-between gap-3">
             <Link to="/" className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-white/10 border border-white/15 grid place-items-center text-amber-300">
-                <HeartHandshake size={22} />
-              </div>
+                <div className="h-12 w-12 rounded-full overflow-hidden border border-white/15 bg-transparent flex items-center justify-center p-0">
+                  <img src="/ngo-logo.jpeg" alt="ARV Foundation logo" className="h-full w-full object-cover object-center transform scale-110" />
+                </div>
               <div className="leading-tight">
                 <p className="text-sm uppercase tracking-[0.2em] text-white/70">ARV</p>
                 <p className="text-lg font-semibold">Foundation</p>
               </div>
             </Link>
 
-            <div className="hidden md:flex items-center gap-2">
-              {t.navLinks.map((link, idx) => (
-                <motion.div
-                  key={link.path}
-                  variants={navItemVariants}
-                  initial="hidden"
-                  animate="show"
-                  transition={{ delay: idx * 0.05 + 0.1 }}
-                >
-                  <Link
-                    to={link.path}
-                    className={`px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${
-                      isActive(link.path)
-                        ? "text-white bg-white/10 border border-white/10"
-                        : "text-white/70 hover:bg-white/5"
-                    }`}
-                  >
-                    {link.key === "home" && (lang === "hi" ? "होम" : "Home")}
-                    {link.key === "about" && (lang === "hi" ? "परिचय" : "About")}
-                    {link.key === "work" && (lang === "hi" ? "कार्य" : "Work")}
-                    {link.key === "initiatives" && (lang === "hi" ? "पहल" : "Initiatives")}
-                    {link.key === "donate" && (lang === "hi" ? "दान" : "Donate")}
-                    {link.key === "contact" && (lang === "hi" ? "संपर्क" : "Contact")}
-                  </Link>
-                </motion.div>
-              ))}
+            <div ref={navRef} className="hidden md:flex items-center gap-2 relative">
+              {t.navLinks.map((link, idx) => {
+                const items = getDropdownItems(link.key, t, lang);
+                return (
+                  <div key={link.path} className="relative" onMouseLeave={() => setActiveDropdown(null)}>
+                    <motion.div
+                      variants={navItemVariants}
+                      initial="hidden"
+                      animate="show"
+                      transition={{ delay: idx * 0.05 + 0.1 }}
+                    >
+                      <div className="inline-flex items-center gap-0">
+                        <Link
+                          to={link.path}
+                          className={`px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${
+                            isActive(link.path)
+                              ? "text-white bg-white/10 border border-white/10"
+                              : "text-white/70 hover:bg-white/5"
+                          }`}
+                        >
+                          {link.key === "home" && (lang === "hi" ? "होम" : "Home")}
+                          {link.key === "about" && (lang === "hi" ? "परिचय" : "About")}
+                          {link.key === "work" && (lang === "hi" ? "कार्य" : "Work")}
+                          {link.key === "initiatives" && (lang === "hi" ? "पहल" : "Initiatives")}
+                          {link.key === "donate" && (lang === "hi" ? "दान" : "Donate")}
+                          {link.key === "contact" && (lang === "hi" ? "संपर्क" : "Contact")}
+                        </Link>
+
+                        {items.length > 0 && (
+                          <button
+                            onMouseEnter={() => setActiveDropdown(link.key)}
+                            aria-expanded={activeDropdown === link.key}
+                            aria-controls={`${link.key}-menu`}
+                            className="inline-flex items-center justify-center h-6 w-6 rounded-full text-white/70 hover:text-white hover:bg-white/5 -ml-2"
+                            title={lang === "hi" ? "मेनू" : "Menu"}
+                          >
+                            <ChevronDown size={11} className={`transition-transform ${activeDropdown === link.key ? "rotate-180" : ""}`} />
+                          </button>
+                        )}
+                      </div>
+                    </motion.div>
+
+                    <AnimatePresence>
+                      {activeDropdown === link.key && items.length > 0 && (
+                        <motion.div
+                          onMouseEnter={() => setActiveDropdown(link.key)}
+                          onMouseLeave={() => setActiveDropdown(null)}
+                          initial={{ opacity: 0, y: -6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -6 }}
+                          transition={{ duration: 0.16, ease: "easeOut" }}
+                          className="absolute left-0 top-full mt-2 w-56 rounded-lg bg-white/5 border border-white/10 shadow-lg z-60"
+                          key={link.key + "-menu"}
+                        >
+                          {items.map((it) => (
+                            <Link key={it.path} to={it.path} className="block px-4 py-2 text-sm text-white/80 hover:bg-white/5">
+                              {it.label}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    {activeDropdown && createPortal(
+                      <div
+                        className="fixed inset-0 bg-black/20 backdrop-blur-md z-45"
+                        onClick={() => setActiveDropdown(null)}
+                        aria-hidden="true"
+                      />,
+                      document.body
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             <div className="flex items-center gap-2">
@@ -72,13 +142,21 @@ const Navbar = () => {
                 className="relative inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium"
               >
                 <Languages size={16} />
-                <span className="hidden sm:inline">{t.navToggleLabel}</span>
-                <span className="font-semibold">{lang === "en" ? "EN" : "HI"}</span>
-                <motion.span
-                  layout
-                  className={`absolute inset-y-1 ${lang === "en" ? "left-1" : "right-1"} w-1/2 rounded-full bg-white/15`}
-                  transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                />
+
+                <span className="ml-4 inline-block">
+                  <span className="relative inline-block">
+                    <motion.span
+                      layout
+                      className="absolute inset-0 rounded-full bg-white/15 pointer-events-none z-0"
+                      transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                    />
+
+                    <span className="relative z-10 inline-flex items-center gap-2 px-3 py-1">
+                      <span className="hidden sm:inline">{t.navToggleLabel}</span>
+                      <span className="font-semibold">{lang === "en" ? "EN" : "HI"}</span>
+                    </span>
+                  </span>
+                </span>
               </motion.button>
 
               <Link to="/donate" className="relative inline-flex items-center">
@@ -137,3 +215,42 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+// Helper to build dropdown items for each page
+function getDropdownItems(key, t, lang) {
+  const slug = (s) =>
+    s
+      .toString()
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
+
+  if (key === "about") {
+    return [
+      { label: lang === "hi" ? "हम कौन हैं" : "Who We Are", path: "/about#who" },
+      { label: lang === "hi" ? "मिशन" : "Mission", path: "/about#mission" },
+      { label: lang === "hi" ? "दृष्टि" : "Vision", path: "/about#vision" }
+    ];
+  }
+
+  if (key === "work") {
+    return t.work.map((item) => ({ label: item.title, path: `/work#${slug(item.title)}` }));
+  }
+
+  if (key === "initiatives") {
+    return t.initiatives.map((item) => ({ label: item.title, path: `/initiatives#${slug(item.title)}` }));
+  }
+
+  if (key === "donate") {
+    return [
+      { label: lang === "hi" ? "दान करें" : "Make a Gift", path: "/donate#make-a-gift" },
+      { label: lang === "hi" ? "स्वयंसेवक बनें" : "Volunteer", path: "/donate#volunteer" }
+    ];
+  }
+
+  return [];
+}
+
+// close dropdown when clicking outside or pressing Escape
+// (handled in component via useEffect)

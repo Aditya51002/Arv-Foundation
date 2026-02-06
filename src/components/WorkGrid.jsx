@@ -2,6 +2,15 @@ import { motion } from "framer-motion";
 import { Leaf, Stethoscope, School, HelpingHand, Droplets, Heart, Shirt, Soup } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
 
+function slugify(s) {
+  return s
+    .toString()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
 const icons = [HelpingHand, Heart, School, Stethoscope, Leaf, Droplets, Shirt, Soup];
 const spans = ["md:col-span-2", "", "md:row-span-2", "", "", "md:col-span-2", "", ""];
 
@@ -15,6 +24,7 @@ const WorkGrid = () => {
         const span = spans[idx] || "";
         return (
           <motion.div
+            id={slugify(item.title)}
             key={item.title}
             whileHover={{ y: -4 }}
             whileInView={{ opacity: 1, y: 0 }}

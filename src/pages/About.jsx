@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 const About = () => {
   const { t, lang } = useLanguage();
   const cards = [
-    { title: lang === "hi" ? "हम कौन हैं" : "Who We Are", body: t.about.who },
-    { title: lang === "hi" ? "मिशन" : "Mission", body: t.about.mission },
-    { title: lang === "hi" ? "दृष्टि" : "Vision", body: t.about.vision }
+    { id: "who", title: lang === "hi" ? "हम कौन हैं" : "Who We Are", body: t.about.who },
+    { id: "mission", title: lang === "hi" ? "मिशन" : "Mission", body: t.about.mission },
+    { id: "vision", title: lang === "hi" ? "दृष्टि" : "Vision", body: t.about.vision }
   ];
 
   return (
@@ -19,6 +19,7 @@ const About = () => {
       <div className="grid gap-4 md:grid-cols-3">
         {cards.map((card, idx) => (
           <motion.div
+            id={card.id}
             key={card.title}
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
