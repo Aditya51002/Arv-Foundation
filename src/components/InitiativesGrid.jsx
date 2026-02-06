@@ -1,8 +1,12 @@
 import { motion } from "framer-motion";
-import { Sparkles, Droplet, Recycle } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
+import initiativeImage1 from "../Images/Initiative/initiativeimage1.jpg";
+import initiativeImage2 from "../Images/Initiative/initiativeimage2.jpg";
+import initiativeImage3 from "../Images/Initiative/initiativeimage3.jpg";
+import initiativeImage4 from "../Images/Initiative/initiativeimage4.jpg";
+import initiativeImage5 from "../Images/Initiative/initiativeimage5.jpg";
 
-const icons = [Sparkles, Recycle, Droplet];
+const images = [initiativeImage1, initiativeImage2, initiativeImage3, initiativeImage4, initiativeImage5];
 
 const InitiativesGrid = () => {
   const { t, lang } = useLanguage();
@@ -10,7 +14,7 @@ const InitiativesGrid = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {t.initiatives.map((item, idx) => {
-        const Icon = icons[idx % icons.length];
+        const imageSrc = images[idx % images.length];
         return (
           <motion.div
             key={item.title}
@@ -22,8 +26,8 @@ const InitiativesGrid = () => {
             className="glass-card p-4 border border-white/10"
           >
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-white/10 border border-white/10 grid place-items-center text-amber-200">
-                <Icon size={18} />
+              <div className="h-10 w-10 rounded-lg bg-white/10 border border-white/10 overflow-hidden">
+                <img src={imageSrc} alt={item.title} className="h-full w-full object-cover" />
               </div>
               <h3 className={`text-lg font-semibold ${lang === "hi" ? "font-devanagari" : ""}`}>{item.title}</h3>
             </div>

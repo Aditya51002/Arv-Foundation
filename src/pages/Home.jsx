@@ -8,7 +8,7 @@ const Home = () => {
   const { t, lang } = useLanguage();
 
   return (
-    <div className="glass-card p-6 border border-white/10 pb-14 space-y-12">
+    <div className="pb-14 space-y-12">
       <Hero />
 
       <section className="section-shell space-y-6">
@@ -16,21 +16,6 @@ const Home = () => {
           // eyebrow={lang === "hi" ? "हमारा उद्देश्य" : "Our Purpose"}
           title={lang === "hi" ? "उम्मीद के साथ सेवा" : "Serving with Hope"}
         />
-<<<<<<< HEAD
-        <div className="glass-card shine-border p-4 ">
-          {[t.about.who, t.about.mission, t.about.vision].map((text, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-70px" }}
-              transition={{ duration: 0.45, delay: idx * 0.05 }}
-              className="glass-card p-5 border border-white/10"
-            >
-              <p className={`text-sm leading-relaxed text-white/80 ${lang === "hi" ? "font-devanagari" : ""}`}>{text}</p>
-            </motion.div>
-          ))}
-=======
         <div className="glass-card p-6 border border-white/10 pb-14 space-y-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[t.about.who, t.about.mission, t.about.vision].map((text, idx) => (
@@ -46,7 +31,6 @@ const Home = () => {
               </motion.div>
             ))}
           </div>
->>>>>>> 34478784a7f591e6c60735e702cd56145bc2781d
         </div>
       </section>
 
