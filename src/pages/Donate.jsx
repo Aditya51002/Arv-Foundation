@@ -66,9 +66,10 @@ const Donate = () => {
   ];
 
   return (
+    <div className="glass-card p-6  pb-14 space-y-12">
     <div className="section-shell space-y-8 pb-12">
       <SectionHeading
-        eyebrow={lang === "hi" ? "दान" : "Donate"}
+        // eyebrow={lang === "hi" ? "दान" : "Donate"}
         title={lang === "hi" ? "हर सहयोग मायने रखता है" : "Every Contribution Matters"}
       />
       <div className="grid gap-4 md:grid-cols-2">
@@ -104,6 +105,7 @@ const Donate = () => {
           );
         })}
       </div>
+    </div>
     </div>
   );
 };

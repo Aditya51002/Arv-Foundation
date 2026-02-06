@@ -67,6 +67,14 @@ export const translations = {
       {
         title: "Food Drive",
         description: "Providing nutritious food to slum residents and labor-class families."
+      },
+      {
+        title: "Women Empowerment",
+        description: "Empowering women through vocational training, self-help groups, and awareness programs."
+      },
+      {
+        title: "Skill Development",
+        description: "Providing vocational training to youth to enhance employability and entrepreneurship."
       }
     ],
     initiatives: [
@@ -82,6 +90,14 @@ export const translations = {
       {
         title: "Blood Donation Drive",
         description: "Encouraging voluntary blood donation in collaboration with Police Mitra."
+      },
+      {
+        title: "Tree Plantation Drive",
+        description: "Planting saplings to increase green cover and combat climate change."
+      },
+      {
+        title: "Winter Blanket Distribution",
+        description: "Providing warm blankets to the homeless during harsh winters."
       }
     ],
     founderMessage:
@@ -165,6 +181,14 @@ export const translations = {
       {
         title: "भोजन वितरण",
         description: "झुग्गी बस्तियों और मजदूर वर्ग को पौष्टिक भोजन उपलब्ध कराना।"
+      },
+      {
+        title: "महिला सशक्तिकरण",
+        description: "व्यावसायिक प्रशिक्षण, स्वयं सहायता समूहों और जागरूकता कार्यक्रमों के माध्यम से महिलाओं को सशक्त बनाना।"
+      },
+      {
+        title: "कौशल विकास",
+        description: "युवाओं को रोजगार और उद्यमिता बढ़ाने के लिए व्यावसायिक प्रशिक्षण प्रदान करना।"
       }
     ],
     initiatives: [
@@ -181,6 +205,14 @@ export const translations = {
       {
         title: "रक्तदान अभियान",
         description: "पुलिस मित्र के सहयोग से स्वैच्छिक रक्तदान को बढ़ावा देना।"
+      },
+      {
+        title: "वृक्षारोपण अभियान",
+        description: "हरित आवरण बढ़ाने और जलवायु परिवर्तन से निपटने के लिए पौधे लगाना।"
+      },
+      {
+        title: "शीतकालीन कंबल वितरण",
+        description: "कड़ाके की ठंड में बेघर लोगों को गर्म कंबल उपलब्ध कराना।"
       }
     ],
     founderMessage:

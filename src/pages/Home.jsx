@@ -8,7 +8,7 @@ const Home = () => {
   const { t, lang } = useLanguage();
 
   return (
-    <div className="glass-card p-6 border border-white/10 pb-14 space-y-12">
+    <div className="pb-14 space-y-12">
       <Hero />
 
       <section className="section-shell space-y-6">
