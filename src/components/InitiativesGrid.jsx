@@ -1,6 +1,4 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { Sparkles, Droplet, Recycle, ArrowRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import initiativeImage1 from "../Images/Initiative/initiativeimage1.jpg";
 import initiativeImage2 from "../Images/Initiative/initiativeimage2.jpg";
