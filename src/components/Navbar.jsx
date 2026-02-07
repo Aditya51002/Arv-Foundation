@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Languages, Menu, X, ChevronDown, LogIn, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext.jsx";
+import { isAdminAuthed, logoutAdmin } from "../utils/adminAuth.js";
+import { isUserAuthed, logoutUser } from "../utils/userAuth.js";
 
 const navItemVariants = {
   hidden: { opacity: 0, y: -6 },
@@ -41,8 +43,8 @@ const Navbar = () => {
 
   useEffect(() => {
     const checkAuth = () => {
-      const token = localStorage.getItem('token');
-      setIsLoggedIn(!!token);
+      // TODO: Replace mock auth with JWT API
+      setIsLoggedIn(isAdminAuthed() || isUserAuthed());
     };
 
     checkAuth();
@@ -50,10 +52,11 @@ const Navbar = () => {
   }, [location]);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    // TODO: Replace mock auth with JWT API
+    logoutAdmin();
+    logoutUser();
     setIsLoggedIn(false);
-    alert("Logged out successfully");
-    navigate('/');
+    navigate("/login");
   };
 
   useEffect(() => {

@@ -15,6 +15,10 @@ import Partners from "./pages/Partners.jsx";
 import Services from "./pages/Services.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
+import AdminGallery from "./pages/admin/AdminGallery.jsx";
+import AdminSections from "./pages/admin/AdminSections.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const ScrollToTop = () => {
 	const { pathname } = useLocation();
@@ -48,6 +52,38 @@ const AppShell = () => {
 					<Route path="/services" element={<Services />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<Signup />} />
+					<Route
+						path="/admin"
+						element={
+							<ProtectedRoute>
+								<AdminDashboard />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/admin/gallery"
+						element={
+							<ProtectedRoute>
+								<AdminGallery />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/admin/sections"
+						element={
+							<ProtectedRoute>
+								<AdminSections />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/admin/*"
+						element={
+							<ProtectedRoute>
+								<AdminDashboard />
+							</ProtectedRoute>
+						}
+					/>
 				</Routes>
 			</main>
 			<Footer />

@@ -1,43 +1,43 @@
-import SectionHeading from "../components/SectionHeading.jsx";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { loginAdmin } from "../utils/adminAuth.js";
+import { loginUser } from "../utils/userAuth.js";
 
 const Login = () => {
   const { lang } = useLanguage();
   const isHindi = lang === "hi";
-  const [showPassword, setShowPassword] = useState(false);
-  const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+  const location = useLocation();
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginType, setLoginType] = useState("user");
+  const [error, setError] = useState("");
+  const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
-      });
-      const data = await response.json();
-      if (response.ok) {
-        console.log("Login success:", data);
-        // Store token in localStorage or context if needed
-        localStorage.setItem('token', data.token);
-        alert("Login Successful!");
-        navigate('/'); // Redirect to home on success
-      } else {
-        alert(data.message || "Login failed");
+    setError("");
+    // TODO: Replace mock login with auth API
+    if (loginType === "admin") {
+      if (form.email === "Admin" && form.password === "Admin@pass") {
+        loginAdmin();
+        const redirectTo = location.state?.from?.pathname || "/admin";
+        navigate(redirectTo, { replace: true });
+        return;
       }
-    } catch (error) {
-      console.error("Login error:", error);
-      alert("Error connecting to server");
+      setError("Invalid admin credentials.");
+      return;
     }
+    // TODO: Replace mock login with auth API
+    loginUser();
+    console.log("User login submitted:", form);
+    navigate("/", { replace: true });
   };
 
   return (
@@ -65,17 +65,54 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm text-white/70 flex items-center gap-2">
+              {isHindi ? "लॉगिन प्रकार" : "Login Type"}
+            </label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setLoginType("user")}
+                className={`flex-1 rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  loginType === "user"
+                    ? "bg-white/15 text-white border border-white/15"
+                    : "bg-white/5 text-white/70 border border-white/10 hover:bg-white/10"
+                }`}
+              >
+                {isHindi ? "यूज़र" : "User"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setLoginType("admin")}
+                className={`flex-1 rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  loginType === "admin"
+                    ? "bg-white/15 text-white border border-white/15"
+                    : "bg-white/5 text-white/70 border border-white/10 hover:bg-white/10"
+                }`}
+              >
+                {isHindi ? "एडमिन" : "Admin"}
+              </button>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm text-white/70 flex items-center gap-2">
               <Mail size={14} />
-              {isHindi ? "ईमेल" : "Email"}
+              {loginType === "admin" ? (isHindi ? "यूज़रनेम" : "Username") : isHindi ? "ईमेल" : "Email"}
             </label>
             <input
-              type="email"
+              type="text"
               name="email"
               value={form.email}
               onChange={handleChange}
               required
               className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition"
-              placeholder={isHindi ? "आपका ईमेल" : "you@example.com"}
+              placeholder={
+                loginType === "admin"
+                  ? isHindi
+                    ? "एडमिन यूज़रनेम"
+                    : "Admin username"
+                  : isHindi
+                  ? "आपका ईमेल"
+                  : "you@example.com"
+              }
             />
           </div>
 
@@ -104,13 +141,21 @@ const Login = () => {
             </div>
           </div>
 
+          {error && <p className="text-xs text-red-400">{error}</p>}
+
           <motion.button
             type="submit"
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
             className="w-full rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 py-2.5 text-sm font-semibold text-black shadow-lg"
           >
-            {isHindi ? "लॉगिन" : "Sign In"}
+            {loginType === "admin"
+              ? isHindi
+                ? "एडमिन लॉगिन"
+                : "Admin Sign In"
+              : isHindi
+              ? "लॉगिन"
+              : "Sign In"}
           </motion.button>
         </form>
 
