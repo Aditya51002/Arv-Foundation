@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Languages, Menu, X, ChevronDown, LogIn } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Languages, Menu, X, ChevronDown, LogIn, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext.jsx";
 
@@ -31,11 +31,30 @@ const getNavLinks = (lang) => [
 const Navbar = () => {
   const { t, lang, toggleLanguage } = useLanguage();
   const location = useLocation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const navRef = useRef(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navLinks = getNavLinks(lang);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('token');
+      setIsLoggedIn(!!token);
+    };
+
+    checkAuth();
+    // Re-check on location change to catch login/logout updates
+  }, [location]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    alert("Logged out successfully");
+    navigate('/');
+  };
 
   useEffect(() => {
     const handleDocClick = (e) => {
@@ -100,11 +119,10 @@ const Navbar = () => {
                         onClick={() =>
                           setDropdownOpen((prev) => (prev === link.key ? null : link.key))
                         }
-                        className={`inline-flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${
-                          dropdownOpen === link.key || location.pathname.startsWith("/services")
+                        className={`inline-flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${dropdownOpen === link.key || location.pathname.startsWith("/services")
                             ? "text-white bg-white/10 border border-white/10"
                             : "text-white/70 hover:bg-white/5"
-                        }`}
+                          }`}
                       >
                         {link.label}
                         <ChevronDown
@@ -140,11 +158,10 @@ const Navbar = () => {
                     /* Normal link */
                     <Link
                       to={link.path}
-                      className={`px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${
-                        isActive(link.path)
+                      className={`px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${isActive(link.path)
                           ? "text-white bg-white/10 border border-white/10"
                           : "text-white/70 hover:bg-white/5"
-                      }`}
+                        }`}
                     >
                       {link.label}
                     </Link>
@@ -178,14 +195,24 @@ const Navbar = () => {
                 </span>
               </motion.button>
 
-              {/* Login */}
-              <Link
-                to="/login"
-                className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
-              >
-                <LogIn size={15} />
-                <span>{lang === "hi" ? "लॉगिन" : "Login"}</span>
-              </Link>
+              {/* Login / Logout */}
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
+                >
+                  <LogOut size={15} />
+                  <span>{lang === "hi" ? "लॉग आउट" : "Logout"}</span>
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
+                >
+                  <LogIn size={15} />
+                  <span>{lang === "hi" ? "लॉगिन" : "Login"}</span>
+                </Link>
+              )}
 
               {/* Donate CTA */}
               <Link to="/donate" className="relative inline-flex items-center">
@@ -263,23 +290,35 @@ const Navbar = () => {
                         key={link.key}
                         to={link.path}
                         onClick={() => setOpen(false)}
-                        className={`rounded-lg px-3 py-2 text-sm font-medium ${
-                          isActive(link.path) ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5"
-                        }`}
+                        className={`rounded-lg px-3 py-2 text-sm font-medium ${isActive(link.path) ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5"
+                          }`}
                       >
                         {link.label}
                       </Link>
                     )
                   )}
-                  {/* Mobile login link */}
-                  <Link
-                    to="/login"
-                    onClick={() => setOpen(false)}
-                    className="rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
-                  >
-                    <LogIn size={15} />
-                    {lang === "hi" ? "लॉगिन" : "Login"}
-                  </Link>
+                  {/* Mobile login / logout link */}
+                  {isLoggedIn ? (
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setOpen(false);
+                      }}
+                      className="w-full text-left rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
+                    >
+                      <LogOut size={15} />
+                      {lang === "hi" ? "लॉग आउट" : "Logout"}
+                    </button>
+                  ) : (
+                    <Link
+                      to="/login"
+                      onClick={() => setOpen(false)}
+                      className="rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
+                    >
+                      <LogIn size={15} />
+                      {lang === "hi" ? "लॉगिन" : "Login"}
+                    </Link>
+                  )}
                 </div>
               </motion.div>
             )}
