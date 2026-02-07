@@ -14,6 +14,7 @@ import Founder from "./pages/Founder.jsx";
 import Partners from "./pages/Partners.jsx";
 import Services from "./pages/Services.jsx";
 import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup.jsx";
 
 const ScrollToTop = () => {
 	const { pathname } = useLocation();
@@ -46,6 +47,7 @@ const AppShell = () => {
 					<Route path="/partners" element={<Partners />} />
 					<Route path="/services" element={<Services />} />
 					<Route path="/login" element={<Login />} />
+					<Route path="/signup" element={<Signup />} />
 				</Routes>
 			</main>
 			<Footer />

@@ -3,21 +3,41 @@ import { useLanguage } from "../context/LanguageContext.jsx";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { lang } = useLanguage();
   const isHindi = lang === "hi";
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: connect to backend auth API
-    console.log("Login submitted:", form);
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+      const data = await response.json();
+      if (response.ok) {
+        console.log("Login success:", data);
+        // Store token in localStorage or context if needed
+        localStorage.setItem('token', data.token);
+        alert("Login Successful!");
+        navigate('/'); // Redirect to home on success
+      } else {
+        alert(data.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Error connecting to server");
+    }
   };
 
   return (
@@ -96,8 +116,11 @@ const Login = () => {
 
         <p className={`text-center text-xs text-white/50 ${isHindi ? "font-devanagari" : ""}`}>
           {isHindi
-            ? "खाता नहीं है? जल्द ही पंजीकरण उपलब्ध होगा।"
-            : "Don't have an account? Registration coming soon."}
+            ? "खाता नहीं है? "
+            : "Don't have an account? "}
+          <Link to="/signup" className="text-amber-200 hover:underline">
+            {isHindi ? "रजिस्टर करें" : "Sign up"}
+          </Link>
         </p>
       </motion.div>
     </div>
