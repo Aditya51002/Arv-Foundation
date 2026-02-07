@@ -73,6 +73,17 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const updateNavbarHeight = () => {
+      if (!navRef.current) return;
+      const { height } = navRef.current.getBoundingClientRect();
+      document.documentElement.style.setProperty("--navbar-height", `${Math.ceil(height)}px`);
+    };
+    updateNavbarHeight();
+    window.addEventListener("resize", updateNavbarHeight);
+    return () => window.removeEventListener("resize", updateNavbarHeight);
+  }, []);
+
   const isActive = (path) => path && location.pathname === path;
 
   return (
@@ -81,7 +92,7 @@ const Navbar = () => {
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="sticky top-0 z-50"
+      className="fixed top-0 left-0 right-0 z-50"
     >
       <div className="section-shell pt-4">
         <div className="glass rounded-2xl px-4 py-3 md:px-6 md:py-4 border border-white/10">
@@ -213,17 +224,6 @@ const Navbar = () => {
                   <span>{lang === "hi" ? "लॉगिन" : "Login"}</span>
                 </Link>
               )}
-
-              {/* Donate CTA */}
-              <Link to="/donate" className="relative inline-flex items-center">
-                <motion.span
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="magnetic inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black shadow-lg"
-                >
-                  {t.hero.donate}
-                </motion.span>
-              </Link>
 
               {/* Mobile menu toggle */}
               <button

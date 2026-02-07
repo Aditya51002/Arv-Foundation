@@ -59,7 +59,7 @@ const About = () => {
   return (
     <div className="section-shell space-y-8 pb-12">
       <SectionHeading
-        eyebrow={isHindi ? "परिचय" : "About"}
+        // eyebrow={isHindi ? "परिचय" : "About"}
         title={isHindi ? "समाज के लिए आशा" : "Hope for Every Community"}
       />
 
