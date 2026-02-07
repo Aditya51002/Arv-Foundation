@@ -20,7 +20,7 @@ const Hero = () => {
       <div className="blur-blob right-[-10%] top-10 h-64 w-64 bg-amber-300/20" />
       <div className="section-shell relative z-10 grid gap-10 md:grid-cols-[1.1fr_0.9fr] items-center">
         <div className="space-y-6">
-          <div className="badge w-fit">{lang === "hi" ? "गैर-सरकारी संगठन" : "Non-Governmental Organization"}</div>
+          {/* <div className="badge w-fit">{lang === "hi" ? "गैर-सरकारी संगठन" : "Non-Governmental Organization"}</div> */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
