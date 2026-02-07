@@ -1,0 +1,23 @@
+[
+  {
+    "_id": "69870e5277c04eda0df944e9",
+    "name": "Ankitff0132",
+    "email": "bezos143@gmail.com",
+    "phone": "8540078766",
+    "otp": "535945",
+    "otpExpires": "2026-02-07T10:15:31.637Z",
+    "isVerified": false,
+    "createdAt": "2026-02-07T10:05:06.691Z",
+    "updatedAt": "2026-02-07T10:05:31.641Z",
+    "__v": 0
+  },
+  {
+    "_id": "698718f7a6823abce839130a",
+    "username": "Vishal Tiwari",
+    "email": "bezos14@gmail.com",
+    "phone": "8540078766",
+    "password": "$2a$10$MIjeQhYGfm5GG4zU2OnUKuNy/lcKMHERcTbjPx/QlY2JNZnNLnxhq",
+    "createdAt": "2026-02-07T10:50:31.382Z",
+    "__v": 0
+  }
+]

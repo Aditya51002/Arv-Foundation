@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Languages, Menu, X, ChevronDown, LogIn } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Languages, Menu, X, ChevronDown, LogIn, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext.jsx";
+import { isAdminAuthed, logoutAdmin } from "../utils/adminAuth.js";
+import { isUserAuthed, logoutUser } from "../utils/userAuth.js";
 
 const navItemVariants = {
   hidden: { opacity: 0, y: -6 },
@@ -31,11 +33,31 @@ const getNavLinks = (lang) => [
 const Navbar = () => {
   const { t, lang, toggleLanguage } = useLanguage();
   const location = useLocation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const navRef = useRef(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navLinks = getNavLinks(lang);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      // TODO: Replace mock auth with JWT API
+      setIsLoggedIn(isAdminAuthed() || isUserAuthed());
+    };
+
+    checkAuth();
+    // Re-check on location change to catch login/logout updates
+  }, [location]);
+
+  const handleLogout = () => {
+    // TODO: Replace mock auth with JWT API
+    logoutAdmin();
+    logoutUser();
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
 
   useEffect(() => {
     const handleDocClick = (e) => {
@@ -54,6 +76,17 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const updateNavbarHeight = () => {
+      if (!navRef.current) return;
+      const { height } = navRef.current.getBoundingClientRect();
+      document.documentElement.style.setProperty("--navbar-height", `${Math.ceil(height)}px`);
+    };
+    updateNavbarHeight();
+    window.addEventListener("resize", updateNavbarHeight);
+    return () => window.removeEventListener("resize", updateNavbarHeight);
+  }, []);
+
   const isActive = (path) => path && location.pathname === path;
 
   return (
@@ -62,7 +95,7 @@ const Navbar = () => {
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="sticky top-0 z-50"
+      className="fixed top-0 left-0 right-0 z-50"
     >
       <div className="section-shell pt-4">
         <div className="glass rounded-2xl px-4 py-3 md:px-6 md:py-4 border border-white/10">
@@ -100,11 +133,10 @@ const Navbar = () => {
                         onClick={() =>
                           setDropdownOpen((prev) => (prev === link.key ? null : link.key))
                         }
-                        className={`inline-flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${
-                          dropdownOpen === link.key || location.pathname.startsWith("/services")
+                        className={`inline-flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${dropdownOpen === link.key || location.pathname.startsWith("/services")
                             ? "text-white bg-white/10 border border-white/10"
                             : "text-white/70 hover:bg-white/5"
-                        }`}
+                          }`}
                       >
                         {link.label}
                         <ChevronDown
@@ -140,11 +172,10 @@ const Navbar = () => {
                     /* Normal link */
                     <Link
                       to={link.path}
-                      className={`px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${
-                        isActive(link.path)
+                      className={`px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${isActive(link.path)
                           ? "text-white bg-white/10 border border-white/10"
                           : "text-white/70 hover:bg-white/5"
-                      }`}
+                        }`}
                     >
                       {link.label}
                     </Link>
@@ -178,25 +209,24 @@ const Navbar = () => {
                 </span>
               </motion.button>
 
-              {/* Login */}
-              <Link
-                to="/login"
-                className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
-              >
-                <LogIn size={15} />
-                <span>{lang === "hi" ? "लॉगिन" : "Login"}</span>
-              </Link>
-
-              {/* Donate CTA */}
-              <Link to="/donate" className="relative inline-flex items-center">
-                <motion.span
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="magnetic inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black shadow-lg"
+              {/* Login / Logout */}
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
                 >
-                  {t.hero.donate}
-                </motion.span>
-              </Link>
+                  <LogOut size={15} />
+                  <span>{lang === "hi" ? "लॉग आउट" : "Logout"}</span>
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
+                >
+                  <LogIn size={15} />
+                  <span>{lang === "hi" ? "लॉगिन" : "Login"}</span>
+                </Link>
+              )}
 
               {/* Mobile menu toggle */}
               <button
@@ -263,23 +293,35 @@ const Navbar = () => {
                         key={link.key}
                         to={link.path}
                         onClick={() => setOpen(false)}
-                        className={`rounded-lg px-3 py-2 text-sm font-medium ${
-                          isActive(link.path) ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5"
-                        }`}
+                        className={`rounded-lg px-3 py-2 text-sm font-medium ${isActive(link.path) ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5"
+                          }`}
                       >
                         {link.label}
                       </Link>
                     )
                   )}
-                  {/* Mobile login link */}
-                  <Link
-                    to="/login"
-                    onClick={() => setOpen(false)}
-                    className="rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
-                  >
-                    <LogIn size={15} />
-                    {lang === "hi" ? "लॉगिन" : "Login"}
-                  </Link>
+                  {/* Mobile login / logout link */}
+                  {isLoggedIn ? (
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setOpen(false);
+                      }}
+                      className="w-full text-left rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
+                    >
+                      <LogOut size={15} />
+                      {lang === "hi" ? "लॉग आउट" : "Logout"}
+                    </button>
+                  ) : (
+                    <Link
+                      to="/login"
+                      onClick={() => setOpen(false)}
+                      className="rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
+                    >
+                      <LogIn size={15} />
+                      {lang === "hi" ? "लॉगिन" : "Login"}
+                    </Link>
+                  )}
                 </div>
               </motion.div>
             )}

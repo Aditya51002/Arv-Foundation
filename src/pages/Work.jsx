@@ -8,7 +8,7 @@ const Work = () => {
   return (
     <div className="section-shell space-y-6 pb-12">
       <SectionHeading
-        eyebrow={lang === "hi" ? "हमारा कार्य" : "Our Work"}
+        // eyebrow={lang === "hi" ? "हमारा कार्य" : "Our Work"}
         title={lang === "hi" ? "सम्मान के साथ सेवा" : "Serving with Dignity"}
       />
       <WorkGrid />
