@@ -1,13 +1,20 @@
+
 import { motion } from "framer-motion";
 import { ArrowRight, HandHeart, Leaf, Stethoscope, GraduationCap, HeartPulse, Shirt } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
+import { useState } from "react";
+import QuickDonate from "./QuickDonate.jsx";
+import QuickVolunteer from "./QuickVolunteer.jsx";
 
 const focusIcons = [HandHeart, HeartPulse, GraduationCap, Stethoscope, Leaf, Shirt];
 
 const Hero = () => {
   const { t, lang } = useLanguage();
+  const [donateOpen, setDonateOpen] = useState(false);
+  const [volunteerOpen, setVolunteerOpen] = useState(false);
 
   return (
+    <>
     <section className="relative overflow-hidden py-12 md:py-16">
       <div className="blur-blob left-[-10%] top-[-10%] h-64 w-64 bg-emerald-400/20" />
       <div className="blur-blob right-[-10%] top-10 h-64 w-64 bg-amber-300/20" />
@@ -31,23 +38,24 @@ const Hero = () => {
             {t.hero.intro}
           </motion.p>
           <div className="flex flex-wrap items-center gap-4">
-            <motion.a
-              href="/donate"
+            <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => setDonateOpen(true)}
               className="magnetic inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-5 py-3 text-black font-semibold shadow-xl"
             >
               {t.hero.donate}
               <ArrowRight size={18} />
-            </motion.a>
-            <motion.a
-              href="/contact"
+            </motion.button>
+
+            <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => setVolunteerOpen(true)}
               className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 py-3 font-semibold"
             >
               {t.hero.volunteer}
-            </motion.a>
+            </motion.button>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
             {t.hero.focusAreas.map((area, idx) => {
@@ -104,6 +112,9 @@ const Hero = () => {
         </motion.div>
       </div>
     </section>
+    <QuickDonate open={donateOpen} onClose={() => setDonateOpen(false)} />
+    <QuickVolunteer open={volunteerOpen} onClose={() => setVolunteerOpen(false)} />
+    </>
   );
 };
 
