@@ -17,7 +17,6 @@ const getNavLinks = (lang) => [
   { key: "about", path: "/about", label: lang === "hi" ? "परिचय" : "About" },
   { key: "work", path: "/work", label: lang === "hi" ? "कार्य" : "Work" },
   { key: "initiatives", path: "/initiatives", label: lang === "hi" ? "पहल" : "Initiatives" },
-  { key: "donate", path: "/donate", label: lang === "hi" ? "दान" : "Donate" },
   { key: "partners", path: "/partners", label: lang === "hi" ? "साथी" : "Partners" },
   {
     key: "services",
@@ -211,17 +210,6 @@ const Navbar = () => {
               >
                 <LogIn size={15} />
                 <span>{lang === "hi" ? "लॉगिन" : "Login"}</span>
-              </Link>
-
-              {/* Donate CTA */}
-              <Link to="/donate" className="relative inline-flex items-center">
-                <motion.span
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="magnetic inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black shadow-lg"
-                >
-                  {t.hero.donate}
-                </motion.span>
               </Link>
 
               {/* Mobile menu toggle */}

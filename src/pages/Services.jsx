@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import SectionHeading from "../components/SectionHeading.jsx";
-import ContactSection from "../components/ContactSection.jsx";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import { motion } from "framer-motion";
 import { GraduationCap, Newspaper, Mail, ArrowRight, X } from "lucide-react";
@@ -609,14 +608,6 @@ const Services = () => {
       </div>
     )}
 
-      {/* Contact section embedded */}
-      <div className="space-y-6">
-        <SectionHeading
-          eyebrow={isHindi ? "संपर्क" : "Contact"}
-          title={content.contactHeading}
-        />
-        <ContactSection />
-      </div>
     </div>
   );
 };
