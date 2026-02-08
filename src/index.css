@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap");
+@import "tailwindcss";
 
 :root {
   font-family: "Inter", "Poppins", "Noto Sans Devanagari", system-ui, -apple-system, sans-serif;
@@ -16,6 +16,8 @@
   --accent: #f5a524;
   --accent-2: #79cbb8;
   --text-dim: #b8c7be;
+  --navbar-height: 80px;
+  --page-top-gap: 24px;
 }
 
 * {
@@ -62,6 +64,16 @@ a {
   padding: 0 1.5rem;
 }
 
+.page-wrapper {
+  padding-top: calc(var(--navbar-height) + var(--page-top-gap));
+}
+
+@media (max-width: 768px) {
+  :root {
+    --page-top-gap: 16px;
+  }
+}
+
 .accent-gradient {
   background-image: linear-gradient(120deg, #79cbb8 0%, #f5a524 60%, #f57f17 100%);
 }
@@ -98,5 +110,12 @@ a {
   position: absolute;
   filter: blur(70px);
   opacity: 0.55;
+  z-index: 0;
+}
+
+.app-blur-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
   z-index: 0;
 }

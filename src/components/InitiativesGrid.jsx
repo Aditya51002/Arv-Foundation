@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Sparkles, Droplet, Recycle, ArrowRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
+import initiativeImage1 from "../Images/Initiative/initiativeimage1.jpg";
+import initiativeImage2 from "../Images/Initiative/initiativeimage2.jpg";
+import initiativeImage3 from "../Images/Initiative/initiativeimage3.jpg";
+import initiativeImage4 from "../Images/Initiative/initiativeimage4.jpg";
+import initiativeImage5 from "../Images/Initiative/initiativeimage5.jpg";
 
 function slugify(s) {
   return s
