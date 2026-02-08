@@ -160,17 +160,12 @@ const Navbar = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={toggleLanguage}
-                className="relative inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium"
+                className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black shadow-lg"
               >
                 <Languages size={16} />
-                <span className="ml-4 inline-block">
+                <span className="ml-2 inline-block">
                   <span className="relative inline-block">
-                    <motion.span
-                      layout
-                      className="absolute inset-0 rounded-full bg-white/15 pointer-events-none z-0"
-                      transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                    />
-                    <span className="relative z-10 inline-flex items-center gap-2 px-3 py-1">
+                    <span className="relative inline-flex items-center gap-2 px-2 py-0.5">
                       <span className="hidden sm:inline">{t.navToggleLabel}</span>
                       <span className="font-semibold">{lang === "en" ? "EN" : "HI"}</span>
                     </span>
@@ -178,25 +173,16 @@ const Navbar = () => {
                 </span>
               </motion.button>
 
-              {/* Login */}
+              {/* Login (styled like Donate CTA) */}
               <Link
                 to="/login"
-                className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
+                className="hidden md:inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black shadow-lg"
               >
                 <LogIn size={15} />
                 <span>{lang === "hi" ? "लॉगिन" : "Login"}</span>
               </Link>
 
-              {/* Donate CTA */}
-              <Link to="/donate" className="relative inline-flex items-center">
-                <motion.span
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="magnetic inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black shadow-lg"
-                >
-                  {t.hero.donate}
-                </motion.span>
-              </Link>
+              {/* Donate CTA removed per request */}
 
               {/* Mobile menu toggle */}
               <button
@@ -275,7 +261,7 @@ const Navbar = () => {
                   <Link
                     to="/login"
                     onClick={() => setOpen(false)}
-                    className="rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
+                    className="rounded-lg px-3 py-2 text-sm font-medium flex items-center gap-2 justify-center bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 text-black font-semibold shadow-lg"
                   >
                     <LogIn size={15} />
                     {lang === "hi" ? "लॉगिन" : "Login"}
