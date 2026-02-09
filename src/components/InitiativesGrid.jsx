@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import initiativesContent from "../data/initiativesContent.js";
 import { Sparkles, Recycle, Droplet, ArrowRight } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext.jsx";
+// import { Sparkles, Recycle, Droplet, ArrowRight } from "lucide-react";
 import initiativeImage1 from "../Images/Initiative/initiativeimage1.jpg";
 import initiativeImage2 from "../Images/Initiative/initiativeimage2.jpg";
 import initiativeImage3 from "../Images/Initiative/initiativeimage3.jpg";
