@@ -37,13 +37,17 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const navRef = useRef(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navLinks = getNavLinks(lang);
 
   useEffect(() => {
     const checkAuth = () => {
       // TODO: Replace mock auth with JWT API
-      setIsLoggedIn(isAdminAuthed() || isUserAuthed());
+      const adminAuthed = isAdminAuthed();
+      const userAuthed = isUserAuthed();
+      setIsAdmin(adminAuthed);
+      setIsLoggedIn(adminAuthed || userAuthed);
     };
 
     checkAuth();
@@ -55,6 +59,7 @@ const Navbar = () => {
     logoutAdmin();
     logoutUser();
     setIsLoggedIn(false);
+    setIsAdmin(false);
     navigate("/login");
   };
 
@@ -203,14 +208,34 @@ const Navbar = () => {
                 </span>
               </motion.button>
 
-              {/* Login */}
-              <Link
-                to="/login"
-                className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
-              >
-                <LogIn size={15} />
-                <span>{lang === "hi" ? "लॉगिन" : "Login"}</span>
-              </Link>
+              {/* Admin dashboard shortcut */}
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-emerald-200/40 bg-emerald-400/20 px-3 py-2 text-sm font-semibold text-emerald-100 hover:bg-emerald-400/30 transition"
+                >
+                  <span>{lang === "hi" ? "एडमिन डैशबोर्ड" : "Admin"}</span>
+                </Link>
+              )}
+
+              {/* Login/Logout */}
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
+                >
+                  <LogOut size={15} />
+                  <span>{lang === "hi" ? "लॉग आउट" : "Logout"}</span>
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
+                >
+                  <LogIn size={15} />
+                  <span>{lang === "hi" ? "लॉगिन" : "Login"}</span>
+                </Link>
+              )}
 
               {/* Mobile menu toggle */}
               <button
@@ -284,15 +309,39 @@ const Navbar = () => {
                       </Link>
                     )
                   )}
-                  {/* Mobile login link */}
-                  <Link
-                    to="/login"
-                    onClick={() => setOpen(false)}
-                    className="rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
-                  >
-                    <LogIn size={15} />
-                    {lang === "hi" ? "लॉगिन" : "Login"}
-                  </Link>
+                  {/* Mobile admin shortcut */}
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      onClick={() => setOpen(false)}
+                      className="rounded-lg px-3 py-2 text-sm font-semibold text-emerald-100 bg-emerald-500/10 hover:bg-emerald-500/20 flex items-center gap-2"
+                    >
+                      {lang === "hi" ? "एडमिन डैशबोर्ड" : "Admin Dashboard"}
+                    </Link>
+                  )}
+
+                  {/* Mobile login/logout link */}
+                  {isLoggedIn ? (
+                    <button
+                      onClick={() => {
+                        setOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full text-left rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
+                    >
+                      <LogOut size={15} />
+                      {lang === "hi" ? "लॉग आउट" : "Logout"}
+                    </button>
+                  ) : (
+                    <Link
+                      to="/login"
+                      onClick={() => setOpen(false)}
+                      className="rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
+                    >
+                      <LogIn size={15} />
+                      {lang === "hi" ? "लॉगिन" : "Login"}
+                    </Link>
+                  )}
                 </div>
               </motion.div>
             )}
