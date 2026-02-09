@@ -101,12 +101,12 @@ const Navbar = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="fixed top-0 left-0 right-0 z-50"
     >
-      <div className="section-shell pt-4">
-        <div className="glass rounded-2xl px-4 py-3 md:px-6 md:py-4 border border-white/10">
+      <div className="section-shell pt-3 sm:pt-4">
+        <div className="glass rounded-2xl px-3 py-3 sm:px-4 lg:px-6 lg:py-4 border border-white/10">
           <div className="flex items-center justify-between gap-3">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-full overflow-hidden border border-white/15 bg-transparent flex items-center justify-center p-0">
+              <div className="h-10 w-10 sm:h-11 sm:w-11 lg:h-12 lg:w-12 rounded-full overflow-hidden border border-white/15 bg-transparent flex items-center justify-center p-0">
                 <img
                   src="/ngo-logo.jpeg"
                   alt="ARV Foundation logo"
@@ -114,13 +114,13 @@ const Navbar = () => {
                 />
               </div>
               <div className="leading-tight">
-                <p className="text-sm uppercase tracking-[0.2em] text-white/70">ARV</p>
-                <p className="text-lg font-semibold">Foundation</p>
+                <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-white/70">ARV</p>
+                <p className="text-base sm:text-lg font-semibold">Foundation</p>
               </div>
             </Link>
 
             {/* ── Desktop nav ── */}
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-1">
               {navLinks.map((link, idx) => (
                 <motion.div
                   key={link.key}
@@ -195,7 +195,7 @@ const Navbar = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={toggleLanguage}
-                className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black shadow-lg"
+                className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-3 py-2 text-xs sm:px-4 sm:text-sm font-semibold text-black shadow-lg"
               >
                 <Languages size={16} />
                 <span className="ml-2 inline-block">
@@ -212,9 +212,9 @@ const Navbar = () => {
               {isAdmin && (
                 <Link
                   to="/admin"
-                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-emerald-200/40 bg-emerald-400/20 px-3 py-2 text-sm font-semibold text-emerald-100 hover:bg-emerald-400/30 transition"
+                  className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-emerald-200/40 bg-emerald-400/20 px-3 py-2 text-sm font-semibold text-emerald-100 hover:bg-emerald-400/30 transition"
                 >
-                  <span>{lang === "hi" ? "एडमिन डैशबोर्ड" : "Admin"}</span>
+                  <span>{lang === "hi" ? "à¤à¤¡à¤®à¤¿à¤¨ à¤¡à¥ˆà¤¶à¤¬à¥‹à¤°à¥à¤¡" : "Admin"}</span>
                 </Link>
               )}
 
@@ -222,25 +222,25 @@ const Navbar = () => {
               {isLoggedIn ? (
                 <button
                   onClick={handleLogout}
-                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
+                  className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
                 >
                   <LogOut size={15} />
-                  <span>{lang === "hi" ? "लॉग आउट" : "Logout"}</span>
+                  <span>{lang === "hi" ? "à¤²à¥‰à¤— à¤†à¤‰à¤Ÿ" : "Logout"}</span>
                 </button>
               ) : (
                 <Link
                   to="/login"
-                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
+                  className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
                 >
                   <LogIn size={15} />
-                  <span>{lang === "hi" ? "लॉगिन" : "Login"}</span>
+                  <span>{lang === "hi" ? "à¤²à¥‰à¤—à¤¿à¤¨" : "Login"}</span>
                 </Link>
               )}
 
               {/* Mobile menu toggle */}
               <button
                 onClick={() => setOpen((v) => !v)}
-                className="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/10 border border-white/10"
+                className="lg:hidden inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/10 border border-white/10"
               >
                 {open ? <X size={20} /> : <Menu size={20} />}
               </button>
@@ -254,7 +254,7 @@ const Navbar = () => {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                className="md:hidden overflow-hidden"
+                className="lg:hidden overflow-hidden"
               >
                 <div className="mt-3 flex flex-col gap-2 pb-2">
                   {navLinks.map((link) =>

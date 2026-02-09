@@ -31,6 +31,7 @@ body {
     radial-gradient(circle at 80% 0%, rgba(245, 165, 36, 0.18), transparent 32%),
     linear-gradient(135deg, #0b1411 0%, #0f1d18 40%, #0b1411 100%);
   color: #e7f2ec;
+  overflow-x: hidden;
 }
 
 #root {
@@ -39,6 +40,12 @@ body {
 
 a {
   text-decoration: none;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
 }
 
 .glass {
@@ -61,16 +68,34 @@ a {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
 }
 
 .page-wrapper {
   padding-top: calc(var(--navbar-height) + var(--page-top-gap));
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   :root {
-    --page-top-gap: 16px;
+    --page-top-gap: 14px;
+  }
+}
+
+@media (min-width: 641px) {
+  .section-shell {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .section-shell {
+    padding: 0 2.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .section-shell {
+    max-width: 1280px;
   }
 }
 

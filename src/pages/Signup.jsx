@@ -43,16 +43,16 @@ const Signup = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="w-full max-w-md glass-card p-8 border border-white/10 rounded-2xl space-y-6"
+                className="w-full max-w-md glass-card p-6 sm:p-8 border border-white/10 rounded-2xl space-y-6"
             >
                 <div className="text-center space-y-2">
                     <div className="h-14 w-14 mx-auto rounded-2xl bg-white/10 border border-white/10 grid place-items-center text-amber-200">
                         <User size={28} />
                     </div>
-                    <h2 className={`text-2xl font-semibold ${isHindi ? "font-devanagari" : ""}`}>
+                    <h2 className={`text-xl sm:text-2xl font-semibold ${isHindi ? "font-devanagari" : ""}`}>
                         {isHindi ? "साइन अप करें" : "Sign Up"}
                     </h2>
-                    <p className={`text-sm text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                    <p className={`text-xs sm:text-sm text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
                         {isHindi
                             ? "नया खाता बनाएँ"
                             : "Create a new account"}
