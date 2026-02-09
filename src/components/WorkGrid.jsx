@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Leaf, Stethoscope, School, HelpingHand, Droplets, Heart, Shirt, Soup, ArrowRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
+import workContent from "../data/workContent.js";
 
 function slugify(s) {
   return s
@@ -17,10 +18,12 @@ const spans = ["md:col-span-2", "", "md:row-span-2", "", "", "md:col-span-2", ""
 
 const WorkGrid = () => {
   const { t, lang } = useLanguage();
+  // Use dedicated work content file instead of translation block
+  const items = workContent;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {t.work.map((item, idx) => {
+      {items.map((item, idx) => {
         const Icon = icons[idx % icons.length];
         const span = spans[idx] || "";
         const slug = slugify(item.title);

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext.jsx";
+import initiativesContent from "../data/initiativesContent.js";
 import { Sparkles, Recycle, Droplet, ArrowRight } from "lucide-react";
 import initiativeImage1 from "../Images/Initiative/initiativeimage1.jpg";
 import initiativeImage2 from "../Images/Initiative/initiativeimage2.jpg";
@@ -21,10 +22,11 @@ const icons = [Sparkles, Recycle, Droplet];
 
 const InitiativesGrid = () => {
   const { t, lang } = useLanguage();
+  const items = initiativesContent;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {t.initiatives.map((item, idx) => {
+      {items.map((item, idx) => {
         const Icon = icons[idx % icons.length];
         const slug = slugify(item.title);
         return (
