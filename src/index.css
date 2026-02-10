@@ -17,7 +17,8 @@
   --accent-2: #79cbb8;
   --text-dim: #b8c7be;
   --navbar-height: 80px;
-  --page-top-gap: 24px;
+  /* increased top gap as a fallback to avoid headings hiding under fixed navbar */
+  --page-top-gap: 40px;
 }
 
 * {
@@ -70,7 +71,41 @@ a {
 
 @media (max-width: 768px) {
   :root {
-    --page-top-gap: 16px;
+    /* slightly larger mobile gap for safe spacing */
+    --page-top-gap: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    /* larger gap on wide screens */
+    --page-top-gap: 56px;
+  }
+}
+
+/* Layout spacing variables (used by components for responsive gaps) */
+:root {
+  --timeline-gap: 6rem;         /* default (mobile) */
+  --tracker-top-gap: 2rem;     /* small top gap before tracker */
+  --donation-gap: 3rem;        /* spacer height between timeline & donations */
+  --slider-bottom-gap: 2rem;   /* bottom margin reserve for slider */
+}
+
+@media (min-width: 768px) {
+  :root {
+    --timeline-gap: 10rem;
+    --tracker-top-gap: 6rem;
+    --donation-gap: 6rem;
+    --slider-bottom-gap: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --timeline-gap: 16rem;
+    --tracker-top-gap: 8rem;
+    --donation-gap: 8rem;
+    --slider-bottom-gap: 5rem;
   }
 }
 
@@ -119,3 +154,24 @@ a {
   pointer-events: none;
   z-index: 0;
 }
+
+/* Animated headline gradient */
+.animated-headline .headline-gradient {
+  background: linear-gradient(90deg, #fff 0%, #f5a524 30%, #79cbb8 60%, #fff 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  will-change: background-position, transform, opacity;
+  animation: gradientShift 6s linear infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Slight emphasis entrance for the headline */
+.animated-headline { text-wrap: balance; }

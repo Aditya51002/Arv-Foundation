@@ -51,7 +51,7 @@ const InitiativesGrid = () => {
               <span className="inline-flex items-center gap-1 mt-2 text-xs text-amber-200 opacity-0 group-hover:opacity-100 transition-opacity">
                 {lang === "hi" ? "और पढ़ें" : "Read more"} <ArrowRight size={12} />
               </span>
-            </motion.div>
+              </motion.div>
           </Link>
         );
       })}

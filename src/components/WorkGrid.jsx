@@ -50,7 +50,7 @@ const WorkGrid = () => {
                   </span>
                 </div>
               </div>
-            </motion.div>
+              </motion.div>
           </Link>
         );
       })}

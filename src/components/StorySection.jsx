@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import SectionHeading from "./SectionHeading.jsx";
+import ParallaxSection from "./ParallaxSection.jsx";
 
 // Simple before/after slider without external deps.
 // Accepts optional `leftImage` and `rightImage` props (urls). If not provided, shows gradients/placeholders.
@@ -32,9 +33,15 @@ const StorySection = ({ leftImage = null, rightImage = null, leftLabel = "Before
   }, []);
 
   return (
-    <section className="section-shell">
-      <SectionHeading title="Stories of Change" />
-      <div ref={containerRef} className="relative rounded-md overflow-hidden mt-4" style={{ height: 340 }}>
+    <section className="section-shell mb-24 pb-96">
+      {/* Heading above slider (restored original layout) */}
+      <div className="mb-4">
+        <SectionHeading title="Stories of Change" />
+      </div>
+
+      {/* reduce parallax strength and reserve responsive bottom margin to keep visual space (uses CSS var) */}
+      <ParallaxSection speed={0.08} className="relative rounded-md overflow-hidden mt-4 mb-[var(--slider-bottom-gap)] z-0">
+        <div ref={containerRef} className="relative h-[340px]" style={{ height: 340 }}>
         {/* Right / background image */}
         <div
           className="absolute inset-0"
@@ -81,10 +88,12 @@ const StorySection = ({ leftImage = null, rightImage = null, leftLabel = "Before
           </div>
         </div>
 
-        {/* Labels */}
-        <div className="absolute left-4 bottom-4 bg-white/5 px-3 py-1 rounded text-sm">{leftLabel}</div>
-        <div className="absolute right-4 bottom-4 bg-white/5 px-3 py-1 rounded text-sm">{rightLabel}</div>
-      </div>
+          {/* Labels inside slider */}
+          <div className="absolute left-4 bottom-4 bg-white/5 px-3 py-1 rounded text-sm">{leftLabel}</div>
+          <div className="absolute right-4 bottom-4 bg-white/5 px-3 py-1 rounded text-sm">{rightLabel}</div>
+        </div>
+      </ParallaxSection>
+
       {/* placeholder text removed */}
     </section>
   );
