@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Leaf, Stethoscope, School, HelpingHand, Droplets, Heart, Shirt, Soup } from "lucide-react";
+import { Leaf, Stethoscope, School, HelpingHand, Droplets, Heart, Shirt, Soup, ArrowRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import workContent from "../data/workContent.js";
 
@@ -18,8 +18,29 @@ const spans = ["md:col-span-2", "", "md:row-span-2", "", "", "md:col-span-2", ""
 
 const WorkGrid = () => {
   const { t, lang } = useLanguage();
-  // Use dedicated work content file instead of translation block
-  const items = workContent;
+  // Use translations so descriptions follow selected language
+  const items = t && t.work ? t.work : workContent;
+
+  const handleTileMove = (e, id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const clientX = e.clientX ?? (e.touches && e.touches[0] && e.touches[0].clientX) ?? 0;
+    const clientY = e.clientY ?? (e.touches && e.touches[0] && e.touches[0].clientY) ?? 0;
+    const px = (clientX - rect.left) / rect.width;
+    const py = (clientY - rect.top) / rect.height;
+    const rx = (py - 0.5) * 6; // rotateX
+    const ry = (px - 0.5) * -10; // rotateY
+    el.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
+    el.style.transition = "transform 0.06s ease-out";
+  };
+
+  const handleTileLeave = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.transform = "none";
+    el.style.transition = "transform 0.28s cubic-bezier(.2,.9,.2,1)";
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -31,7 +52,10 @@ const WorkGrid = () => {
           <Link to={`/work/${slug}`} key={item.title} className="block">
             <motion.div
               id={slug}
-              whileHover={{ y: -4, scale: 1.01 }}
+              onMouseMove={(e) => handleTileMove(e, slug)}
+              onMouseLeave={() => handleTileLeave(slug)}
+              onTouchMove={(e) => handleTileMove(e, slug)}
+              onFocus={() => {}}
               whileInView={{ opacity: 1, y: 0 }}
               initial={{ opacity: 0, y: 20 }}
               viewport={{ once: true, margin: "-50px" }}
@@ -43,6 +67,13 @@ const WorkGrid = () => {
                   <Icon size={18} />
                 </div>
                 <h3 className={`text-lg font-semibold ${lang === "hi" ? "font-devanagari" : ""}`}>{item.title}</h3>
+              </div>
+              {/* short summary (2-3 lines) + read more link */}
+              <p className={`mt-3 text-sm text-white/80 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""} line-clamp-3`}>{item.description}</p>
+              <div className="mt-3">
+                <Link to={`/work/${slug}`} className="text-sm text-amber-300 hover:underline inline-flex items-center gap-2">
+                  {lang === "hi" ? "और पढ़ें" : "Read more"} <ArrowRight size={14} />
+                </Link>
               </div>
             </motion.div>
           </Link>

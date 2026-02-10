@@ -21,11 +21,7 @@ const getNavLinks = (lang) => [
   {
     key: "services",
     label: lang === "hi" ? "सेवाएँ" : "Services",
-    dropdown: [
-      { label: lang === "hi" ? "इंटर्नशिप" : "Internship", path: "/services#internship" },
-      { label: lang === "hi" ? "समाचार और पत्र" : "News & Letter", path: "/services#newsletter" },
-      { label: lang === "hi" ? "संपर्क" : "Contact", path: "/services#contact" },
-    ],
+    path: "/services",
   },
 ];
 
@@ -106,7 +102,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between gap-3">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-full overflow-hidden border border-white/15 bg-transparent flex items-center justify-center p-0">
+              <div className="h-12 w-12 rounded-full overflow-hidden border border-white/15 bg-transparent flex items-center justify-center p-0 logo-parallax">
                 <img
                   src="/ngo-logo.jpeg"
                   alt="ARV Foundation logo"
@@ -195,9 +191,9 @@ const Navbar = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={toggleLanguage}
-                className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black shadow-lg"
+                className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black shadow-lg cta-raise"
               >
-                <Languages size={16} />
+                <Languages size={16} className="icon-pop" />
                 <span className="ml-2 inline-block">
                   <span className="relative inline-block">
                     <span className="relative inline-flex items-center gap-2 px-2 py-0.5">
@@ -214,7 +210,7 @@ const Navbar = () => {
               {isAdmin && (
                 <Link
                   to="/admin"
-                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-emerald-200/40 bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-3 py-2 text-sm font-semibold text-black shadow-lg hover:bg-emerald-400/30 transition"
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-emerald-200/40 bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-3 py-2 text-sm font-semibold text-black shadow-lg hover:bg-emerald-400/30 transition cta-raise"
                 >
                   <span>{lang === "hi" ? "एडमिन डैशबोर्ड" : "Admin"}</span>
                 </Link>
@@ -224,17 +220,17 @@ const Navbar = () => {
               {isLoggedIn ? (
                 <button
                   onClick={handleLogout}
-                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition cta-raise"
                 >
-                  <LogOut size={15} />
+                  <LogOut size={15} className="icon-pop" />
                   <span>{lang === "hi" ? "लॉग आउट" : "Logout"}</span>
                 </button>
               ) : (
                 <Link
                   to="/login"
-                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition"
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition cta-raise"
                 >
-                  <LogIn size={15} />
+                  <LogIn size={15} className="icon-pop" />
                   <span>{lang === "hi" ? "लॉगिन" : "Login"}</span>
                 </Link>
               )}
@@ -242,9 +238,9 @@ const Navbar = () => {
               {/* Mobile menu toggle */}
               <button
                 onClick={() => setOpen((v) => !v)}
-                className="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/10 border border-white/10"
+                className="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/10 border border-white/10 cta-raise"
               >
-                {open ? <X size={20} /> : <Menu size={20} />}
+                {open ? <X size={20} className="icon-pop" /> : <Menu size={20} className="icon-pop" />}
               </button>
             </div>
           </div>
@@ -331,7 +327,7 @@ const Navbar = () => {
                       }}
                       className="w-full text-left rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
                     >
-                      <LogOut size={15} />
+                      <LogOut size={15} className="icon-pop" />
                       {lang === "hi" ? "लॉग आउट" : "Logout"}
                     </button>
                   ) : (
@@ -340,7 +336,7 @@ const Navbar = () => {
                       onClick={() => setOpen(false)}
                       className="rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
                     >
-                      <LogIn size={15} />
+                      <LogIn size={15} className="icon-pop" />
                       {lang === "hi" ? "लॉगिन" : "Login"}
                     </Link>
                   )}
