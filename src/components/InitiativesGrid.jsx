@@ -2,7 +2,9 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import initiativesContent from "../data/initiativesContent.js";
-import { Sparkles, Recycle, Droplet } from "lucide-react";
+import { Sparkles, Recycle, Droplet, ArrowRight } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext.jsx";
+// import { Sparkles, Recycle, Droplet, ArrowRight } from "lucide-react";
 import initiativeImage1 from "../Images/Initiative/initiativeimage1.jpg";
 import initiativeImage2 from "../Images/Initiative/initiativeimage2.jpg";
 import initiativeImage3 from "../Images/Initiative/initiativeimage3.jpg";
@@ -46,17 +48,10 @@ const InitiativesGrid = () => {
                 </div>
                 <h3 className={`text-lg font-semibold ${lang === "hi" ? "font-devanagari" : ""}`}>{item.title}</h3>
               </div>
-              <p
-                className={`mt-2 text-sm text-white/75 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""}`}
-                style={{
-                  display: "-webkit-box",
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
-                }}
-              >
-                {item.description}
-              </p>
+              <p className={`mt-2 text-sm text-white/75 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""}`}>{item.description}</p>
+              <span className="inline-flex items-center gap-1 mt-2 text-xs text-amber-200 opacity-0 group-hover:opacity-100 transition-opacity">
+                {lang === "hi" ? "और पढ़ें" : "Read more"} <ArrowRight size={12} />
+              </span>
             </motion.div>
           </Link>
         );

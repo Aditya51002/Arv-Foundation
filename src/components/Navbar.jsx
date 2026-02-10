@@ -208,11 +208,13 @@ const Navbar = () => {
                 </span>
               </motion.button>
 
-              {/* Admin dashboard shortcut */}
+              {/* Donate CTA removed per request */}
+
+               {/* Admin dashboard shortcut */}
               {isAdmin && (
                 <Link
                   to="/admin"
-                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-emerald-200/40 bg-emerald-400/20 px-3 py-2 text-sm font-semibold text-emerald-100 hover:bg-emerald-400/30 transition"
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-emerald-200/40 bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-3 py-2 text-sm font-semibold text-black shadow-lg hover:bg-emerald-400/30 transition"
                 >
                   <span>{lang === "hi" ? "एडमिन डैशबोर्ड" : "Admin"}</span>
                 </Link>

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, HandHeart, Leaf, Stethoscope, GraduationCap, HeartPulse, Shirt } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import { useState, useRef, useEffect } from "react";
-import QuickDonate from "./QuickDonate.jsx";
+import { useNavigate } from "react-router-dom";
 import QuickVolunteer from "./QuickVolunteer.jsx";
 import AnimatedCounter from "./AnimatedCounter.jsx";
 
@@ -11,7 +11,7 @@ const focusIcons = [HandHeart, HeartPulse, GraduationCap, Stethoscope, Leaf, Shi
 
 const Hero = () => {
   const { t, lang } = useLanguage();
-  const [donateOpen, setDonateOpen] = useState(false);
+  const navigate = useNavigate();
   const [volunteerOpen, setVolunteerOpen] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const sectionRef = useRef(null);
@@ -93,12 +93,13 @@ const Hero = () => {
         <div className="space-y-6">
           {/* <div className="badge w-fit">{lang === "hi" ? "गैर-सरकारी संगठन" : "Non-Governmental Organization"}</div> */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className={`text-4xl md:text-5xl font-bold leading-tight ${lang === "hi" ? "font-devanagari" : ""}`}
+            className={`text-4xl md:text-5xl font-bold leading-tight animated-headline ${lang === "hi" ? "font-devanagari" : ""}`}
           >
-            {t.hero.tagline}
+            <span className="headline-gradient">{t.hero.tagline}</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 18 }}
@@ -112,7 +113,7 @@ const Hero = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => setDonateOpen(true)}
+              onClick={() => navigate("/donate")}
               className="magnetic inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-5 py-3 text-black font-semibold shadow-xl"
             >
               {t.hero.donate}
@@ -183,7 +184,7 @@ const Hero = () => {
         </motion.div>
       </div>
     </section>
-    <QuickDonate open={donateOpen} onClose={() => setDonateOpen(false)} />
+    
     <QuickVolunteer open={volunteerOpen} onClose={() => setVolunteerOpen(false)} />
     </>
   );

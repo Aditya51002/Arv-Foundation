@@ -44,17 +44,6 @@ const WorkGrid = () => {
                 </div>
                 <h3 className={`text-lg font-semibold ${lang === "hi" ? "font-devanagari" : ""}`}>{item.title}</h3>
               </div>
-              <p
-                className={`mt-2 text-sm text-white/75 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""}`}
-                style={{
-                  display: "-webkit-box",
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
-                }}
-              >
-                {item.description}
-              </p>
             </motion.div>
           </Link>
         );
