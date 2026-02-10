@@ -268,9 +268,10 @@ const Services = () => {
               key={card.id}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -4, scale: 1.01 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: idx * 0.08 }}
-              className="glass-card p-6 border border-white/10 rounded-2xl space-y-4"
+              className="glass-card p-6 border border-white/10 rounded-2xl space-y-4 hover:border-amber-300/50 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <div className="h-11 w-11 rounded-xl bg-white/10 border border-white/10 grid place-items-center text-amber-200">

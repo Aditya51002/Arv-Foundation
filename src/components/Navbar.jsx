@@ -14,10 +14,10 @@ const navItemVariants = {
 /* ── top-level links (Contact removed, Partners + Services added) ── */
 const getNavLinks = (lang) => [
   { key: "home", path: "/", label: lang === "hi" ? "होम" : "Home" },
-  { key: "about", path: "/about", label: lang === "hi" ? "परिचय" : "About" },
   { key: "work", path: "/work", label: lang === "hi" ? "कार्य" : "Work" },
   { key: "initiatives", path: "/initiatives", label: lang === "hi" ? "पहल" : "Initiatives" },
   { key: "partners", path: "/partners", label: lang === "hi" ? "साथी" : "Partners" },
+  { key: "about", path: "/about", label: lang === "hi" ? "परिचय" : "About" },
   {
     key: "services",
     label: lang === "hi" ? "सेवाएँ" : "Services",

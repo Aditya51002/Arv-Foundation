@@ -2,9 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import initiativesContent from "../data/initiativesContent.js";
-import { Sparkles, Recycle, Droplet, ArrowRight } from "lucide-react";
-import { useLanguage } from "../context/LanguageContext.jsx";
-// import { Sparkles, Recycle, Droplet, ArrowRight } from "lucide-react";
+import { Sparkles, Recycle, Droplet } from "lucide-react";
 import initiativeImage1 from "../Images/Initiative/initiativeimage1.jpg";
 import initiativeImage2 from "../Images/Initiative/initiativeimage2.jpg";
 import initiativeImage3 from "../Images/Initiative/initiativeimage3.jpg";
@@ -40,18 +38,25 @@ const InitiativesGrid = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.45, delay: idx * 0.06 }}
-              className="glass-card p-4 border border-white/10 cursor-pointer group h-full"
+              className="glass-card p-5 rounded-2xl border border-white/10 h-full hover:border-amber-300/50 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-white/10 border border-white/10 grid place-items-center text-amber-200">
+                <div className="h-11 w-11 rounded-xl bg-white/10 border border-white/10 grid place-items-center text-amber-200">
                   <Icon size={18} />
                 </div>
                 <h3 className={`text-lg font-semibold ${lang === "hi" ? "font-devanagari" : ""}`}>{item.title}</h3>
               </div>
-              <p className={`mt-2 text-sm text-white/75 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""}`}>{item.description}</p>
-              <span className="inline-flex items-center gap-1 mt-2 text-xs text-amber-200 opacity-0 group-hover:opacity-100 transition-opacity">
-                {lang === "hi" ? "और पढ़ें" : "Read more"} <ArrowRight size={12} />
-              </span>
+              <p
+                className={`mt-2 text-sm text-white/75 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""}`}
+                style={{
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }}
+              >
+                {item.description}
+              </p>
             </motion.div>
           </Link>
         );

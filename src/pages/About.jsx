@@ -72,9 +72,10 @@ const About = () => {
               key={card.id}
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -4, scale: 1.01 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: idx * 0.07 }}
-              className="glass-card p-6 border border-white/10 rounded-2xl space-y-4"
+              className="glass-card p-6 border border-white/10 rounded-2xl space-y-4 hover:border-amber-300/50 transition-colors"
             >
               {/* Header */}
               <div className="flex items-center gap-3">
