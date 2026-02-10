@@ -11,7 +11,11 @@ const Home = () => {
       <DriveAnnouncementPopup />
       <Hero />
       <StorySection />
+
+
       <Timeline />
+
+      {/* (Hover cards and gamified progress bars removed from home for now) */}
     </div>
   );
 };

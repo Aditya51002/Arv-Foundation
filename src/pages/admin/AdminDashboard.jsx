@@ -30,7 +30,7 @@ const AdminDashboard = () => {
 
 	const activeDrives = drives.filter((d) => d.active);
 
-	return (
+	return (<>
 		<div className="section-shell pb-12">
 			<AdminLayout
 				title="Dashboard"
@@ -181,7 +181,7 @@ const AdminDashboard = () => {
 				onPublished={refreshDrives}
 			/>
 		</div>
-	);
+	</>);
 };
 
 export default AdminDashboard;

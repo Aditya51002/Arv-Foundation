@@ -51,7 +51,7 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="rounded-full border border-white/10 bg-white/5 p-2 text-white/50 transition hover:bg-white/15 hover:text-white"
+                  className="rounded-full border border-white/10 bg-white/5 p-2 text-white/50 transition hover:bg-white/15 hover:text-white icon-pop icon-tilt focus-outline"
                 >
                   <Icon size={16} />
                 </a>
@@ -132,7 +132,7 @@ const Footer = () => {
           </p>
           <p className="flex items-center gap-1 text-xs text-white/40">
             {isHindi ? "से बनाया गया" : "Made with"}
-            <Heart size={12} className="text-red-400" fill="currentColor" />
+            <Heart size={12} className="text-red-400 icon-pop icon-tilt" fill="currentColor" />
             {isHindi ? "भारत में" : "in India"}
           </p>
         </div>
