@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap");
+@import "tailwindcss";
 
 :root {
   font-family: "Inter", "Poppins", "Noto Sans Devanagari", system-ui, -apple-system, sans-serif;
@@ -16,6 +16,9 @@
   --accent: #f5a524;
   --accent-2: #79cbb8;
   --text-dim: #b8c7be;
+  --navbar-height: 80px;
+  /* increased top gap as a fallback to avoid headings hiding under fixed navbar */
+  --page-top-gap: 8px;
 }
 
 * {
@@ -29,6 +32,7 @@ body {
     radial-gradient(circle at 80% 0%, rgba(245, 165, 36, 0.18), transparent 32%),
     linear-gradient(135deg, #0b1411 0%, #0f1d18 40%, #0b1411 100%);
   color: #e7f2ec;
+  overflow-x: hidden;
 }
 
 #root {
@@ -37,6 +41,12 @@ body {
 
 a {
   text-decoration: none;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
 }
 
 .glass {
@@ -59,7 +69,51 @@ a {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
+}
+
+.page-wrapper {
+  padding-top: calc(var(--navbar-height) + var(--page-top-gap));
+}
+
+@media (max-width: 640px) {
+  :root {
+    /* small mobile gap to keep content close to navbar */
+    --page-top-gap: 8px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    /* modest desktop gap so hero sits closer under navbar */
+    --page-top-gap: 12px;
+  }
+}
+
+/* Layout spacing variables (used by components for responsive gaps) */
+:root {
+  --timeline-gap: 6rem;         /* default (mobile) */
+  --tracker-top-gap: 2rem;     /* small top gap before tracker */
+  --donation-gap: 3rem;        /* spacer height between timeline & donations */
+  --slider-bottom-gap: 2rem;   /* bottom margin reserve for slider */
+}
+
+@media (min-width: 768px) {
+  :root {
+    --timeline-gap: 10rem;
+    --tracker-top-gap: 6rem;
+    --donation-gap: 6rem;
+    --slider-bottom-gap: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --timeline-gap: 16rem;
+    --tracker-top-gap: 8rem;
+    --donation-gap: 8rem;
+    --slider-bottom-gap: 5rem;
+  }
 }
 
 .accent-gradient {
@@ -74,6 +128,32 @@ a {
   transform: translateY(-2px) scale(1.01);
   box-shadow: 0 12px 35px rgba(245, 165, 36, 0.35);
 }
+
+/* CTA micro-raise with animated gradient shift */
+.cta-raise {
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  will-change: transform;
+}
+.cta-raise:focus { outline: none; }
+.cta-raise:hover, .cta-raise:focus {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(11,20,17,0.45);
+}
+
+/* Small pop for social icons */
+.icon-pop { transition: transform 140ms ease, box-shadow 140ms ease; }
+.icon-pop:hover { transform: translateY(-3px) scale(1.08); }
+
+/* Tiny tilt effect for icons (adds a small rotation for delight) */
+.icon-tilt { transition: transform 140ms ease; transform-origin: center; }
+.icon-tilt:hover { transform: translateY(-3px) scale(1.06) rotate(-6deg); }
+.icon-tilt:active, .icon-tilt:focus { transform: translateY(-1px) scale(1.03) rotate(-3deg); }
+
+/* Logo micro-parallax container */
+.logo-parallax { transform-origin: center; transition: transform 140ms linear; will-change: transform; }
+
+/* Focus-visible outline for interactive tiles */
+.focus-outline:focus { outline: 2px solid rgba(255,255,255,0.08); outline-offset: 4px; }
 
 .badge {
   display: inline-flex;
@@ -96,7 +176,86 @@ a {
 
 .blur-blob {
   position: absolute;
-  filter: blur(70px);
+  /* reduced blur to improve performance on lower-end devices */
+  filter: blur(28px);
   opacity: 0.55;
   z-index: 0;
 }
+
+.app-blur-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* small helper to clamp text to 3 lines when needed */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Animated headline gradient */
+.animated-headline .headline-gradient {
+  background: linear-gradient(90deg, #fff 0%, #f5a524 30%, #79cbb8 60%, #fff 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  will-change: background-position, transform, opacity;
+  animation: gradientShift 6s linear infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Slight emphasis entrance for the headline */
+.animated-headline { text-wrap: balance; }
+
+/* Photo gallery grid */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+.media-thumb { padding: 0; border: none; background: transparent; display: block; overflow: hidden; border-radius: 0.6rem; }
+.media-thumb img { width: 100%; height: 120px; object-fit: cover; display: block; transition: transform 180ms ease; }
+.media-thumb:hover img { transform: scale(1.04); }
+
+.media-lightbox { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; background: rgba(2,6,5,0.7); }
+.media-lightbox-inner { position: relative; max-width: 90%; max-height: 90%; }
+.media-lightbox-inner img { max-width: 100%; max-height: 80vh; display: block; border-radius: 0.5rem; }
+.media-close { position: absolute; right: -8px; top: -8px; background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
+.media-caption { margin-top: 8px; text-align: center; color: rgba(255,255,255,0.8); font-size: 0.9rem; }
+.media-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+.media-nav.prev { left: -32px; }
+.media-nav.next { right: -32px; }
+
+/* Partners / CSR logos */
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  align-items: center;
+}
+.partner-card { display: flex; align-items: center; justify-content: center; padding: 0.6rem; background: rgba(255,255,255,0.02); border-radius: 0.6rem; }
+.partner-logo { max-width: 100%; max-height: 60px; object-fit: contain; filter: grayscale(0.06) contrast(0.95); transition: transform 160ms ease, filter 160ms ease; }
+.partner-logo:hover { transform: translateY(-4px) scale(1.03); filter: grayscale(0) contrast(1.02); }
+
+/* Flip card styles for FounderCard */
+.flip-card { perspective: 1000px; }
+.flip-inner { transition: transform 600ms cubic-bezier(.2,.9,.2,1); transform-style: preserve-3d; will-change: transform; }
+.flip-front, .flip-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; position: relative; }
+.flip-back { transform: rotateY(180deg); position: absolute; inset: 0; }
+.flip-card:hover .flip-inner, .flip-card:focus-within .flip-inner, .flip-card.is-flipped .flip-inner { transform: rotateY(180deg); }
+.flip-card .flip-front { transform: rotateY(0deg); }
+.flip-card .flip-back { display: flex; align-items: center; justify-content: center; padding: 1rem; }
+
+/* Depth lift on hover/focus */
+.flip-card:hover .glass-card, .flip-card:focus-within .glass-card { transform: translateY(-6px) translateZ(8px); box-shadow: 0 18px 50px rgba(0,0,0,0.45); }

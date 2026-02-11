@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0%" stop-color="#083122" />
+      <stop offset="100%" stop-color="#123a2b" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#g)" />
+  <g fill="#ffffff" fill-opacity="0.07">
+    <circle cx="200" cy="150" r="180" />
+    <circle cx="1400" cy="120" r="220" />
+    <circle cx="1300" cy="700" r="260" />
+  </g>
+  <text x="80" y="380" font-family="system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size="64" fill="#ffffff" fill-opacity="0.9">Serving Humanity with</text>
+  <text x="80" y="460" font-family="system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size="64" font-weight="700" fill="#ffffff">Compassion, Dignity & Hope</text>
+  <rect x="80" y="520" width="280" height="56" rx="28" fill="#f6c84d" />
+  <text x="140" y="560" font-family="system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-size="18" font-weight="600" fill="#06221a">Donate Now →</text>
+</svg>
