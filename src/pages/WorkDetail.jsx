@@ -14,6 +14,7 @@ import {
   Soup,
   ImagePlus,
 } from "lucide-react";
+import { usePlacedImages } from "../utils/usePlacedImages.js";
 
 const icons = [HelpingHand, Heart, School, Stethoscope, Leaf, Droplets, Shirt, Soup];
 
@@ -166,6 +167,7 @@ const WorkDetail = () => {
   const { slug } = useParams();
   const { t, lang } = useLanguage();
   const isHindi = lang === "hi";
+  const { images: slotImages } = usePlacedImages("work", slug);
 
   const details = detailContent[lang];
   const page = details[slug];
@@ -224,14 +226,22 @@ const WorkDetail = () => {
           </p>
         ))}
 
-        {/* Image placeholders — editable later */}
+        {/* Image placeholders — connected to admin gallery */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 pt-4">
-          {[1, 2, 3].map((n) => (
+          {[0, 1, 2].map((n) => (
             <div
               key={n}
-              className="aspect-video rounded-xl border border-dashed border-white/20 bg-white/5 grid place-items-center text-white/30"
+              className={`aspect-video rounded-xl border ${
+                slotImages[n]
+                  ? "border-white/10 overflow-hidden"
+                  : "border-dashed border-white/20 bg-white/5 grid place-items-center text-white/30"
+              }`}
             >
-              <ImagePlus size={28} />
+              {slotImages[n] ? (
+                <img src={slotImages[n]} alt={`${page.heading} ${n + 1}`} className="w-full h-full object-cover" />
+              ) : (
+                <ImagePlus size={28} />
+              )}
             </div>
           ))}
         </div>

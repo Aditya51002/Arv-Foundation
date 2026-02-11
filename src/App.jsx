@@ -10,6 +10,7 @@ import Initiatives from "./pages/Initiatives.jsx";
 import InitiativeDetail from "./pages/InitiativeDetail.jsx";
 import Donate from "./pages/Donate.jsx";
 import Contact from "./pages/Contact.jsx";
+import Gallery from "./pages/Gallery.jsx";
 import Founder from "./pages/Founder.jsx";
 import Partners from "./pages/Partners.jsx";
 import PartnerDetail from "./pages/PartnerDetail.jsx";
@@ -18,8 +19,10 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import AdminGallery from "./pages/admin/AdminGallery.jsx";
+import AdminDrives from "./pages/admin/AdminDrives.jsx";
 import AdminSections from "./pages/admin/AdminSections.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import DriveAnnouncementPopup from "./components/DriveAnnouncementPopup.jsx";
 
 const ScrollToTop = () => {
 	const { pathname } = useLocation();
@@ -46,6 +49,7 @@ const AppShell = () => {
 					<Route path="/work/:slug" element={<WorkDetail />} />
 					<Route path="/initiatives" element={<Initiatives />} />
 					<Route path="/initiatives/:slug" element={<InitiativeDetail />} />
+					<Route path="/gallery" element={<Gallery />} />
 					<Route path="/donate" element={<Donate />} />
 					<Route path="/contact" element={<Contact />} />
 					<Route path="/founder" element={<Founder />} />
@@ -67,6 +71,14 @@ const AppShell = () => {
 						element={
 							<ProtectedRoute>
 								<AdminGallery />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/admin/drives"
+						element={
+							<ProtectedRoute>
+								<AdminDrives />
 							</ProtectedRoute>
 						}
 					/>
@@ -98,6 +110,7 @@ const App = () => {
 		<BrowserRouter>
 			<ScrollToTop />
 			<AppShell />
+			<DriveAnnouncementPopup />
 		</BrowserRouter>
 	);
 };

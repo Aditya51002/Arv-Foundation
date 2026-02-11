@@ -4,6 +4,7 @@ import SectionHeading from "../components/SectionHeading.jsx";
 import { motion } from "framer-motion";
 import { ArrowLeft, Sparkles, Recycle, Droplet, ImagePlus } from "lucide-react";
 import initiativesContent from "../data/initiativesContent.js";
+import { usePlacedImages } from "../utils/usePlacedImages.js";
 
 const icons = [Sparkles, Recycle, Droplet];
 
@@ -21,6 +22,7 @@ const InitiativeDetail = () => {
   const { slug } = useParams();
   const { t, lang } = useLanguage();
   const isHindi = lang === "hi";
+  const { images: slotImages } = usePlacedImages("initiative", slug);
 
   const initIndex = initiativesContent.findIndex((item) => slugify(item.title) === slug);
   if (initIndex === -1) {
@@ -69,12 +71,20 @@ const InitiativeDetail = () => {
         ))}
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 pt-4">
-          {[1, 2, 3].map((n) => (
+          {[0, 1, 2].map((n) => (
             <div
               key={n}
-              className="aspect-video rounded-xl border border-dashed border-white/20 bg-white/5 grid place-items-center text-white/30"
+              className={`aspect-video rounded-xl border ${
+                slotImages[n]
+                  ? "border-white/10 overflow-hidden"
+                  : "border-dashed border-white/20 bg-white/5 grid place-items-center text-white/30"
+              }`}
             >
-              <ImagePlus size={28} />
+              {slotImages[n] ? (
+                <img src={slotImages[n]} alt={`${item.title} ${n + 1}`} className="w-full h-full object-cover" />
+              ) : (
+                <ImagePlus size={28} />
+              )}
             </div>
           ))}
         </div>

@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import SectionHeading from "../components/SectionHeading.jsx";
+import { usePlacedImages } from "../utils/usePlacedImages.js";
+import { ImagePlus } from "lucide-react";
 
 const partnerData = {
 	en: [
@@ -74,6 +76,7 @@ const PartnerDetail = () => {
 	const { lang } = useLanguage();
 	const t = partnerData[lang];
 	const partner = t.find(p => p.slug === slug);
+	const { images: slotImages } = usePlacedImages("partner", slug);
 
 	if (!partner) {
 		return <div>Partner not found</div>;
@@ -88,10 +91,14 @@ const PartnerDetail = () => {
 			</div>
 
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-				{partner.images.map((image, index) => (
+				{[0, 1, 2].map((index) => (
 					<div key={index} className="glass-card p-4 rounded-2xl border border-white/10">
-						<div className="aspect-video bg-white/10 rounded-lg flex items-center justify-center">
-							<span className="text-white/50">{image || `Image ${index + 1}`}</span>
+						<div className="aspect-video bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
+							{slotImages[index] ? (
+								<img src={slotImages[index]} alt={`${partner.title} ${index + 1}`} className="w-full h-full object-cover" />
+							) : (
+								<ImagePlus size={28} className="text-white/30" />
+							)}
 						</div>
 					</div>
 				))}

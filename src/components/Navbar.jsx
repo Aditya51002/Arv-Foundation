@@ -16,6 +16,7 @@ const getNavLinks = (lang) => [
   { key: "home", path: "/", label: lang === "hi" ? "होम" : "Home" },
   { key: "work", path: "/work", label: lang === "hi" ? "कार्य" : "Work" },
   { key: "initiatives", path: "/initiatives", label: lang === "hi" ? "पहल" : "Initiatives" },
+  { key: "gallery", path: "/gallery", label: lang === "hi" ? "गैलरी" : "Gallery" },
   { key: "partners", path: "/partners", label: lang === "hi" ? "साथी" : "Partners" },
   { key: "about", path: "/about", label: lang === "hi" ? "परिचय" : "About" },
   {
