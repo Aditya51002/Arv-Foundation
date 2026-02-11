@@ -97,8 +97,8 @@ const Navbar = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="fixed top-0 left-0 right-0 z-50"
     >
-      <div className="section-shell pt-4">
-        <div className="glass rounded-2xl px-4 py-3 md:px-6 md:py-4 border border-white/10">
+      <div className="section-shell pt-3 sm:pt-4">
+        <div className="glass rounded-2xl px-3 py-3 sm:px-4 lg:px-6 lg:py-4 border border-white/10">
           <div className="flex items-center justify-between gap-3">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">
@@ -110,13 +110,13 @@ const Navbar = () => {
                 />
               </div>
               <div className="leading-tight">
-                <p className="text-sm uppercase tracking-[0.2em] text-white/70">ARV</p>
-                <p className="text-lg font-semibold">Foundation</p>
+                <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-white/70">ARV</p>
+                <p className="text-base sm:text-lg font-semibold">Foundation</p>
               </div>
             </Link>
 
             {/* ── Desktop nav ── */}
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-1">
               {navLinks.map((link, idx) => (
                 <motion.div
                   key={link.key}
@@ -212,7 +212,7 @@ const Navbar = () => {
                   to="/admin"
                   className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-emerald-200/40 bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-3 py-2 text-sm font-semibold text-black shadow-lg hover:bg-emerald-400/30 transition cta-raise"
                 >
-                  <span>{lang === "hi" ? "एडमिन डैशबोर्ड" : "Admin"}</span>
+                  <span>{lang === "hi" ? "à¤à¤¡à¤®à¤¿à¤¨ à¤¡à¥ˆà¤¶à¤¬à¥‹à¤°à¥à¤¡" : "Admin"}</span>
                 </Link>
               )}
 
@@ -252,7 +252,7 @@ const Navbar = () => {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                className="md:hidden overflow-hidden"
+                className="lg:hidden overflow-hidden"
               >
                 <div className="mt-3 flex flex-col gap-2 pb-2">
                   {navLinks.map((link) =>
