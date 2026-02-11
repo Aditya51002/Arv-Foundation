@@ -2,6 +2,7 @@ import SectionHeading from "../components/SectionHeading.jsx";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import { motion } from "framer-motion";
 import { Globe, Target, Users, UserCircle, ImagePlus } from "lucide-react";
+import { usePlacedImages } from "../utils/usePlacedImages.js";
 
 const aboutContent = {
   en: {
@@ -43,6 +44,27 @@ const aboutContent = {
 };
 
 const iconMap = { who: Globe, mission: Target, volunteers: Users, team: UserCircle };
+
+/* Small helper rendered per image-bearing card so each section gets its own hook */
+const AboutImages = ({ section }) => {
+  const { images: slotImages } = usePlacedImages("about", section);
+  return (
+    <div className="grid grid-cols-3 gap-3 pt-2">
+      {[0, 1, 2].map((n) => (
+        <div
+          key={n}
+          className="aspect-square rounded-xl border border-dashed border-white/20 bg-white/5 grid place-items-center text-white/30 overflow-hidden"
+        >
+          {slotImages[n] ? (
+            <img src={slotImages[n]} alt={`${section} ${n + 1}`} className="w-full h-full object-cover" />
+          ) : (
+            <ImagePlus size={24} />
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const About = () => {
   const { lang } = useLanguage();
@@ -92,18 +114,9 @@ const About = () => {
                 {card.body}
               </p>
 
-              {/* Image placeholders for Volunteers & Team */}
+              {/* Image placeholders for Volunteers & Team — connected to admin gallery */}
               {card.hasImages && (
-                <div className="grid grid-cols-3 gap-3 pt-2">
-                  {[1, 2, 3].map((n) => (
-                    <div
-                      key={n}
-                      className="aspect-square rounded-xl border border-dashed border-white/20 bg-white/5 grid place-items-center text-white/30"
-                    >
-                      <ImagePlus size={24} />
-                    </div>
-                  ))}
-                </div>
+                <AboutImages section={card.id} />
               )}
             </motion.div>
           );
