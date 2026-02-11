@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { HeartHandshake, Users, ShieldCheck, Check } from "lucide-react";
 import SectionHeading from "../components/SectionHeading.jsx";
 import { useLanguage } from "../context/LanguageContext.jsx";
@@ -12,28 +14,33 @@ const copy = {
 			{
 				icon: HeartHandshake,
 				title: "Shuruat ek Jyoti Shiksha ki",
+				slug: "shuruat-ek-jyoti-shiksha-ki",
 				desc: "Align your CSR goals with on-ground programs across education, health, and relief."
 			},
 			{
 				icon: Users,
 				title: "Adharshila Vridhaashram ",
+				slug: "adharshila-vridhaashram",
 				desc: "Tap into verified beneficiary clusters through our field volunteers and local partners."
 			},
 			{
 				icon: ShieldCheck,
 				title: "The Earth Modifications Team",
+				slug: "the-earth-modifications-team",
 				desc: "Impact reports, photos, and on-site visits keep your team aligned with outcomes."
 			},
 
             {
                 icon: Users,
                 title: "Kedarsut Foundation ",
+                slug: "kedarsut-foundation",
                 desc: "Xyz"
             },
 
             {
                 icon: Users,
                 title: "Miopass Charitable and Welfare Foundation ",
+                slug: "miopass-charitable-and-welfare-foundation",
                 desc: "Xyz"
             
             }
@@ -84,18 +91,33 @@ const copy = {
 		benefits: [
 			{
 				icon: HeartHandshake,
-				title: "सीएसआर व अनुदान",
+				title: "शुरुआत एक ज्योति शिक्षा की",
+				slug: "shuruat-ek-jyoti-shiksha-ki",
 				desc: "शिक्षा, स्वास्थ्य और राहत कार्यक्रमों में आपकी सीएसआर प्राथमिकताओं के अनुसार परियोजनाएँ बनाते हैं।"
 			},
 			{
 				icon: Users,
-				title: "सामुदायिक पहुँच",
+				title: "आधारशिला वृद्धाश्रम",
+				slug: "adharshila-vridhaashram",
 				desc: "मैदान स्तर के स्वयंसेवकों और स्थानीय सहयोगियों के साथ सत्यापित लाभार्थी समूहों तक पहुंच।"
 			},
 			{
 				icon: ShieldCheck,
-				title: "पारदर्शी प्रभाव",
+				title: "द एर्थ मॉडिफिकेशंस टीम",
+				slug: "the-earth-modifications-team",
 				desc: "प्रभाव रिपोर्ट, तस्वीरें और साइट विज़िट के साथ आपकी टीम को परिणामों से जोड़े रखते हैं।"
+			},
+			{
+				icon: Users,
+				title: "केदारसूत फाउंडेशन",
+				slug: "kedarsut-foundation",
+				desc: "Xyz"
+			},
+			{
+				icon: Users,
+				title: "मायोपास चैरिटेबल एंड वेलफेयर फाउंडेशन",
+				slug: "miopass-charitable-and-welfare-foundation",
+				desc: "Xyz"
 			}
 		],
 		stepsTitle: "सहयोग कैसे शुरू करें",
@@ -225,15 +247,24 @@ const Partners = () => {
 				{t.benefits.map((item) => {
 					const Icon = item.icon;
 					return (
-						<div key={item.title} className="glass-card p-5 rounded-2xl border border-white/10 h-full">
-							<div className="flex items-center gap-3">
-								<div className="h-11 w-11 rounded-xl bg-white/10 border border-white/10 grid place-items-center text-amber-200">
-									<Icon size={18} />
+						<Link key={item.title} to={`/partners/${item.slug}`} className="block">
+							<motion.div 
+								whileHover={{ y: -4, scale: 1.01 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								initial={{ opacity: 0, y: 20 }}
+								viewport={{ once: true, margin: "-50px" }}
+								transition={{ duration: 0.4 }}
+								className="glass-card p-5 rounded-2xl border border-white/10 h-full hover:border-amber-300/50 transition-colors"
+							>
+								<div className="flex items-center gap-3">
+									<div className="h-11 w-11 rounded-xl bg-white/10 border border-white/10 grid place-items-center text-amber-200">
+										<Icon size={18} />
+									</div>
+									<h3 className={`text-lg font-semibold ${isHindi ? "font-devanagari" : ""}`}>{item.title}</h3>
 								</div>
-								<h3 className={`text-lg font-semibold ${isHindi ? "font-devanagari" : ""}`}>{item.title}</h3>
-							</div>
-							<p className={`mt-2 text-sm text-white/75 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>{item.desc}</p>
-						</div>
+								<p className={`mt-2 text-sm text-white/75 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>{item.desc}</p>
+							</motion.div>
+						</Link>
 					);
 				})}
 			</div>

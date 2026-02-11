@@ -17,7 +17,8 @@
   --accent-2: #79cbb8;
   --text-dim: #b8c7be;
   --navbar-height: 80px;
-  --page-top-gap: 24px;
+  /* increased top gap as a fallback to avoid headings hiding under fixed navbar */
+  --page-top-gap: 8px;
 }
 
 * {
@@ -77,25 +78,41 @@ video {
 
 @media (max-width: 640px) {
   :root {
-    --page-top-gap: 14px;
+    /* small mobile gap to keep content close to navbar */
+    --page-top-gap: 8px;
   }
 }
 
-@media (min-width: 641px) {
-  .section-shell {
-    padding: 0 1.5rem;
+@media (min-width: 1024px) {
+  :root {
+    /* modest desktop gap so hero sits closer under navbar */
+    --page-top-gap: 12px;
   }
 }
 
-@media (min-width: 1025px) {
-  .section-shell {
-    padding: 0 2.5rem;
+/* Layout spacing variables (used by components for responsive gaps) */
+:root {
+  --timeline-gap: 6rem;         /* default (mobile) */
+  --tracker-top-gap: 2rem;     /* small top gap before tracker */
+  --donation-gap: 3rem;        /* spacer height between timeline & donations */
+  --slider-bottom-gap: 2rem;   /* bottom margin reserve for slider */
+}
+
+@media (min-width: 768px) {
+  :root {
+    --timeline-gap: 10rem;
+    --tracker-top-gap: 6rem;
+    --donation-gap: 6rem;
+    --slider-bottom-gap: 3rem;
   }
 }
 
-@media (min-width: 1280px) {
-  .section-shell {
-    max-width: 1280px;
+@media (min-width: 1024px) {
+  :root {
+    --timeline-gap: 16rem;
+    --tracker-top-gap: 8rem;
+    --donation-gap: 8rem;
+    --slider-bottom-gap: 5rem;
   }
 }
 
@@ -111,6 +128,32 @@ video {
   transform: translateY(-2px) scale(1.01);
   box-shadow: 0 12px 35px rgba(245, 165, 36, 0.35);
 }
+
+/* CTA micro-raise with animated gradient shift */
+.cta-raise {
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  will-change: transform;
+}
+.cta-raise:focus { outline: none; }
+.cta-raise:hover, .cta-raise:focus {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(11,20,17,0.45);
+}
+
+/* Small pop for social icons */
+.icon-pop { transition: transform 140ms ease, box-shadow 140ms ease; }
+.icon-pop:hover { transform: translateY(-3px) scale(1.08); }
+
+/* Tiny tilt effect for icons (adds a small rotation for delight) */
+.icon-tilt { transition: transform 140ms ease; transform-origin: center; }
+.icon-tilt:hover { transform: translateY(-3px) scale(1.06) rotate(-6deg); }
+.icon-tilt:active, .icon-tilt:focus { transform: translateY(-1px) scale(1.03) rotate(-3deg); }
+
+/* Logo micro-parallax container */
+.logo-parallax { transform-origin: center; transition: transform 140ms linear; will-change: transform; }
+
+/* Focus-visible outline for interactive tiles */
+.focus-outline:focus { outline: 2px solid rgba(255,255,255,0.08); outline-offset: 4px; }
 
 .badge {
   display: inline-flex;
@@ -133,7 +176,8 @@ video {
 
 .blur-blob {
   position: absolute;
-  filter: blur(70px);
+  /* reduced blur to improve performance on lower-end devices */
+  filter: blur(28px);
   opacity: 0.55;
   z-index: 0;
 }
@@ -144,3 +188,32 @@ video {
   pointer-events: none;
   z-index: 0;
 }
+
+/* small helper to clamp text to 3 lines when needed */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Animated headline gradient */
+.animated-headline .headline-gradient {
+  background: linear-gradient(90deg, #fff 0%, #f5a524 30%, #79cbb8 60%, #fff 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  will-change: background-position, transform, opacity;
+  animation: gradientShift 6s linear infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Slight emphasis entrance for the headline */
+.animated-headline { text-wrap: balance; }
