@@ -1,6 +1,8 @@
 import Hero from "../components/Hero.jsx";
 import StorySection from "../components/StorySection.jsx";
 import OngoingDrives from "../components/OngoingDrives.jsx";
+/* mport PhotoGallery from "../components/PhotoGallery.jsx";
+import PartnersSection from "../components/PartnersSection.jsx"; */
 // Parallax moved into StorySection to avoid transforming the heading
 // (wrapping the whole StorySection caused the heading to be translated under the fixed navbar)
 
