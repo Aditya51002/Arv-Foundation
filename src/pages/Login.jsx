@@ -5,6 +5,7 @@ import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginAdmin } from "../utils/adminAuth.js";
 import { loginUser } from "../utils/userAuth.js";
+import { API_URL } from "../config";
 
 const Login = () => {
   const { lang } = useLanguage();
@@ -20,24 +21,57 @@ const Login = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    // TODO: Replace mock login with auth API
-    if (loginType === "admin") {
-      if (form.email === "Admin" && form.password === "Admin@pass") {
-        loginAdmin();
-        const redirectTo = location.state?.from?.pathname || "/admin";
-        navigate(redirectTo, { replace: true });
+
+    try {
+      if (loginType === "admin") {
+        const res = await fetch(`${API_URL}/api/admin/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: form.email, password: form.password }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          setError(data.message || "Admin login failed");
+          return;
+        }
+
+        // Save token under adminToken
+        loginAdmin(data.token);
+
+        // Navigate to /admin or previous page
+        const from = location.state?.from?.pathname || "/admin";
+        navigate(from, { replace: true });
         return;
       }
-      setError("Invalid admin credentials.");
-      return;
+
+      // USER LOGIN
+      const res = await fetch(`${API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: form.email, password: form.password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "User login failed");
+        return;
+      }
+
+      // Save token under token
+      loginUser(data.token);
+
+      // Navigate to / or previous page
+      const from = location.state?.from?.pathname || "/";
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError("Something went wrong");
     }
-    // TODO: Replace mock login with auth API
-    loginUser();
-    console.log("User login submitted:", form);
-    navigate("/", { replace: true });
   };
 
   return (
@@ -56,9 +90,7 @@ const Login = () => {
             {isHindi ? "लॉगिन करें" : "Login"}
           </h2>
           <p className={`text-xs sm:text-sm text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-            {isHindi
-              ? "अपने खाते में प्रवेश करें"
-              : "Sign in to your account"}
+            {isHindi ? "अपने खाते में प्रवेश करें" : "Sign in to your account"}
           </p>
         </div>
 
@@ -92,10 +124,11 @@ const Login = () => {
               </button>
             </div>
           </div>
+
           <div className="space-y-2">
             <label className="text-sm text-white/70 flex items-center gap-2">
               <Mail size={14} />
-              {loginType === "admin" ? (isHindi ? "यूज़रनेम" : "Username") : isHindi ? "ईमेल" : "Email"}
+              {isHindi ? "ईमेल" : "Email"}
             </label>
             <input
               type="text"
@@ -104,15 +137,7 @@ const Login = () => {
               onChange={handleChange}
               required
               className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition"
-              placeholder={
-                loginType === "admin"
-                  ? isHindi
-                    ? "एडमिन यूज़रनेम"
-                    : "Admin username"
-                  : isHindi
-                  ? "आपका ईमेल"
-                  : "you@example.com"
-              }
+              placeholder={isHindi ? "आपका ईमेल" : "you@example.com"}
             />
           </div>
 
@@ -160,9 +185,7 @@ const Login = () => {
         </form>
 
         <p className={`text-center text-xs text-white/50 ${isHindi ? "font-devanagari" : ""}`}>
-          {isHindi
-            ? "खाता नहीं है? "
-            : "Don't have an account? "}
+          {isHindi ? "खाता नहीं है? " : "Don't have an account? "}
           <Link to="/signup" className="text-amber-200 hover:underline">
             {isHindi ? "रजिस्टर करें" : "Sign up"}
           </Link>

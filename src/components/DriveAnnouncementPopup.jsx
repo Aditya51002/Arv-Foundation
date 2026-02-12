@@ -2,20 +2,39 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, MapPin, Clock, Megaphone } from "lucide-react";
-import { getLatestActiveDrive, isDriveDismissed, dismissDrive } from "../utils/driveStorage.js";
+import { API_URL } from "../config"; // Import your central API URL
 
 const DriveAnnouncementPopup = () => {
   const [drive, setDrive] = useState(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const activeDrive = getLatestActiveDrive();
-    if (activeDrive && !isDriveDismissed(activeDrive.id)) {
-      setDrive(activeDrive);
-      setVisible(true);
-      // Prevent background scrolling
-      document.body.style.overflow = "hidden";
-    }
+    const fetchLatestDrive = async () => {
+      try {
+        // Fetch only the latest active drive from the database
+        const res = await fetch(`${API_URL}/api/drives/latest`);
+        const data = await res.json();
+
+        if (res.ok && data) {
+          // Check if this specific drive has been dismissed by the user
+          const dismissedId = localStorage.getItem("dismissedDriveId");
+
+          if (dismissedId !== data._id) {
+            setDrive(data);
+            // Small delay for better UX after page load
+            setTimeout(() => {
+              setVisible(true);
+              document.body.style.overflow = "hidden";
+            }, 1000); 
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch latest drive popup:", err);
+      }
+    };
+
+    fetchLatestDrive();
+
     return () => {
       document.body.style.overflow = "";
     };
@@ -24,7 +43,11 @@ const DriveAnnouncementPopup = () => {
   const handleClose = () => {
     setVisible(false);
     document.body.style.overflow = "";
-    if (drive) dismissDrive(drive.id);
+
+    // Save the specific drive ID to localStorage so it doesn't pop up again
+    if (drive?._id) {
+      localStorage.setItem("dismissedDriveId", drive._id);
+    }
   };
 
   if (!drive) return null;
@@ -93,23 +116,20 @@ const DriveAnnouncementPopup = () => {
 
             {/* Content */}
             <div className="p-6 space-y-4">
-              {/* Badge + title */}
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <div className="h-8 w-8 rounded-lg bg-amber-400/15 border border-amber-400/20 grid place-items-center">
                     <Megaphone size={16} className="text-amber-300" />
                   </div>
                   <span className="text-xs font-semibold uppercase tracking-wider text-amber-300">
-                    Ongoing Drive
+                    Active Drive Announcement
                   </span>
                 </div>
                 <h2 className="text-xl font-bold text-white">{drive.category}</h2>
               </div>
 
-              {/* Description */}
               <p className="text-sm text-white/75 leading-relaxed">{drive.description}</p>
 
-              {/* Meta info */}
               <div className="flex flex-col gap-2 text-sm">
                 <div className="flex items-center gap-2 text-white/60">
                   <MapPin size={14} className="text-emerald-300 flex-shrink-0" />
@@ -121,10 +141,9 @@ const DriveAnnouncementPopup = () => {
                 </div>
               </div>
 
-              {/* Close button */}
               <button
                 onClick={handleClose}
-                className="w-full mt-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 py-2.5 text-sm font-semibold text-black shadow-lg hover:shadow-xl transition"
+                className="w-full mt-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 py-2.5 text-sm font-semibold text-black shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 Got it, Continue to Website
               </button>

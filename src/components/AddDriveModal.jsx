@@ -1,7 +1,8 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Upload, MapPin, Clock, FileText, Tag, Image as ImageIcon } from "lucide-react";
-import { DRIVE_CATEGORIES, publishDrive } from "../utils/driveStorage.js";
+import { DRIVE_CATEGORIES } from "../utils/driveStorage.js";
+import { API_URL } from "../config";
 
 const AddDriveModal = ({ open, onClose, onPublished }) => {
   const fileInputRef = useRef(null);
@@ -31,29 +32,42 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setPublishing(true);
 
-    // small delay for UX feel
-    setTimeout(() => {
-      const drive = publishDrive({
-        category: form.category,
-        location: form.location,
-        description: form.description,
-        dateTime: form.dateTime,
-        image: form.image,
-      });
-      setPublishing(false);
-      setSuccess(true);
-      if (onPublished) onPublished(drive);
+    try {
+      // CHANGED: Use adminToken to match Login logic
+      const token = localStorage.getItem("adminToken");
 
-      // auto-close after brief success message
+      const res = await fetch(`${API_URL}/api/drives`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(form)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to publish drive");
+      }
+
+      setSuccess(true);
+      if (onPublished) onPublished(data);
+
       setTimeout(() => {
         resetForm();
         onClose();
       }, 1500);
-    }, 600);
+
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setPublishing(false);
+    }
   };
 
   const resetForm = () => {

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { HeartHandshake, Users, ShieldCheck, Check } from "lucide-react";
 import SectionHeading from "../components/SectionHeading.jsx";
 import { useLanguage } from "../context/LanguageContext.jsx";
-
+import { API_URL } from "../config";
 const copy = {
 	en: {
     
@@ -189,6 +189,7 @@ const Partners = () => {
 		capacity: ""
 	});
 	const [isReadyToSubmit, setIsReadyToSubmit] = useState(false);
+	const [submitting, setSubmitting] = useState(false);
 
 	useEffect(() => {
 		const ready =
@@ -202,10 +203,7 @@ const Partners = () => {
 		setIsReadyToSubmit(Boolean(ready));
 	}, [formData, selectedCategories]);
 
-	useEffect(() => {
-		// TODO: API endpoint for partnership proposals
-		// TODO: Trigger email to ARV Foundation partnerships team
-	}, []);
+
 
 	const handleCategoryToggle = (category) => {
 		setSelectedCategories((prev) =>
@@ -218,24 +216,52 @@ const Partners = () => {
 		setFormData((prev) => ({ ...prev, [name]: value }));
 	};
 
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		if (!isReadyToSubmit) {
-			return;
-		}
+	const handleSubmit = async (event) => {
+  event.preventDefault();
+  if (!isReadyToSubmit || submitting) return; // prevent multiple clicks
+  setSubmitting(true); // lock the form
 
-		const payload = {
-			...formData,
-			partnershipTypes: selectedCategories.map((key) => {
-				const item = categoryMap.get(key);
-				return item ? item.en : key;
-			})
-		};
+  const payload = {
+    ...formData,
+    partnershipTypes: selectedCategories.map((key) => {
+      const item = categoryMap.get(key);
+      return item ? item.en : key;
+    })
+  };
 
-		console.log("Partnership proposal ready for submission", payload);
-		// TODO: Send partnership proposal data to backend API
-		// TODO: Notify ARV Foundation team via email
-	};
+  try {
+    const response = await fetch(`${API_URL}/api/partnerships`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (response.ok) {
+      alert("✅ Partnership proposal submitted successfully!");
+      // Reset form
+      setFormData({
+        organizationName: "",
+        contactName: "",
+        email: "",
+        phone: "",
+        location: "",
+        offerDetails: "",
+        duration: "",
+        capacity: ""
+      });
+      setSelectedCategories([]);
+    } else {
+      const error = await response.json();
+      alert("❌ Submission failed: " + error.message);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("❌ Something went wrong. Please try again.");
+  } finally {
+    setSubmitting(false); // unlock the form
+  }
+};
+
 
 	return (
 		<div className="section-shell space-y-8 pb-12">
@@ -456,14 +482,17 @@ const Partners = () => {
 					</div>
 
 					<button
-						type="submit"
-						className={`w-full rounded-2xl px-6 py-3 font-semibold text-base transition focus:outline-none ${
-							isReadyToSubmit ? "accent-gradient text-[#0b1411]" : "bg-white/10 text-white/40 cursor-not-allowed"
-						}`}
-						disabled={!isReadyToSubmit}
-					>
-						{t.submit}
-					</button>
+  type="submit"
+  className={`w-full rounded-2xl px-6 py-3 font-semibold text-base transition focus:outline-none ${
+    isReadyToSubmit && !submitting
+      ? "accent-gradient text-[#0b1411]"
+      : "bg-white/10 text-white/40 cursor-not-allowed"
+  }`}
+  disabled={!isReadyToSubmit || submitting}
+>
+  {submitting ? "Submitting..." : t.submit}
+</button>
+
 				</form>
 			</div>
 		</div>

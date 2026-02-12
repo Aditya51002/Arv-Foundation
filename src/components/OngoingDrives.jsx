@@ -1,9 +1,31 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Clock, Megaphone } from "lucide-react";
-import { getDrives } from "../utils/driveStorage.js";
+import { MapPin, Clock, Megaphone, Loader2 } from "lucide-react";
+// Import the new API utility instead of storage
+import { getDrives } from "../utils/driveApi.js"; 
 
 const OngoingDrives = () => {
-  const drives = getDrives();
+  const [drives, setDrives] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDrives = async () => {
+      try {
+        setLoading(true);
+        // This now fetches from your /api/drives/public endpoint
+        const data = await getDrives();
+        setDrives(data);
+      } catch (error) {
+        console.error("Failed to load drives:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDrives();
+  }, []);
+
+  // Use MongoDB _id for filtering since that's what the backend sends
   const ongoingDrives = drives.filter(d => d.active);
   const pastDrives = drives.filter(d => !d.active);
 
@@ -23,14 +45,14 @@ const OngoingDrives = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="glass-card p-5 rounded-2xl border border-white/10 hover:border-amber-300/50 transition-colors"
+        className="glass-card p-5 rounded-2xl border border-white/10 hover:border-amber-300/50 transition-all group"
       >
         {drive.image && (
-          <div className="w-full h-32 overflow-hidden rounded-lg mb-4">
+          <div className="w-full h-40 overflow-hidden rounded-xl mb-4">
             <img
               src={drive.image}
               alt={drive.category}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
           </div>
         )}
@@ -43,14 +65,17 @@ const OngoingDrives = () => {
           </span>
         </div>
         <h3 className="text-lg font-bold text-white mb-2">{drive.category}</h3>
-        <p className="text-sm text-white/75 leading-relaxed mb-3">{drive.description}</p>
-        <div className="flex flex-col gap-1 text-xs text-white/60">
-          <div className="flex items-center gap-2">
-            <MapPin size={12} className="text-emerald-300 flex-shrink-0" />
-            <span>{drive.location}</span>
+        <p className="text-sm text-white/75 leading-relaxed mb-4 line-clamp-3">
+          {drive.description}
+        </p>
+        
+        <div className="space-y-2 pt-3 border-t border-white/5">
+          <div className="flex items-center gap-2 text-xs text-white/60">
+            <MapPin size={14} className="text-emerald-400 flex-shrink-0" />
+            <span className="truncate">{drive.location}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Clock size={12} className="text-emerald-300 flex-shrink-0" />
+          <div className="flex items-center gap-2 text-xs text-white/60">
+            <Clock size={14} className="text-emerald-400 flex-shrink-0" />
             <span>{formattedDate}</span>
           </div>
         </div>
@@ -58,17 +83,29 @@ const OngoingDrives = () => {
     );
   };
 
+  if (loading) {
+    return (
+      <div className="py-20 text-center">
+        <Loader2 className="animate-spin mx-auto text-amber-400 mb-4" size={32} />
+        <p className="text-white/40">Loading drives from database...</p>
+      </div>
+    );
+  }
+
   return (
     <section className="section-shell py-12 relative z-20" aria-label="Ongoing Drives">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-8 text-center">On Going Drive</h2>
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-bold mb-2">Ongoing Initiatives</h2>
+          <div className="h-1 w-20 bg-amber-400 mx-auto rounded-full"></div>
+        </div>
 
         {ongoingDrives.length > 0 && (
-          <div className="mb-12">
-            <h3 className="text-xl font-semibold mb-6">Present Drives</h3>
+          <div className="mb-16">
+            <h3 className="text-xl font-semibold mb-6 text-emerald-300">Present Drives</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {ongoingDrives.map((drive) => (
-                <DriveCard key={drive.id} drive={drive} isOngoing={true} />
+                <DriveCard key={drive._id} drive={drive} isOngoing={true} />
               ))}
             </div>
           </div>
@@ -76,17 +113,19 @@ const OngoingDrives = () => {
 
         {pastDrives.length > 0 && (
           <div>
-            <h3 className="text-xl font-semibold mb-6">Past Drives</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <h3 className="text-xl font-semibold mb-6 text-white/60">Past Drives</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-80">
               {pastDrives.map((drive) => (
-                <DriveCard key={drive.id} drive={drive} isOngoing={false} />
+                <DriveCard key={drive._id} drive={drive} isOngoing={false} />
               ))}
             </div>
           </div>
         )}
 
-        {ongoingDrives.length === 0 && pastDrives.length === 0 && (
-          <p className="text-center text-white/60">No drives available at the moment.</p>
+        {drives.length === 0 && (
+          <div className="glass-card p-10 rounded-3xl border border-white/5 text-center">
+             <p className="text-white/60 italic">No drives are currently published.</p>
+          </div>
         )}
       </div>
     </section>

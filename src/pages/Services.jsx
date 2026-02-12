@@ -4,6 +4,7 @@ import { useLanguage } from "../context/LanguageContext.jsx";
 import { motion } from "framer-motion";
 import { GraduationCap, Newspaper, Mail, ArrowRight, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../config";
 
 const servicesContent = {
   en: {
@@ -43,7 +44,7 @@ const servicesContent = {
         availability: "Availability *",
         motivation: "Why do you want to intern with ARV Foundation? *",
         experience: "Previous experience (optional)",
-        resume: "Resume / CV (UI only)"
+        resume: "Resume / CV (PDF Only)" // CHANGED: Clarified format
       },
       placeholders: {
         fullName: "Your full name",
@@ -82,7 +83,6 @@ const servicesContent = {
     }
   },
   hi: {
-
     title: "हम क्या प्रदान करते हैं",
     cards: [
       {
@@ -118,7 +118,7 @@ const servicesContent = {
         availability: "उपलब्धता *",
         motivation: "आप ARV Foundation में इंटर्नशिप क्यों करना चाहते हैं? *",
         experience: "पिछला अनुभव (वैकल्पिक)",
-        resume: "रेज़्यूमे / सीवी (केवल UI)"
+        resume: "रेज़्यूमे / सीवी (PDF Only)" // CHANGED: Clarified format
       },
       placeholders: {
         fullName: "अपना पूरा नाम",
@@ -178,17 +178,14 @@ const Services = () => {
     duration: "",
     motivation: "",
     experience: "",
+    resume: null,
     resumeName: ""
   });
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
-  useEffect(() => {
-    // TODO: API endpoint for internship applications
-    // TODO: Trigger confirmation email to applicant
-    // TODO: Notify ARV Foundation internship team
-    // TODO: Fetch logged-in user details from backend and pre-fill internship form when authentication is available
-  }, []);
+  // CHANGED: Added isSubmitting to manage the async upload process
+  const [isSubmitting, setIsSubmitting] = useState(false); 
 
   useEffect(() => {
     if (!isInternshipFormOpen) return undefined;
@@ -212,16 +209,7 @@ const Services = () => {
     );
   };
 
-  const handleResumeChange = (event) => {
-    const file = event.target.files?.[0];
-    setInternshipFormData((prev) => ({ ...prev, resumeName: file ? file.name : "" }));
-    // TODO: Handle resume upload via backend
-  };
-
-  const handleInternshipSubmit = (event) => {
-    event.preventDefault();
-    setSubmitAttempted(true);
-
+  const isFormValid = () => {
     const requiredFields = [
       "fullName",
       "email",
@@ -235,30 +223,87 @@ const Services = () => {
       "motivation"
     ];
 
-    const hasMissingField = requiredFields.some(
-      (field) => !String(internshipFormData[field] || "").trim()
+    const missingField = requiredFields.some(
+      (field) => !internshipFormData[field]?.trim()
     );
-    const hasNoInterest = selectedInterests.length === 0;
 
-    if (hasMissingField || hasNoInterest) {
+    const noInterest = selectedInterests.length === 0;
+
+    return !missingField && !noInterest;
+  };
+
+  const handleResumeChange = (event) => {
+    const file = event.target.files?.[0];
+
+    setInternshipFormData((prev) => ({
+      ...prev,
+      resume: file || null,
+      resumeName: file ? file.name : ""
+    }));
+  };
+
+  // CHANGED: Rewrote handler to support Cloudinary workflow and loading UI
+  const handleInternshipSubmit = async (event) => {
+    event.preventDefault();
+    
+    // 1. Validate before starting submission
+    if (!isFormValid()) {
+      setSubmitAttempted(true);
       return;
     }
 
-    const payload = {
-      ...internshipFormData,
-      areasOfInterest: selectedInterests
-    };
+    setSubmitAttempted(false); // CHANGED: Clear error state to avoid red flashing during valid upload
+    setIsSubmitting(true);     // CHANGED: Enter loading state
 
-    console.log("Internship application ready for submission", payload);
-    // TODO: Send internship application data to backend API
-    // TODO: Notify HR / Internship team via email
+    try {
+      const formData = new FormData();
+      Object.keys(internshipFormData).forEach((key) => {
+        // CHANGED: Only append data to FormData, excluding internal helper resumeName
+        if (key !== "resumeName" && internshipFormData[key]) {
+          formData.append(key, internshipFormData[key]);
+        }
+      });
+      
+      // CHANGED: Convert interests array to string for Multi-part form data
+      formData.append("areasOfInterest", JSON.stringify(selectedInterests));
+
+      const response = await fetch(`${API_URL}/api/internship/apply`, {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Submission failed");
+        return;
+      }
+
+      alert("Application submitted successfully!");
+      
+      // CHANGED: Reset form fully after success
+      setIsInternshipFormOpen(false);
+      setInternshipFormData({
+        fullName: "", email: "", phone: "", age: "",
+        cityState: "", qualification: "", college: "",
+        fieldOfStudy: "", availability: "", duration: "",
+        motivation: "", experience: "", resume: null, resumeName: ""
+      });
+      setSelectedInterests([]);
+      setSubmitAttempted(false);
+
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong");
+    } finally {
+      setIsSubmitting(false); // CHANGED: Release loading state
+    }
   };
 
   return (
     <div className="section-shell space-y-10 pb-12">
       <SectionHeading eyebrow={content.eyebrow} title={content.title} />
 
-      {/* Service cards */}
       <div className="grid gap-5 md:grid-cols-2">
         {content.cards.map((card, idx) => {
           const Icon = card.icon;
@@ -288,10 +333,10 @@ const Services = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => {
-            if (card.id === "internship") {
-              setIsInternshipFormOpen(true);
-            }
-          }}
+                  if (card.id === "internship") {
+                    setIsInternshipFormOpen(true);
+                  }
+                }}
                 className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black"
               >
                 {card.cta} <ArrowRight size={14} />
@@ -301,314 +346,316 @@ const Services = () => {
         })}
       </div>
 
-    {isInternshipFormOpen && (
-      <div className="fixed inset-0 z-40 flex items-start justify-center px-4 pb-8 pt-[calc(var(--navbar-height)+1rem)] bg-black/70 backdrop-blur-md">
-        <div className="relative flex w-full max-w-2xl max-h-[calc(100vh-var(--navbar-height)-2rem)] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0b1411]/85 backdrop-blur-2xl p-6 space-y-6 shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2 className={`text-lg font-semibold ${isHindi ? "font-devanagari" : ""}`}>{formCopy.title}</h2>
-              <p className={`mt-1 text-sm text-white/70 ${isHindi ? "font-devanagari" : ""}`}>
-                {formCopy.subtitle}
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setIsInternshipFormOpen(false)}
-              className="rounded-full p-1.5 bg-white/5 border border-white/10 text-white/70 hover:text-white"
-            >
-              <X size={16} />
-            </button>
-          </div>
-
-          <form onSubmit={handleInternshipSubmit} className="flex-1 min-h-0 space-y-5 overflow-y-auto pr-1 overscroll-contain">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <label className="flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                  {formCopy.labels.fullName}
-                </span>
-                <input
-                  type="text"
-                  name="fullName"
-                  value={internshipFormData.fullName}
-                  onChange={handleInternshipInputChange}
-                  className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
-                    submitAttempted && !internshipFormData.fullName.trim()
-                      ? "border-red-500/70"
-                      : "border-white/10"
-                  }`}
-                  placeholder={formCopy.placeholders.fullName}
-                />
-              </label>
-              <label className="flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                  {formCopy.labels.email}
-                </span>
-                <input
-                  type="email"
-                  name="email"
-                  value={internshipFormData.email}
-                  onChange={handleInternshipInputChange}
-                  className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
-                    submitAttempted && !internshipFormData.email.trim()
-                      ? "border-red-500/70"
-                      : "border-white/10"
-                  }`}
-                  placeholder={formCopy.placeholders.email}
-                />
-              </label>
-              <label className="flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                  {formCopy.labels.phone}
-                </span>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={internshipFormData.phone}
-                  onChange={handleInternshipInputChange}
-                  className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
-                    submitAttempted && !internshipFormData.phone.trim()
-                      ? "border-red-500/70"
-                      : "border-white/10"
-                  }`}
-                  placeholder={formCopy.placeholders.phone}
-                />
-              </label>
-              <label className="flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                  {formCopy.labels.age}
-                </span>
-                <input
-                  type="number"
-                  name="age"
-                  value={internshipFormData.age}
-                  onChange={handleInternshipInputChange}
-                  className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
-                  min="14"
-                />
-              </label>
-              <label className="md:col-span-2 flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                  {formCopy.labels.cityState}
-                </span>
-                <input
-                  type="text"
-                  name="cityState"
-                  value={internshipFormData.cityState}
-                  onChange={handleInternshipInputChange}
-                  className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
-                    submitAttempted && !internshipFormData.cityState.trim()
-                      ? "border-red-500/70"
-                      : "border-white/10"
-                  }`}
-                  placeholder={formCopy.placeholders.cityState}
-                />
-              </label>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <label className="flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                  {formCopy.labels.qualification}
-                </span>
-                <input
-                  type="text"
-                  name="qualification"
-                  value={internshipFormData.qualification}
-                  onChange={handleInternshipInputChange}
-                  className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
-                    submitAttempted && !internshipFormData.qualification.trim()
-                      ? "border-red-500/70"
-                      : "border-white/10"
-                  }`}
-                  placeholder={formCopy.placeholders.qualification}
-                />
-              </label>
-              <label className="flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                  {formCopy.labels.college}
-                </span>
-                <input
-                  type="text"
-                  name="college"
-                  value={internshipFormData.college}
-                  onChange={handleInternshipInputChange}
-                  className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
-                    submitAttempted && !internshipFormData.college.trim()
-                      ? "border-red-500/70"
-                      : "border-white/10"
-                  }`}
-                  placeholder={formCopy.placeholders.college}
-                />
-              </label>
-              <label className="md:col-span-2 flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                  {formCopy.labels.fieldOfStudy}
-                </span>
-                <input
-                  type="text"
-                  name="fieldOfStudy"
-                  value={internshipFormData.fieldOfStudy}
-                  onChange={handleInternshipInputChange}
-                  className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
-                    submitAttempted && !internshipFormData.fieldOfStudy.trim()
-                      ? "border-red-500/70"
-                      : "border-white/10"
-                  }`}
-                  placeholder={formCopy.placeholders.fieldOfStudy}
-                />
-              </label>
-            </div>
-
-            <div className="space-y-3">
-              <p
-                className={`text-xs uppercase tracking-wide ${
-                  submitAttempted && selectedInterests.length === 0
-                    ? "text-red-400"
-                    : "text-white/60"
-                }`}
-              >
-                {formCopy.labels.interests}
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {internshipInterests.map((interest) => {
-                  const isSelected = selectedInterests.includes(interest);
-                  return (
-                    <button
-                      key={interest}
-                      type="button"
-                      onClick={() => handleInterestToggle(interest)}
-                      className={`glass-card border text-left transition-all duration-200 rounded-2xl px-4 py-3 ${
-                        isSelected
-                          ? "border-amber-300/70 shadow-[0_0_20px_rgba(245,165,36,0.32)]"
-                          : "border-white/10"
-                      }`}
-                    >
-                      <span className={`text-sm font-semibold text-white/90 ${isHindi ? "font-devanagari" : ""}`}>
-                        {interest}
-                      </span>
-                    </button>
-                  );
-                })}
+      {isInternshipFormOpen && (
+        <div className="fixed inset-0 z-40 flex items-start justify-center px-4 pb-8 pt-[calc(var(--navbar-height)+1rem)] bg-black/70 backdrop-blur-md">
+          <div className="relative flex w-full max-w-2xl max-h-[calc(100vh-var(--navbar-height)-2rem)] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0b1411]/85 backdrop-blur-2xl p-6 space-y-6 shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 className={`text-lg font-semibold ${isHindi ? "font-devanagari" : ""}`}>{formCopy.title}</h2>
+                <p className={`mt-1 text-sm text-white/70 ${isHindi ? "font-devanagari" : ""}`}>
+                  {formCopy.subtitle}
+                </p>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <label className="flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                  {formCopy.labels.duration}
-                </span>
-                <select
-                  name="duration"
-                  value={internshipFormData.duration}
-                  onChange={handleInternshipInputChange}
-                  className={`glass border rounded-xl px-4 py-3 bg-[#0b1411]/80 text-white focus:border-amber-200 focus:outline-none ${
-                    submitAttempted && !internshipFormData.duration
-                      ? "border-red-500/70"
-                      : "border-white/10"
-                  }`}
-                >
-                  <option value="" className="bg-[#0b1411] text-white">{formCopy.options.duration.placeholder}</option>
-                  <option value="1-month" className="bg-[#0b1411] text-white">{formCopy.options.duration.oneMonth}</option>
-                  <option value="3-months" className="bg-[#0b1411] text-white">{formCopy.options.duration.threeMonths}</option>
-                  <option value="6-months" className="bg-[#0b1411] text-white">{formCopy.options.duration.sixMonths}</option>
-                </select>
-              </label>
-              <label className="flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                  {formCopy.labels.availability}
-                </span>
-                <select
-                  name="availability"
-                  value={internshipFormData.availability}
-                  onChange={handleInternshipInputChange}
-                  className={`glass border rounded-xl px-4 py-3 bg-[#0b1411]/80 text-white focus:border-amber-200 focus:outline-none ${
-                    submitAttempted && !internshipFormData.availability
-                      ? "border-red-500/70"
-                      : "border-white/10"
-                  }`}
-                >
-                  <option value="" className="bg-[#0b1411] text-white">{formCopy.options.availability.placeholder}</option>
-                  <option value="part-time" className="bg-[#0b1411] text-white">{formCopy.options.availability.partTime}</option>
-                  <option value="full-time" className="bg-[#0b1411] text-white">{formCopy.options.availability.fullTime}</option>
-                </select>
-              </label>
-            </div>
-
-            <label className="flex flex-col gap-2">
-              <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                {formCopy.labels.motivation}
-              </span>
-              <textarea
-                name="motivation"
-                value={internshipFormData.motivation}
-                onChange={handleInternshipInputChange}
-                className={`glass border rounded-2xl px-4 py-3 min-h-[120px] bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
-                  submitAttempted && !internshipFormData.motivation.trim()
-                    ? "border-red-500/70"
-                    : "border-white/10"
-                }`}
-                placeholder={formCopy.placeholders.motivation}
-              />
-            </label>
-
-            <label className="flex flex-col gap-2">
-              <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                {formCopy.labels.experience}
-              </span>
-              <textarea
-                name="experience"
-                value={internshipFormData.experience}
-                onChange={handleInternshipInputChange}
-                className="glass border border-white/10 rounded-2xl px-4 py-3 min-h-[100px] bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
-                placeholder={formCopy.placeholders.experience}
-              />
-            </label>
-
-            <label className="flex flex-col gap-2">
-              <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
-                {formCopy.labels.resume}
-              </span>
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleResumeChange}
-                  className="block w-full text-xs text-white/70 file:mr-3 file:rounded-full file:border-none file:bg-white/90 file:px-4 file:py-2 file:text-xs file:font-semibold file:text-black file:cursor-pointer cursor-pointer"
-                />
-                {internshipFormData.resumeName && (
-                  <span className="text-xs text-white/70 truncate">
-                    {internshipFormData.resumeName}
-                  </span>
-                )}
-              </div>
-            </label>
-
-            {submitAttempted && (
-              <p className={`text-xs text-red-400 ${isHindi ? "font-devanagari" : ""}`}>
-                {formCopy.error}
-              </p>
-            )}
-
-            <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-2">
               <button
                 type="button"
                 onClick={() => setIsInternshipFormOpen(false)}
-                className={`px-5 py-2 rounded-full border border-white/20 text-sm text-white/80 hover:bg-white/5 ${isHindi ? "font-devanagari" : ""}`}
+                className="rounded-full p-1.5 bg-white/5 border border-white/10 text-white/70 hover:text-white"
               >
-                {formCopy.cancel}
-              </button>
-              <button
-                type="submit"
-                className={`accent-gradient rounded-full px-6 py-2 text-sm font-semibold text-[#0b1411] ${isHindi ? "font-devanagari" : ""}`}
-              >
-                {formCopy.submit}
+                <X size={16} />
               </button>
             </div>
-          </form>
-        </div>
-      </div>
-    )}
 
+            <form onSubmit={handleInternshipSubmit} className="flex-1 min-h-0 space-y-5 overflow-y-auto pr-1 overscroll-contain">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label className="flex flex-col gap-2">
+                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                    {formCopy.labels.fullName}
+                  </span>
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={internshipFormData.fullName}
+                    onChange={handleInternshipInputChange}
+                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                      submitAttempted && !internshipFormData.fullName.trim()
+                        ? "border-red-500/70"
+                        : "border-white/10"
+                    }`}
+                    placeholder={formCopy.placeholders.fullName}
+                  />
+                </label>
+                <label className="flex flex-col gap-2">
+                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                    {formCopy.labels.email}
+                  </span>
+                  <input
+                    type="email"
+                    name="email"
+                    value={internshipFormData.email}
+                    onChange={handleInternshipInputChange}
+                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                      submitAttempted && !internshipFormData.email.trim()
+                        ? "border-red-500/70"
+                        : "border-white/10"
+                    }`}
+                    placeholder={formCopy.placeholders.email}
+                  />
+                </label>
+                <label className="flex flex-col gap-2">
+                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                    {formCopy.labels.phone}
+                  </span>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={internshipFormData.phone}
+                    onChange={handleInternshipInputChange}
+                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                      submitAttempted && !internshipFormData.phone.trim()
+                        ? "border-red-500/70"
+                        : "border-white/10"
+                    }`}
+                    placeholder={formCopy.placeholders.phone}
+                  />
+                </label>
+                <label className="flex flex-col gap-2">
+                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                    {formCopy.labels.age}
+                  </span>
+                  <input
+                    type="number"
+                    name="age"
+                    value={internshipFormData.age}
+                    onChange={handleInternshipInputChange}
+                    className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
+                    min="14"
+                  />
+                </label>
+                <label className="md:col-span-2 flex flex-col gap-2">
+                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                    {formCopy.labels.cityState}
+                  </span>
+                  <input
+                    type="text"
+                    name="cityState"
+                    value={internshipFormData.cityState}
+                    onChange={handleInternshipInputChange}
+                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                      submitAttempted && !internshipFormData.cityState.trim()
+                        ? "border-red-500/70"
+                        : "border-white/10"
+                    }`}
+                    placeholder={formCopy.placeholders.cityState}
+                  />
+                </label>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label className="flex flex-col gap-2">
+                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                    {formCopy.labels.qualification}
+                  </span>
+                  <input
+                    type="text"
+                    name="qualification"
+                    value={internshipFormData.qualification}
+                    onChange={handleInternshipInputChange}
+                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                      submitAttempted && !internshipFormData.qualification.trim()
+                        ? "border-red-500/70"
+                        : "border-white/10"
+                    }`}
+                    placeholder={formCopy.placeholders.qualification}
+                  />
+                </label>
+                <label className="flex flex-col gap-2">
+                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                    {formCopy.labels.college}
+                  </span>
+                  <input
+                    type="text"
+                    name="college"
+                    value={internshipFormData.college}
+                    onChange={handleInternshipInputChange}
+                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                      submitAttempted && !internshipFormData.college.trim()
+                        ? "border-red-500/70"
+                        : "border-white/10"
+                    }`}
+                    placeholder={formCopy.placeholders.college}
+                  />
+                </label>
+                <label className="md:col-span-2 flex flex-col gap-2">
+                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                    {formCopy.labels.fieldOfStudy}
+                  </span>
+                  <input
+                    type="text"
+                    name="fieldOfStudy"
+                    value={internshipFormData.fieldOfStudy}
+                    onChange={handleInternshipInputChange}
+                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                      submitAttempted && !internshipFormData.fieldOfStudy.trim()
+                        ? "border-red-500/70"
+                        : "border-white/10"
+                    }`}
+                    placeholder={formCopy.placeholders.fieldOfStudy}
+                  />
+                </label>
+              </div>
+
+              <div className="space-y-3">
+                <p
+                  className={`text-xs uppercase tracking-wide ${
+                    submitAttempted && selectedInterests.length === 0
+                      ? "text-red-400"
+                      : "text-white/60"
+                  }`}
+                >
+                  {formCopy.labels.interests}
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {internshipInterests.map((interest) => {
+                    const isSelected = selectedInterests.includes(interest);
+                    return (
+                      <button
+                        key={interest}
+                        type="button"
+                        onClick={() => handleInterestToggle(interest)}
+                        className={`glass-card border text-left transition-all duration-200 rounded-2xl px-4 py-3 ${
+                          isSelected
+                            ? "border-amber-300/70 shadow-[0_0_20px_rgba(245,165,36,0.32)]"
+                            : "border-white/10"
+                        }`}
+                      >
+                        <span className={`text-sm font-semibold text-white/90 ${isHindi ? "font-devanagari" : ""}`}>
+                          {interest}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label className="flex flex-col gap-2">
+                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                    {formCopy.labels.duration}
+                  </span>
+                  <select
+                    name="duration"
+                    value={internshipFormData.duration}
+                    onChange={handleInternshipInputChange}
+                    className={`glass border rounded-xl px-4 py-3 bg-[#0b1411]/80 text-white focus:border-amber-200 focus:outline-none ${
+                      submitAttempted && !internshipFormData.duration
+                        ? "border-red-500/70"
+                        : "border-white/10"
+                    }`}
+                  >
+                    <option value="" className="bg-[#0b1411] text-white">{formCopy.options.duration.placeholder}</option>
+                    <option value="1-month" className="bg-[#0b1411] text-white">{formCopy.options.duration.oneMonth}</option>
+                    <option value="3-months" className="bg-[#0b1411] text-white">{formCopy.options.duration.threeMonths}</option>
+                    <option value="6-months" className="bg-[#0b1411] text-white">{formCopy.options.duration.sixMonths}</option>
+                  </select>
+                </label>
+                <label className="flex flex-col gap-2">
+                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                    {formCopy.labels.availability}
+                  </span>
+                  <select
+                    name="availability"
+                    value={internshipFormData.availability}
+                    onChange={handleInternshipInputChange}
+                    className={`glass border rounded-xl px-4 py-3 bg-[#0b1411]/80 text-white focus:border-amber-200 focus:outline-none ${
+                      submitAttempted && !internshipFormData.availability
+                        ? "border-red-500/70"
+                        : "border-white/10"
+                    }`}
+                  >
+                    <option value="" className="bg-[#0b1411] text-white">{formCopy.options.availability.placeholder}</option>
+                    <option value="part-time" className="bg-[#0b1411] text-white">{formCopy.options.availability.partTime}</option>
+                    <option value="full-time" className="bg-[#0b1411] text-white">{formCopy.options.availability.fullTime}</option>
+                  </select>
+                </label>
+              </div>
+
+              <label className="flex flex-col gap-2">
+                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  {formCopy.labels.motivation}
+                </span>
+                <textarea
+                  name="motivation"
+                  value={internshipFormData.motivation}
+                  onChange={handleInternshipInputChange}
+                  className={`glass border rounded-2xl px-4 py-3 min-h-[120px] bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                    submitAttempted && !internshipFormData.motivation.trim()
+                      ? "border-red-500/70"
+                      : "border-white/10"
+                  }`}
+                  placeholder={formCopy.placeholders.motivation}
+                />
+              </label>
+
+              <label className="flex flex-col gap-2">
+                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  {formCopy.labels.experience}
+                </span>
+                <textarea
+                  name="experience"
+                  value={internshipFormData.experience}
+                  onChange={handleInternshipInputChange}
+                  className="glass border border-white/10 rounded-2xl px-4 py-3 min-h-[100px] bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
+                  placeholder={formCopy.placeholders.experience}
+                />
+              </label>
+
+              <label className="flex flex-col gap-2">
+                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  {formCopy.labels.resume}
+                </span>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <input
+                    type="file"
+                    name="resume" // CHANGED: Linked correctly to multer backend field
+                    accept=".pdf,.doc,.docx"
+                    onChange={handleResumeChange}
+                    className="block w-full text-xs text-white/70 file:mr-3 file:rounded-full file:border-none file:bg-white/90 file:px-4 file:py-2 file:text-xs file:font-semibold file:text-black file:cursor-pointer cursor-pointer"
+                  />
+                  {internshipFormData.resumeName && (
+                    <span className="text-xs text-white/70 truncate">
+                      {internshipFormData.resumeName}
+                    </span>
+                  )}
+                </div>
+              </label>
+
+              {submitAttempted && (
+                <p className={`text-xs text-red-400 ${isHindi ? "font-devanagari" : ""}`}>
+                  {formCopy.error}
+                </p>
+              )}
+
+              <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsInternshipFormOpen(false)}
+                  className={`px-5 py-2 rounded-full border border-white/20 text-sm text-white/80 hover:bg-white/5 ${isHindi ? "font-devanagari" : ""}`}
+                >
+                  {formCopy.cancel}
+                </button>
+                {/* CHANGED: Submit button updated with disabled state and loading text */}
+                <button
+                  type="submit"
+                  disabled={!isFormValid() || isSubmitting}
+                  className="accent-gradient rounded-full px-6 py-2 text-sm font-semibold text-[#0b1411] disabled:opacity-50"
+                >
+                  {isSubmitting ? (isHindi ? "जमा हो रहा है..." : "Submitting...") : formCopy.submit}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
