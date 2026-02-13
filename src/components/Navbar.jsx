@@ -1,11 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-<<<<<<< HEAD
-import { Link, useLocation } from "react-router-dom";
-import { Languages, Menu, X, ChevronDown } from "lucide-react";
-=======
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Languages, Menu, X, ChevronDown, LogIn, LogOut } from "lucide-react";
->>>>>>> main
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useLanguage } from "../context/LanguageContext.jsx";
@@ -37,34 +32,10 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-<<<<<<< HEAD
-  const [activeDropdown, setActiveDropdown] = useState(null);
-  const navRef = useRef(null);
-
-  useEffect(() => {
-    function handleDocClick(e) {
-      if (navRef.current && !navRef.current.contains(e.target)) {
-        setActiveDropdown(null);
-      }
-    }
-
-    function handleEsc(e) {
-      if (e.key === "Escape") setActiveDropdown(null);
-    }
-
-    document.addEventListener("click", handleDocClick);
-    document.addEventListener("keydown", handleEsc);
-    return () => {
-      document.removeEventListener("click", handleDocClick);
-      document.removeEventListener("keydown", handleEsc);
-    };
-  }, []);
-=======
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const navRef = useRef(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
->>>>>>> main
 
   const navLinks = getNavLinks(lang);
 
@@ -133,11 +104,6 @@ const Navbar = () => {
           <div className="flex items-center justify-between gap-3">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">
-<<<<<<< HEAD
-                <div className="h-12 w-12 rounded-full overflow-hidden border border-white/15 bg-transparent flex items-center justify-center p-0">
-                  <img src="/ngo-logo.jpeg" alt="ARV Foundation logo" className="h-full w-full object-cover object-center transform scale-110" />
-                </div>
-=======
               <div className="h-12 w-12 rounded-full overflow-hidden border border-white/15 bg-transparent flex items-center justify-center p-0 logo-parallax">
                 <img
                   src="/ngo-logo.jpeg"
@@ -145,89 +111,12 @@ const Navbar = () => {
                   className="h-full w-full object-cover object-center transform scale-110"
                 />
               </div>
->>>>>>> main
               <div className="leading-tight">
                 <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-white/70">ARV</p>
                 <p className="text-base sm:text-lg font-semibold">Foundation</p>
               </div>
             </Link>
 
-<<<<<<< HEAD
-            <div ref={navRef} className="hidden md:flex items-center gap-2 relative">
-              {t.navLinks.map((link, idx) => {
-                const items = getDropdownItems(link.key, t, lang);
-                return (
-                  <div key={link.path} className="relative" onMouseLeave={() => setActiveDropdown(null)}>
-                    <motion.div
-                      variants={navItemVariants}
-                      initial="hidden"
-                      animate="show"
-                      transition={{ delay: idx * 0.05 + 0.1 }}
-                    >
-                      <div className="inline-flex items-center gap-0">
-                        <Link
-                          to={link.path}
-                          className={`px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${
-                            isActive(link.path)
-                              ? "text-white bg-white/10 border border-white/10"
-                              : "text-white/70 hover:bg-white/5"
-                          }`}
-                        >
-                          {link.key === "home" && (lang === "hi" ? "होम" : "Home")}
-                          {link.key === "about" && (lang === "hi" ? "परिचय" : "About")}
-                          {link.key === "work" && (lang === "hi" ? "कार्य" : "Work")}
-                          {link.key === "initiatives" && (lang === "hi" ? "पहल" : "Initiatives")}
-                          {link.key === "donate" && (lang === "hi" ? "दान" : "Donate")}
-                          {link.key === "contact" && (lang === "hi" ? "संपर्क" : "Contact")}
-                        </Link>
-
-                        {items.length > 0 && (
-                          <button
-                            onMouseEnter={() => setActiveDropdown(link.key)}
-                            aria-expanded={activeDropdown === link.key}
-                            aria-controls={`${link.key}-menu`}
-                            className="inline-flex items-center justify-center h-6 w-6 rounded-full text-white/70 hover:text-white hover:bg-white/5 -ml-2"
-                            title={lang === "hi" ? "मेनू" : "Menu"}
-                          >
-                            <ChevronDown size={11} className={`transition-transform ${activeDropdown === link.key ? "rotate-180" : ""}`} />
-                          </button>
-                        )}
-                      </div>
-                    </motion.div>
-
-                    <AnimatePresence>
-                      {activeDropdown === link.key && items.length > 0 && (
-                        <motion.div
-                          onMouseEnter={() => setActiveDropdown(link.key)}
-                          onMouseLeave={() => setActiveDropdown(null)}
-                          initial={{ opacity: 0, y: -6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -6 }}
-                          transition={{ duration: 0.16, ease: "easeOut" }}
-                          className="absolute left-0 top-full mt-2 w-56 rounded-lg bg-white/5 border border-white/10 shadow-lg z-60"
-                          key={link.key + "-menu"}
-                        >
-                          {items.map((it) => (
-                            <Link key={it.path} to={it.path} className="block px-4 py-2 text-sm text-white/80 hover:bg-white/5">
-                              {it.label}
-                            </Link>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    {activeDropdown && createPortal(
-                      <div
-                        className="fixed inset-0 bg-black/20 backdrop-blur-md z-45"
-                        onClick={() => setActiveDropdown(null)}
-                        aria-hidden="true"
-                      />,
-                      document.body
-                    )}
-                  </div>
-                );
-              })}
-=======
             {/* ── Desktop nav ── */}
             <div className="hidden lg:flex items-center gap-1">
               {navLinks.map((link, idx) => (
@@ -295,7 +184,6 @@ const Navbar = () => {
                   )}
                 </motion.div>
               ))}
->>>>>>> main
             </div>
 
             {/* ── Right side: language toggle, login, donate CTA, mobile burger ── */}
@@ -307,24 +195,10 @@ const Navbar = () => {
                 onClick={toggleLanguage}
                 className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black shadow-lg cta-raise"
               >
-<<<<<<< HEAD
-                <Languages size={16} />
-
-                <span className="ml-4 inline-block">
-                  <span className="relative inline-block">
-                    <motion.span
-                      layout
-                      className="absolute inset-0 rounded-full bg-white/15 pointer-events-none z-0"
-                      transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                    />
-
-                    <span className="relative z-10 inline-flex items-center gap-2 px-3 py-1">
-=======
                 <Languages size={16} className="icon-pop" />
                 <span className="ml-2 inline-block">
                   <span className="relative inline-block">
                     <span className="relative inline-flex items-center gap-2 px-2 py-0.5">
->>>>>>> main
                       <span className="hidden sm:inline">{t.navToggleLabel}</span>
                       <span className="font-semibold">{lang === "en" ? "EN" : "HI"}</span>
                     </span>

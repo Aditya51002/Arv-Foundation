@@ -10,14 +10,7 @@ import initiativeImage3 from "../Images/Initiative/initiativeimage3.jpg";
 import initiativeImage4 from "../Images/Initiative/initiativeimage4.jpg";
 import initiativeImage5 from "../Images/Initiative/initiativeimage5.jpg";
 
-function slugify(s) {
-  return s
-    .toString()
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-");
-}
+
 
 function slugify(s) {
   return s
@@ -61,21 +54,6 @@ const InitiativesGrid = () => {
         const Icon = icons[idx % icons.length];
         const slug = slugify(item.title);
         return (
-<<<<<<< HEAD
-          <motion.div
-            id={slugify(item.title)}
-            key={item.title}
-            whileHover={{ y: -3 }}
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.45, delay: idx * 0.06 }}
-            className="glass-card p-4 border border-white/10"
-          >
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-white/10 border border-white/10 grid place-items-center text-amber-200">
-                <Icon size={18} />
-=======
           <Link to={`/initiatives/${slug}`} key={item.title} className="block">
             <motion.div
               id={slug}
@@ -93,7 +71,6 @@ const InitiativesGrid = () => {
                   <Icon size={18} />
                 </div>
                 <h3 className={`text-lg font-semibold ${lang === "hi" ? "font-devanagari" : ""}`}>{item.title}</h3>
->>>>>>> main
               </div>
               <p className={`mt-2 text-sm text-white/75 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""} line-clamp-3`}>{item.description}</p>
               <div className="mt-3">

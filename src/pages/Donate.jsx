@@ -168,12 +168,8 @@ const Donate = () => {
           const Icon = card.icon;
           const isSelected = selectedContributions.includes(card.id);
           return (
-<<<<<<< HEAD
-            <motion.div
-=======
             <motion.button
               type="button"
->>>>>>> main
               id={card.id}
               key={card.title}
               initial={{ opacity: 0, y: 14 }}

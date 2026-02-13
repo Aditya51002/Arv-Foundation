@@ -2,32 +2,15 @@
 import { motion } from "framer-motion";
 import { ArrowRight, HandHeart, Leaf, Stethoscope, GraduationCap, HeartPulse, Shirt } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
-<<<<<<< HEAD
-import { useState } from "react";
-import QuickDonate from "./QuickDonate.jsx";
-import QuickVolunteer from "./QuickVolunteer.jsx";
-=======
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import QuickVolunteer from "./QuickVolunteer.jsx";
 import AnimatedCounter from "./AnimatedCounter.jsx";
->>>>>>> main
 
 const focusIcons = [HandHeart, HeartPulse, GraduationCap, Stethoscope, Leaf, Shirt];
 
 const Hero = () => {
   const { t, lang } = useLanguage();
-<<<<<<< HEAD
-  const [donateOpen, setDonateOpen] = useState(false);
-  const [volunteerOpen, setVolunteerOpen] = useState(false);
-
-  return (
-    <>
-    <section className="relative overflow-hidden py-12 md:py-16">
-      <div className="blur-blob left-[-10%] top-[-10%] h-64 w-64 bg-emerald-400/20" />
-      <div className="blur-blob right-[-10%] top-10 h-64 w-64 bg-amber-300/20" />
-      <div className="section-shell relative z-10 grid gap-10 md:grid-cols-[1.1fr_0.9fr] items-center">
-=======
   const navigate = useNavigate();
   const [volunteerOpen, setVolunteerOpen] = useState(false);
   const sectionRef = useRef(null);
@@ -136,7 +119,6 @@ const Hero = () => {
       <div ref={blobRightRef} className="blur-blob right-[-10%] top-10 h-64 w-64 bg-amber-300/20" />
 
       <div className="section-shell relative z-10 grid gap-10 md:grid-cols-[1.1fr_0.9fr] items-start">
->>>>>>> main
         <div className="space-y-6">
           {/* <div className="badge w-fit">{lang === "hi" ? "गैर-सरकारी संगठन" : "Non-Governmental Organization"}</div> */}
           <motion.h1
@@ -160,11 +142,7 @@ const Hero = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-<<<<<<< HEAD
-              onClick={() => setDonateOpen(true)}
-=======
               onClick={() => navigate("/donate")}
->>>>>>> main
               className="magnetic inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-5 py-3 text-black font-semibold shadow-xl"
             >
               {t.hero.donate}
@@ -246,11 +224,7 @@ const Hero = () => {
         </motion.div>
       </div>
     </section>
-<<<<<<< HEAD
-    <QuickDonate open={donateOpen} onClose={() => setDonateOpen(false)} />
-=======
     
->>>>>>> main
     <QuickVolunteer open={volunteerOpen} onClose={() => setVolunteerOpen(false)} />
     </>
   );
