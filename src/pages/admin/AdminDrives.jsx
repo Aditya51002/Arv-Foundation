@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+﻿import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { logoutAdmin } from "../../utils/adminAuth.js";
 import AdminLayout from "../../components/AdminLayout.jsx";
@@ -91,7 +91,7 @@ const AdminDrives = () => {
   const activeDrives = drives.filter((d) => d.active);
 
   return (
-    <div className="section-shell pb-12 relative z-0">
+    <>
       <AdminLayout
         title="Drive Management"
         subtitle="Create, manage and publish community drives."
@@ -211,7 +211,7 @@ const AdminDrives = () => {
         onClose={() => setDriveModalOpen(false)}
         onPublished={refreshDrives}
       />
-    </div>
+    </>
   );
 };
 

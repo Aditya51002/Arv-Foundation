@@ -43,7 +43,6 @@ const transporter = nodemailer.createTransport({
 router.post("/apply", upload.single("resume"), async (req, res) => {
   try {
     const resumeUrl = req.file ? req.file.path : null;
-
     const newApplication = new InternshipApplication({
       ...req.body,
       areasOfInterest: JSON.parse(req.body.areasOfInterest || "[]"),
@@ -51,7 +50,6 @@ router.post("/apply", upload.single("resume"), async (req, res) => {
     });
 
     await newApplication.save();
-
     // Notify Applicant
     await transporter.sendMail({
       from: process.env.EMAIL_USER,

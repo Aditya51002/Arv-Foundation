@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import AdminLayout from "../../components/AdminLayout.jsx";
 import {
   fetchSections,
@@ -47,8 +47,7 @@ const AdminSections = ({ onLogout }) => {
   };
 
   return (
-    <div className="section-shell pb-12">
-      <AdminLayout
+    <AdminLayout
         title="Page Sections"
         subtitle="Control visibility and order of homepage sections."
         onLogout={onLogout}
@@ -117,8 +116,9 @@ const AdminSections = ({ onLogout }) => {
           </div>
         </div>
       </AdminLayout>
-    </div>
   );
 };
 
 export default AdminSections;
+
+

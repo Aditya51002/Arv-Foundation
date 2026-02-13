@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+﻿import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { logoutAdmin } from "../../utils/adminAuth.js";
 import { fetchAllImages } from "../../utils/imageApi.js";
@@ -57,8 +57,7 @@ const AdminDashboard = () => {
   );
 
   return (
-    <div className="section-shell pb-12 relative z-0">
-      <AdminLayout
+    <AdminLayout
         title="Dashboard"
         subtitle="Manage content like photos, drives, and announcements."
         onLogout={handleLogout}
@@ -116,8 +115,8 @@ const AdminDashboard = () => {
           </div>
         </div>
       </AdminLayout>
-    </div>
   );
 };
 
 export default AdminDashboard;
+
