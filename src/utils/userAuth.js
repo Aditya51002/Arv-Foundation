@@ -1,18 +1,18 @@
-const USER_AUTH_KEY = "arv_user_auth";
+const USER_TOKEN_KEY = "arv_user_token";
 
 export const isUserAuthed = () => {
-	// TODO: Replace mock auth with JWT API
-	if (typeof window === "undefined") return false;
-	return localStorage.getItem(USER_AUTH_KEY) === "true";
+  if (typeof window === "undefined") return false;
+  return !!localStorage.getItem(USER_TOKEN_KEY);
 };
 
-export const loginUser = () => {
-	// TODO: Replace mock auth with JWT API
-	localStorage.setItem(USER_AUTH_KEY, "true");
+export const loginUser = (token) => {
+  localStorage.setItem(USER_TOKEN_KEY, token);
 };
 
 export const logoutUser = () => {
-	// TODO: Replace mock auth with JWT API
-	localStorage.removeItem(USER_AUTH_KEY);
+  localStorage.removeItem(USER_TOKEN_KEY);
 };
 
+export const getUserToken = () => {
+  return localStorage.getItem(USER_TOKEN_KEY);
+};

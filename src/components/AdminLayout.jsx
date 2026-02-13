@@ -4,7 +4,10 @@ const navItems = [
 	{ label: "Dashboard", to: "/admin" },
 	{ label: "Drives", to: "/admin/drives" },
 	{ label: "Gallery", to: "/admin/gallery" },
-	{ label: "Page Sections", to: "/admin/sections" }
+	{ label: "Page Sections", to: "/admin/sections" },
+	{ label: "Internship Applications", to: "/admin/internships" },
+	{ label: "Partnership Requests", to: "/admin/partnerships" },
+	{ label: "Contributions", to: "/admin/contributions" }
 ];
 
 const AdminLayout = ({ title, subtitle, onLogout, children }) => {

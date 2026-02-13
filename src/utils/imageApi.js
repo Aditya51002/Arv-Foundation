@@ -1,57 +1,87 @@
-// Central API config and image service for connecting to MongoDB backend
+import { API_URL } from "../config"; 
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Define separate bases to prevent route shadowing
+const PUBLIC_BASE = `${API_URL}/api/images`; 
+const ADMIN_BASE = `${API_URL}/api/admin/images`; 
 
-// ─── Image API ───
+// FIXED: Key changed to adminToken to match Login logic
+const getToken = () => localStorage.getItem("adminToken"); 
 
-/** Fetch all gallery images */
-export const fetchAllImages = async () => {
-  const res = await fetch(`${API_BASE}/images`);
-  if (!res.ok) throw new Error('Failed to fetch images');
-  return res.json();
-};
+// Helper: Build auth headers
+const authHeaders = () => ({
+  "Content-Type": "application/json", 
+  "Authorization": `Bearer ${getToken()}` 
+});
 
-/** Fetch images by placement prefix (e.g. "work:orphanage-support") */
-export const fetchImagesByPlacement = async (prefix) => {
-  const res = await fetch(`${API_BASE}/images/placement/${encodeURIComponent(prefix)}`);
-  if (!res.ok) throw new Error('Failed to fetch placed images');
-  return res.json();
-};
+// ─────────────────────────────
+// 🔓 PUBLIC ROUTES (For Website)
+// ─────────────────────────────
 
-/** Fetch all placed images across all pages */
+/** Fetch all placed images for website display */
 export const fetchAllPlacedImages = async () => {
-  const res = await fetch(`${API_BASE}/images/placed`);
-  if (!res.ok) throw new Error('Failed to fetch placed images');
-  return res.json();
+  const res = await fetch(`${PUBLIC_BASE}/placed`); 
+  if (!res.ok) throw new Error("Failed to fetch placed images"); 
+  return res.json(); 
 };
 
-/** Upload images to MongoDB */
-export const uploadImages = async (images) => {
-  const res = await fetch(`${API_BASE}/images`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ images }),
+/** Fetch images by placement prefix */
+export const fetchImagesByPlacement = async (prefix) => {
+  const res = await fetch(`${PUBLIC_BASE}/placement/${encodeURIComponent(prefix)}`); 
+  if (!res.ok) throw new Error("Failed to fetch placed images"); 
+  return res.json(); 
+};
+
+// ─────────────────────────────
+// 🔒 ADMIN ROUTES (For Dashboard)
+// ─────────────────────────────
+
+/** Fetch all images for Admin Gallery (Protected) */
+export const fetchAllImages = async () => {
+  const res = await fetch(ADMIN_BASE, { 
+    method: "GET", 
+    headers: authHeaders(), 
   });
-  if (!res.ok) throw new Error('Failed to upload images');
-  return res.json();
+  if (!res.ok) throw new Error("Unauthorized. Please login again."); 
+  return res.json(); 
 };
 
-/** Assign an image to a specific page slot */
+/** Upload images to MongoDB (Protected) */
+export const uploadImages = async (imageDataArray) => {
+  const res = await fetch(ADMIN_BASE, { 
+    method: "POST", 
+    headers: authHeaders(), 
+    body: JSON.stringify({ images: imageDataArray }), 
+  });
+
+  if (!res.ok) throw new Error("Failed to upload images"); 
+  return res.json(); 
+};
+
+/** Assign an image to a specific page slot (Protected) */
 export const assignImagePlacement = async (imageId, placement) => {
-  const res = await fetch(`${API_BASE}/images/${imageId}/placement`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ placement }),
+  // FIXED: Changed method to PATCH to match backend router.patch
+  const res = await fetch(`${ADMIN_BASE}/${imageId}/placement`, { 
+    method: "PATCH", 
+    headers: authHeaders(), 
+    body: JSON.stringify({ placement }), 
   });
-  if (!res.ok) throw new Error('Failed to assign image');
-  return res.json();
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.message || "Failed to assign image");
+  }
+  return res.json(); 
 };
 
-/** Remove an image from MongoDB */
+/** Remove an image from MongoDB (Protected) */
 export const deleteImage = async (imageId) => {
-  const res = await fetch(`${API_BASE}/images/${imageId}`, {
-    method: 'DELETE',
+  const res = await fetch(`${ADMIN_BASE}/${imageId}`, { 
+    method: "DELETE", 
+    headers: {
+      "Authorization": `Bearer ${getToken()}` 
+    }
   });
-  if (!res.ok) throw new Error('Failed to delete image');
-  return res.json();
+
+  if (!res.ok) throw new Error("Failed to delete image"); 
+  return res.json(); 
 };
