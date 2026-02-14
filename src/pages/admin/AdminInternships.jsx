@@ -114,7 +114,8 @@ const AdminInternships = () => {
   );
 
   return (
-    <AdminLayout
+    <>
+      <AdminLayout
         title="Internship Applications"
         subtitle="View and manage incoming internship requests."
         onLogout={handleLogout}
@@ -332,9 +333,9 @@ const AdminInternships = () => {
             )}
           </>
         )}
-      </AdminLayout>
+        </AdminLayout>
 
-      {/* -------- Delete Confirmation Modal -------- */}
+        {/* -------- Delete Confirmation Modal -------- */}
       {deleteTarget && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 backdrop-blur-sm">
           <div className="glass-card border border-white/15 rounded-2xl p-6 w-full max-w-sm space-y-4 shadow-2xl">
@@ -377,7 +378,7 @@ const AdminInternships = () => {
           {toast}
         </div>
       )}
-    </div>
+    </>
   );
 };
 

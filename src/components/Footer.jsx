@@ -31,7 +31,7 @@ const Footer = () => {
   return (
     <footer className="mt-16 border-t border-white/10 bg-black/20 backdrop-blur-md">
       {/* Main footer grid */}
-      <div className="mx-auto max-w-7xl px-6 py-8">
+      <div className="mx-auto max-w-7xl px-6 py-6">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
 
           {/* Brand & About */}
@@ -125,8 +125,8 @@ const Footer = () => {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/10 py-5">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 sm:flex-row">
+      <div className="border-t border-white/10 py-4">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 sm:flex-row">
           <p className="text-xs text-white/40">
             © {new Date().getFullYear()} ARV Foundation. {isHindi ? "सर्वाधिकार सुरक्षित।" : "All Rights Reserved."}
           </p>
