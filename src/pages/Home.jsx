@@ -1,6 +1,7 @@
 import Hero from "../components/Hero.jsx";
 import StorySection from "../components/StorySection.jsx";
 import OngoingDrives from "../components/OngoingDrives.jsx";
+import Branches from "../components/Branches.jsx";
 /* mport PhotoGallery from "../components/PhotoGallery.jsx";
 import PartnersSection from "../components/PartnersSection.jsx"; */
 // Parallax moved into StorySection to avoid transforming the heading
@@ -12,6 +13,7 @@ const Home = () => {
       <Hero />
       <StorySection />
       <OngoingDrives />
+      <Branches />
     </div>
   );
 };

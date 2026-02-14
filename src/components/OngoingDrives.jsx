@@ -123,7 +123,7 @@ const OngoingDrives = () => {
         )}
 
         {drives.length === 0 && (
-          <div className="glass-card p-10 rounded-3xl border border-white/5 text-center">
+          <div className="glass-card p-10 rounded-3xl border border-white/5 text-center mb-16">
              <p className="text-white/60 italic">No drives are currently published.</p>
           </div>
         )}
