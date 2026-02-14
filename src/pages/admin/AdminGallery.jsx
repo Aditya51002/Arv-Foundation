@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+﻿import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, X, Trash2, MapPin, Loader2, Unlink } from "lucide-react";
 import AdminLayout from "../../components/AdminLayout.jsx";
@@ -124,11 +124,11 @@ const AdminGallery = ({ onLogout }) => {
             {loading ? (
                 <div className="flex justify-center py-20"><Loader2 className="animate-spin text-amber-400" /></div>
             ) : (
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <div className="gallery-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {images.map((image) => (
-                        <div key={image._id} className="glass-card p-3 border border-white/10 rounded-2xl group">
-                            <div className="relative h-32 w-full mb-3 overflow-hidden rounded-xl bg-neutral-900">
-                                <img src={image.url} className="h-full w-full object-cover" alt="" />
+                        <div key={image._id} className="gallery-card glass-card p-3 border border-white/10 rounded-2xl group h-full">
+                            <div className="relative h-[200px] w-full mb-3 overflow-hidden rounded-xl bg-neutral-900">
+                                <img src={image.url} className="gallery-card-image h-full w-full object-cover" alt="" />
                                 {image.placement && (
                                     <div className="absolute top-2 left-2 bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 shadow-lg">
                                         <MapPin size={10} /> 

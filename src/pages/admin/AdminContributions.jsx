@@ -1,12 +1,13 @@
-// ==========================================================
+﻿// ==========================================================
 // ADMIN API ENDPOINTS
-// GET /api/admin/contributions — Fetch all contributions / donations
+// GET /api/admin/contributions â€” Fetch all contributions / donations
 // ==========================================================
 
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import { logoutAdmin } from "../../utils/adminAuth.js";
 import AdminLayout from "../../components/AdminLayout.jsx";
+import { API_URL } from "../../config";
 import {
   Search,
   Loader2,
@@ -39,9 +40,15 @@ const AdminContributions = () => {
     const fetchContributions = async () => {
       try {
         setLoading(true);
-        // TODO: Replace with real API call
-        await new Promise((r) => setTimeout(r, 600));
-        setContributions([]); // Replace with API response
+        const token = localStorage.getItem("adminToken");
+        const res = await fetch(`http://localhost:5000/api/admin/contributions`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data?.message || "Failed to load contributions.");
+        }
+        setContributions(Array.isArray(data) ? data : []);
       } catch (_err) {
         setError("Failed to load contributions.");
       } finally {
@@ -112,8 +119,7 @@ const AdminContributions = () => {
   };
 
   return (
-    <div className="section-shell pb-12 relative z-0">
-      <AdminLayout
+    <AdminLayout
         title="Contributions"
         subtitle="View all donations and contribution submissions."
         onLogout={handleLogout}
@@ -122,7 +128,7 @@ const AdminContributions = () => {
         {loading && (
           <div className="glass-card border border-white/10 rounded-2xl p-16 flex flex-col items-center justify-center gap-4">
             <Loader2 size={36} className="animate-spin text-emerald-300" />
-            <p className="text-white/60 text-sm">Loading contributions…</p>
+            <p className="text-white/60 text-sm">Loading contributionsâ€¦</p>
           </div>
         )}
 
@@ -154,7 +160,7 @@ const AdminContributions = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Search by name, email, payment ID…"
+                  placeholder="Search by name, email, payment IDâ€¦"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full rounded-xl border border-white/10 bg-white/5 pl-9 pr-4 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-400/40 transition"
@@ -196,7 +202,7 @@ const AdminContributions = () => {
                             {item.phone}
                           </td>
                           <td className="px-4 py-3 text-white/60 max-w-[200px] truncate">
-                            {item.message || "—"}
+                            {item.message || "â€”"}
                           </td>
                           <td className="px-4 py-3 text-amber-200 font-semibold whitespace-nowrap">
                             {item.amount != null ? (
@@ -205,18 +211,18 @@ const AdminContributions = () => {
                                 {Number(item.amount).toLocaleString("en-IN")}
                               </span>
                             ) : (
-                              "—"
+                              "â€”"
                             )}
                           </td>
                           <td className="px-4 py-3 text-white/50 font-mono text-xs whitespace-nowrap">
-                            {item.paymentId || "—"}
+                            {item.paymentId || "â€”"}
                           </td>
                           <td className="px-4 py-3 text-white/50 whitespace-nowrap text-xs">
                             {item.date
                               ? new Date(item.date).toLocaleDateString("en-IN", {
                                   dateStyle: "medium",
                                 })
-                              : "—"}
+                              : "â€”"}
                           </td>
                           <td className="px-4 py-3">
                             <PaymentStatusBadge status={item.status} />
@@ -246,11 +252,11 @@ const AdminContributions = () => {
                           <span>Phone: {item.phone}</span>
                           <span className="text-amber-200 font-semibold">
                             {item.amount != null
-                              ? `₹${Number(item.amount).toLocaleString("en-IN")}`
-                              : "—"}
+                              ? `â‚¹${Number(item.amount).toLocaleString("en-IN")}`
+                              : "â€”"}
                           </span>
                           <span>
-                            ID: {item.paymentId || "—"}
+                            ID: {item.paymentId || "â€”"}
                           </span>
                           <span>
                             Date:{" "}
@@ -258,7 +264,7 @@ const AdminContributions = () => {
                               ? new Date(item.date).toLocaleDateString("en-IN", {
                                   dateStyle: "medium",
                                 })
-                              : "—"}
+                              : "â€”"}
                           </span>
                         </div>
                         {item.message && (
@@ -285,8 +291,11 @@ const AdminContributions = () => {
           </>
         )}
       </AdminLayout>
-    </div>
   );
 };
 
 export default AdminContributions;
+
+
+
+

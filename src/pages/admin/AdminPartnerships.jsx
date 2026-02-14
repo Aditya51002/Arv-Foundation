@@ -1,13 +1,14 @@
-// ==========================================================
+﻿// ==========================================================
 // ADMIN API ENDPOINTS
-// GET   /api/admin/partnerships        — Fetch all partnership requests
-// PATCH /api/admin/partnerships/:id    — Toggle active / inactive status
+// GET   /api/admin/partnerships        â€” Fetch all partnership requests
+// PATCH /api/admin/partnerships/:id    â€” Toggle active / inactive status
 // ==========================================================
 
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import { logoutAdmin } from "../../utils/adminAuth.js";
 import AdminLayout from "../../components/AdminLayout.jsx";
+import { API_URL } from "../../config";
 import {
   ToggleLeft,
   ToggleRight,
@@ -40,9 +41,15 @@ const AdminPartnerships = () => {
     const fetchPartners = async () => {
       try {
         setLoading(true);
-        // TODO: Replace with real API call
-        await new Promise((r) => setTimeout(r, 600));
-        setPartners([]); // Replace with API response
+        const token = localStorage.getItem("adminToken");
+        const res = await fetch(`http://localhost:5000/api/admin/partnerships`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data?.message || "Failed to load partnership requests.");
+        }
+        setPartners(Array.isArray(data) ? data : []);
       } catch (_err) {
         setError("Failed to load partnership requests.");
       } finally {
@@ -139,8 +146,7 @@ const AdminPartnerships = () => {
   };
 
   return (
-    <div className="section-shell pb-12 relative z-0">
-      <AdminLayout
+    <AdminLayout
         title="Partnership Requests"
         subtitle="Manage incoming partnership & collaboration proposals."
         onLogout={handleLogout}
@@ -149,7 +155,7 @@ const AdminPartnerships = () => {
         {loading && (
           <div className="glass-card border border-white/10 rounded-2xl p-16 flex flex-col items-center justify-center gap-4">
             <Loader2 size={36} className="animate-spin text-emerald-300" />
-            <p className="text-white/60 text-sm">Loading partnership requests…</p>
+            <p className="text-white/60 text-sm">Loading partnership requestsâ€¦</p>
           </div>
         )}
 
@@ -180,7 +186,7 @@ const AdminPartnerships = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Search by organization, contact, email…"
+                  placeholder="Search by organization, contact, emailâ€¦"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full rounded-xl border border-white/10 bg-white/5 pl-9 pr-4 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-400/40 transition"
@@ -270,11 +276,11 @@ const AdminPartnerships = () => {
                       )}
                       <div>
                         <span className="text-white/40 text-xs">Duration:</span>{" "}
-                        {partner.duration || "—"}
+                        {partner.duration || "â€”"}
                       </div>
                       <div>
                         <span className="text-white/40 text-xs">Expected Scale:</span>{" "}
-                        {partner.expectedScale || "—"}
+                        {partner.expectedScale || "â€”"}
                       </div>
                     </div>
                   </div>
@@ -294,8 +300,11 @@ const AdminPartnerships = () => {
           </>
         )}
       </AdminLayout>
-    </div>
   );
 };
 
 export default AdminPartnerships;
+
+
+
+

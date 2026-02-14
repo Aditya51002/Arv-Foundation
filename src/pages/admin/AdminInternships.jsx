@@ -1,13 +1,14 @@
-// ==========================================================
+﻿// ==========================================================
 // ADMIN API ENDPOINTS
-// GET    /api/admin/internships        — Fetch all applications
-// DELETE /api/admin/internships/:id    — Delete an application
+// GET    /api/admin/internships        â€” Fetch all applications
+// DELETE /api/admin/internships/:id    â€” Delete an application
 // ==========================================================
 
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import { logoutAdmin } from "../../utils/adminAuth.js";
 import AdminLayout from "../../components/AdminLayout.jsx";
+import { API_URL } from "../../config";
 import {
   Trash2,
   Download,
@@ -41,9 +42,15 @@ const AdminInternships = () => {
     const fetchInternships = async () => {
       try {
         setLoading(true);
-        // TODO: Replace with real API call
-        await new Promise((r) => setTimeout(r, 600));
-        setInternships([]); // Replace with API response
+        const token = localStorage.getItem("adminToken");
+        const res = await fetch(`http://localhost:5000/api/admin/internships`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data?.message || "Failed to load internship applications.");
+        }
+        setInternships(Array.isArray(data) ? data : []);
       } catch (_err) {
         setError("Failed to load internship applications.");
       } finally {
@@ -107,8 +114,7 @@ const AdminInternships = () => {
   );
 
   return (
-    <div className="section-shell pb-12 relative z-0">
-      <AdminLayout
+    <AdminLayout
         title="Internship Applications"
         subtitle="View and manage incoming internship requests."
         onLogout={handleLogout}
@@ -117,7 +123,7 @@ const AdminInternships = () => {
         {loading && (
           <div className="glass-card border border-white/10 rounded-2xl p-16 flex flex-col items-center justify-center gap-4">
             <Loader2 size={36} className="animate-spin text-emerald-300" />
-            <p className="text-white/60 text-sm">Loading applications…</p>
+            <p className="text-white/60 text-sm">Loading applicationsâ€¦</p>
           </div>
         )}
 
@@ -156,7 +162,7 @@ const AdminInternships = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Search by name, email, college, interest…"
+                  placeholder="Search by name, email, college, interestâ€¦"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full rounded-xl border border-white/10 bg-white/5 pl-9 pr-4 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-400/40 transition"
@@ -239,7 +245,7 @@ const AdminInternships = () => {
                                   "en-IN",
                                   { dateStyle: "medium" }
                                 )
-                              : "—"}
+                              : "â€”"}
                           </td>
                           <td className="px-4 py-3 text-center">
                             <button
@@ -295,7 +301,7 @@ const AdminInternships = () => {
                                   "en-IN",
                                   { dateStyle: "medium" }
                                 )
-                              : "—"}
+                              : "â€”"}
                           </span>
                         </div>
                         {item.resumeUrl && (
@@ -376,3 +382,5 @@ const AdminInternships = () => {
 };
 
 export default AdminInternships;
+
+
