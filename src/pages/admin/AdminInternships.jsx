@@ -1,7 +1,7 @@
 ﻿// ==========================================================
 // ADMIN API ENDPOINTS
-// GET    /api/admin/internships        â€” Fetch all applications
-// DELETE /api/admin/internships/:id    â€” Delete an application
+// GET    /api/admin/internships        - Fetch all applications
+// DELETE /api/admin/internships/:id    - Delete an application
 // ==========================================================
 
 import { useNavigate } from "react-router-dom";
@@ -107,9 +107,9 @@ const AdminInternships = () => {
 
   // ---------- Render helpers ----------
   const StatCard = ({ label, value, color = "text-amber-200" }) => (
-    <div className="glass-card p-5 border border-white/10 rounded-2xl">
-      <p className="text-xs uppercase tracking-wide text-white/60">{label}</p>
-      <p className={`mt-2 text-3xl font-semibold ${color}`}>{value}</p>
+    <div className="glass-card p-3 sm:p-5 border border-white/10 rounded-2xl">
+      <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">{label}</p>
+      <p className={`mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold ${color}`}>{value}</p>
     </div>
   );
 
@@ -124,7 +124,7 @@ const AdminInternships = () => {
         {loading && (
           <div className="glass-card border border-white/10 rounded-2xl p-16 flex flex-col items-center justify-center gap-4">
             <Loader2 size={36} className="animate-spin text-emerald-300" />
-            <p className="text-white/60 text-sm">Loading applicationsâ€¦</p>
+            <p className="text-white/60 text-sm">Loading applications…</p>
           </div>
         )}
 
@@ -140,7 +140,7 @@ const AdminInternships = () => {
         {!loading && !error && (
           <>
             {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
               <StatCard label="Total Applications" value={internships.length} />
               <StatCard
                 label="Displayed"
@@ -155,18 +155,18 @@ const AdminInternships = () => {
             </div>
 
             {/* Search */}
-            <div className="flex items-center gap-3 mb-6">
-              <div className="relative flex-1 max-w-md">
+            <div className="flex items-center gap-3 mb-4 sm:mb-6">
+              <div className="relative flex-1">
                 <Search
                   size={16}
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40"
                 />
                 <input
                   type="text"
-                  placeholder="Search by name, email, college, interestâ€¦"
+                  placeholder="Search by name, email, college, interest…"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-white/5 pl-9 pr-4 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-400/40 transition"
+                  className="w-full rounded-xl border border-white/10 bg-white/5 pl-9 pr-4 py-2.5 sm:py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-400/40 transition"
                 />
               </div>
             </div>
@@ -174,7 +174,7 @@ const AdminInternships = () => {
             {/* Table / Cards */}
             {filtered.length > 0 ? (
               <div className="glass-card border border-white/10 rounded-2xl overflow-hidden">
-                <div className="max-h-[600px] overflow-y-auto scrollbar-thin">
+                <div className="max-h-[55vh] sm:max-h-[600px] overflow-y-auto scrollbar-thin">
                   {/* Desktop table */}
                   <table className="hidden lg:table w-full text-sm text-left">
                     <thead className="sticky top-0 z-10 bg-white/5 backdrop-blur-md">
@@ -246,7 +246,7 @@ const AdminInternships = () => {
                                   "en-IN",
                                   { dateStyle: "medium" }
                                 )
-                              : "â€”"}
+                              : "—"}
                           </td>
                           <td className="px-4 py-3 text-center">
                             <button
@@ -302,7 +302,7 @@ const AdminInternships = () => {
                                   "en-IN",
                                   { dateStyle: "medium" }
                                 )
-                              : "â€”"}
+                              : "—"}
                           </span>
                         </div>
                         {item.resumeUrl && (
@@ -337,8 +337,8 @@ const AdminInternships = () => {
 
         {/* -------- Delete Confirmation Modal -------- */}
       {deleteTarget && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 backdrop-blur-sm">
-          <div className="glass-card border border-white/15 rounded-2xl p-6 w-full max-w-sm space-y-4 shadow-2xl">
+        <div className="fixed inset-0 z-[100] grid place-items-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="glass-card border border-white/15 rounded-2xl p-5 sm:p-6 w-full max-w-sm space-y-4 shadow-2xl">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">Confirm Delete</h3>
               <button

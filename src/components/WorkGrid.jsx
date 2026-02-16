@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Leaf, Stethoscope, School, HelpingHand, Droplets, Heart, Shirt, Soup, ArrowRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import workContent from "../data/workContent.js";
+import { useBulkDynamicContent } from "../utils/useDynamicContent.js";
 
 function slugify(s) {
   return s
@@ -18,8 +19,38 @@ const spans = ["md:col-span-2", "", "md:row-span-2", "", "", "md:col-span-2", ""
 
 const WorkGrid = () => {
   const { t, lang } = useLanguage();
-  // Use translations so descriptions follow selected language
-  const items = t && t.work ? t.work : workContent;
+  
+  // Create array of content keys for dynamic content
+  const contentKeys = workContent.map((item, idx) => {
+    const slug = slugify(item.title);
+    return [`work:${slug}:title`, `work:${slug}:description`];
+  }).flat();
+
+  // Create fallbacks object
+  const fallbacks = {};
+  workContent.forEach((item, idx) => {
+    const slug = slugify(item.title);
+    fallbacks[`work:${slug}:title`] = item.title;
+    fallbacks[`work:${slug}:description`] = item.description;
+  });
+
+  // Get dynamic content with fallbacks from translations or static content
+  const { content: dynamicContent, loading } = useBulkDynamicContent(contentKeys, fallbacks);
+
+  // Use translations so descriptions follow selected language, with dynamic content override
+  const baseItems = t && t.work ? t.work : workContent;
+  
+  // Combine base items with dynamic content
+  const items = baseItems.map((item, idx) => {
+    const slug = slugify(item.title);
+    const titleKey = `work:${slug}:title`;
+    const descKey = `work:${slug}:description`;
+    
+    return {
+      title: loading ? item.title : (dynamicContent[titleKey] || item.title),
+      description: loading ? item.description : (dynamicContent[descKey] || item.description)
+    };
+  });
 
   const handleTileMove = (e, id) => {
     const el = document.getElementById(id);

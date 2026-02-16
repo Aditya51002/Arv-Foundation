@@ -30,7 +30,7 @@ import Signup from "./pages/Signup.jsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import AdminGallery from "./pages/admin/AdminGallery.jsx";
 import AdminDrives from "./pages/admin/AdminDrives.jsx";
-import AdminSections from "./pages/admin/AdminSections.jsx";
+import AdminContent from "./pages/admin/AdminContent.jsx";
 import AdminInternships from "./pages/admin/AdminInternships.jsx";
 import AdminPartnerships from "./pages/admin/AdminPartnerships.jsx";
 import AdminContributions from "./pages/admin/AdminContributions.jsx";
@@ -102,10 +102,10 @@ const AppShell = () => {
             }
           />
           <Route
-            path="/admin/sections"
+            path="/admin/content"
             element={
               <AdminProtectedRoute>
-                <AdminSections />
+                <AdminContent />
               </AdminProtectedRoute>
             }
           />

@@ -285,6 +285,12 @@ video {
   min-height: 100%;
 }
 
+/* Mobile sidebar slide-in animation */
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
 @media (min-width: 1024px) {
   .admin-layout {
     flex-direction: row;
@@ -294,8 +300,8 @@ video {
   }
 
   .admin-sidebar-fixed {
-    width: 260px;
-    min-width: 260px;
+    width: 240px;
+    min-width: 240px;
     flex-shrink: 0;
     position: sticky;
     top: calc(var(--navbar-height) + 8px);
@@ -320,6 +326,12 @@ video {
     width: 6px;
   }
 }
+
+/* Smooth scrollbar across all admin scrollable areas */
+.scrollbar-thin::-webkit-scrollbar { width: 5px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 9999px; }
+.scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
 /* Admin gallery layout */
 .gallery-grid {

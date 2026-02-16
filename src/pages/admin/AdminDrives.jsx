@@ -98,37 +98,38 @@ const AdminDrives = () => {
         onLogout={handleLogout}
       >
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-          <div className="glass-card p-5 border border-white/10 rounded-2xl">
-            <p className="text-xs uppercase tracking-wide text-white/60">Total Drives</p>
-            <p className="mt-2 text-3xl font-semibold text-amber-200">{drives.length}</p>
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6">
+          <div className="glass-card p-3 sm:p-5 border border-white/10 rounded-2xl">
+            <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Total Drives</p>
+            <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-amber-200">{drives.length}</p>
           </div>
-          <div className="glass-card p-5 border border-white/10 rounded-2xl">
-            <p className="text-xs uppercase tracking-wide text-white/60">Active Drives</p>
-            <p className="mt-2 text-3xl font-semibold text-emerald-200">{activeDrives.length}</p>
+          <div className="glass-card p-3 sm:p-5 border border-white/10 rounded-2xl">
+            <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Active Drives</p>
+            <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-emerald-200">{activeDrives.length}</p>
           </div>
-          <div className="glass-card p-5 border border-white/10 rounded-2xl">
-            <p className="text-xs uppercase tracking-wide text-white/60">Inactive Drives</p>
-            <p className="mt-2 text-3xl font-semibold text-white/60">{drives.length - activeDrives.length}</p>
+          <div className="glass-card p-3 sm:p-5 border border-white/10 rounded-2xl">
+            <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Inactive</p>
+            <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-white/60">{drives.length - activeDrives.length}</p>
           </div>
         </div>
 
         {/* Add New Drive */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Published Drives</h2>
+          <h2 className="text-base sm:text-lg font-semibold">Published Drives</h2>
           <button
             type="button"
             onClick={() => setDriveModalOpen(true)}
-            className="flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-500/20 transition"
+            className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-emerald-200 hover:bg-emerald-500/20 transition"
           >
             <Plus size={16} />
-            Add New Drive
+            <span className="hidden sm:inline">Add New Drive</span>
+            <span className="sm:hidden">Add</span>
           </button>
         </div>
 
         {/* Published Drives List */}
         {drives.length > 0 ? (
-          <div className="space-y-3">
+          <div className="space-y-3 max-h-[55vh] sm:max-h-[600px] overflow-y-auto scrollbar-thin pr-1">
             {drives.map((drive) => (
               <div
                 key={drive._id}
@@ -166,7 +167,7 @@ const AdminDrives = () => {
                     </span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 flex-shrink-0">
+                <div className="flex items-center gap-2 flex-shrink-0 self-end sm:self-center">
                   <button
                     onClick={() => handleToggleDrive(drive._id)}
                     title={drive.active ? "Deactivate" : "Activate"}

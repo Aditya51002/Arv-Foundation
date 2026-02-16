@@ -15,6 +15,7 @@ import {
   ImagePlus,
 } from "lucide-react";
 import { usePlacedImages } from "../utils/usePlacedImages.js";
+import { useSectionContent } from "../utils/useDynamicContent.js";
 
 const icons = [HelpingHand, Heart, School, Stethoscope, Leaf, Droplets, Shirt, Soup];
 
@@ -167,16 +168,32 @@ const WorkDetail = () => {
   const { slug } = useParams();
   const { t, lang } = useLanguage();
   const isHindi = lang === "hi";
+
+  // Get dynamic content for this work section
+  const { content: dynamicContent, loading } = useSectionContent("work", slug, {
+    title: "", // will be filled from static content as fallback
+    description: "",
+    content: ""
+  });
+
   const { images: slotImages } = usePlacedImages("work", slug);
 
   const details = detailContent[lang];
   const page = details[slug];
 
+  // Use dynamic content if available, fallback to static content
+  const pageContent = {
+    heading: loading ? (page?.heading || "Loading...") : (dynamicContent.title || page?.heading || "Not Found"),
+    content: loading ? 
+      (page?.content || ["Loading content..."]) : 
+      (dynamicContent.content ? dynamicContent.content.split('\n\n').filter(p => p.trim()) : page?.content || ["Content not available"])
+  };
+
   /* Find index for the icon */
   const workIndex = t.work.findIndex((w) => slugify(w.title) === slug);
   const Icon = icons[workIndex >= 0 ? workIndex % icons.length : 0];
 
-  if (!page) {
+  if (!page && !loading && !dynamicContent.title) {
     return (
       <div className="section-shell py-20 text-center space-y-4">
         <h2 className="text-2xl font-semibold">
@@ -200,7 +217,7 @@ const WorkDetail = () => {
         {isHindi ? "सभी कार्य" : "All Work"}
       </Link>
 
-      <SectionHeading title={page.heading} />
+      <SectionHeading title={pageContent.heading} />
 
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -213,11 +230,11 @@ const WorkDetail = () => {
             <Icon size={22} />
           </div>
           <h3 className={`text-2xl font-semibold ${isHindi ? "font-devanagari" : ""}`}>
-            {page.heading}
+            {pageContent.heading}
           </h3>
         </div>
 
-        {page.content.map((para, i) => (
+        {pageContent.content.map((para, i) => (
           <p
             key={i}
             className={`text-sm md:text-base text-white/80 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}
@@ -238,7 +255,7 @@ const WorkDetail = () => {
               }`}
             >
               {slotImages[n] ? (
-                <img src={slotImages[n]} alt={`${page.heading} ${n + 1}`} className="w-full h-full object-cover" />
+                <img src={slotImages[n]} alt={`${pageContent.heading} ${n + 1}`} className="w-full h-full object-cover" />
               ) : (
                 <ImagePlus size={28} />
               )}

@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import QuickVolunteer from "./QuickVolunteer.jsx";
 import AnimatedCounter from "./AnimatedCounter.jsx";
+import { useBulkDynamicContent } from "../utils/useDynamicContent.js";
 
 const focusIcons = [HandHeart, HeartPulse, GraduationCap, Stethoscope, Leaf, Shirt];
 
@@ -18,6 +19,15 @@ const Hero = () => {
   const blobRightRef = useRef(null);
   const snapshotRef = useRef(null);
   const [reducedMotion, setReducedMotion] = useState(false);
+
+  // Fetch dynamic content with fallbacks from translations
+  const { content: dynamicContent, loading } = useBulkDynamicContent(
+    ["home:hero:tagline", "home:hero:intro"],
+    {
+      "home:hero:tagline": t?.hero?.tagline || "Serving Humanity with Compassion, Dignity & Hope",
+      "home:hero:intro": t?.hero?.intro || "The ARV Foundation is a non-governmental organization established on 14 November 2017, dedicated to uplifting underprivileged communities through education, healthcare, food, shelter, and environmental initiatives."
+    }
+  );
 
   useEffect(() => {
     // respect user preference for reduced motion
@@ -128,7 +138,9 @@ const Hero = () => {
             transition={{ duration: 0.7, ease: "easeOut" }}
             className={`text-4xl md:text-5xl font-bold leading-tight animated-headline ${lang === "hi" ? "font-devanagari" : ""}`}
           >
-            <span className="headline-gradient">{t.hero.tagline}</span>
+            <span className="headline-gradient">
+              {loading ? t?.hero?.tagline || "Serving Humanity..." : dynamicContent["home:hero:tagline"]}
+            </span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 18 }}
@@ -136,7 +148,7 @@ const Hero = () => {
             transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
             className={`text-lg text-white/80 max-w-2xl ${lang === "hi" ? "font-devanagari" : ""}`}
           >
-            {t.hero.intro}
+            {loading ? t?.hero?.intro || "The ARV Foundation is..." : dynamicContent["home:hero:intro"]}
           </motion.p>
           <div className="flex flex-wrap items-center gap-4">
             <motion.button

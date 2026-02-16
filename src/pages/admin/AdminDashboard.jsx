@@ -62,55 +62,55 @@ const AdminDashboard = () => {
         subtitle="Manage content like photos, drives, and announcements."
         onLogout={handleLogout}
       >
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <div className="glass-card p-5 border border-white/10 rounded-2xl">
-            <p className="text-xs uppercase tracking-wide text-white/60">Total Drives</p>
-            <p className="mt-2 text-3xl font-semibold text-amber-200">{drives.length}</p>
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6 sm:mb-8">
+          <div className="glass-card p-3 sm:p-5 border border-white/10 rounded-2xl">
+            <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Total Drives</p>
+            <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-amber-200">{drives.length}</p>
           </div>
-          <div className="glass-card p-5 border border-white/10 rounded-2xl">
-            <p className="text-xs uppercase tracking-wide text-white/60">Active Drives</p>
-            <p className="mt-2 text-3xl font-semibold text-emerald-200">{activeDrives.length}</p>
+          <div className="glass-card p-3 sm:p-5 border border-white/10 rounded-2xl">
+            <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Active Drives</p>
+            <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-emerald-200">{activeDrives.length}</p>
           </div>
-          <div className="glass-card p-5 border border-white/10 rounded-2xl">
-            <p className="text-xs uppercase tracking-wide text-white/60">Gallery Items</p>
-            <p className="mt-2 text-3xl font-semibold text-amber-200">{galleryCount}</p>
+          <div className="glass-card p-3 sm:p-5 border border-white/10 rounded-2xl">
+            <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Gallery Items</p>
+            <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-amber-200">{galleryCount}</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="glass-card p-6 border border-white/10 rounded-2xl space-y-4">
-            <h2 className="text-lg font-semibold">Drive Management</h2>
-            <p className="text-sm text-white/70">Create, manage and publish community drives.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <div className="glass-card p-4 sm:p-6 border border-white/10 rounded-2xl space-y-3 sm:space-y-4">
+            <h2 className="text-base sm:text-lg font-semibold">Drive Management</h2>
+            <p className="text-xs sm:text-sm text-white/70">Create, manage and publish community drives.</p>
             <NavButton to="/admin/drives">Manage Drives</NavButton>
           </div>
 
-          <div className="glass-card p-6 border border-white/10 rounded-2xl space-y-4">
-            <h2 className="text-lg font-semibold">Photo Gallery</h2>
-            <p className="text-sm text-white/70">Upload and curate photos for the website gallery.</p>
+          <div className="glass-card p-4 sm:p-6 border border-white/10 rounded-2xl space-y-3 sm:space-y-4">
+            <h2 className="text-base sm:text-lg font-semibold">Photo Gallery</h2>
+            <p className="text-xs sm:text-sm text-white/70">Upload and curate photos for the website gallery.</p>
             <NavButton to="/admin/gallery">Manage Gallery</NavButton>
           </div>
 
-          <div className="glass-card p-6 border border-white/10 rounded-2xl space-y-4">
-            <h2 className="text-lg font-semibold">Site Content</h2>
-            <p className="text-sm text-white/70">Update section copy and highlights.</p>
-            <NavButton to="/admin/sections">Edit Content</NavButton>
+          <div className="glass-card p-4 sm:p-6 border border-white/10 rounded-2xl space-y-3 sm:space-y-4">
+            <h2 className="text-base sm:text-lg font-semibold">Content Management</h2>
+            <p className="text-xs sm:text-sm text-white/70">Edit all website text, descriptions and page content.</p>
+            <NavButton to="/admin/content">Edit Content</NavButton>
           </div>
 
-          <div className="glass-card p-6 border border-white/10 rounded-2xl space-y-4">
-            <h2 className="text-lg font-semibold">Internship Applications</h2>
-            <p className="text-sm text-white/70">Review and manage internship submissions.</p>
+          <div className="glass-card p-4 sm:p-6 border border-white/10 rounded-2xl space-y-3 sm:space-y-4">
+            <h2 className="text-base sm:text-lg font-semibold">Internship Applications</h2>
+            <p className="text-xs sm:text-sm text-white/70">Review and manage internship submissions.</p>
             <NavButton to="/admin/internships">View Applications</NavButton>
           </div>
 
-          <div className="glass-card p-6 border border-white/10 rounded-2xl space-y-4">
-            <h2 className="text-lg font-semibold">Partnership Requests</h2>
-            <p className="text-sm text-white/70">Manage collaboration & partnership proposals.</p>
+          <div className="glass-card p-4 sm:p-6 border border-white/10 rounded-2xl space-y-3 sm:space-y-4">
+            <h2 className="text-base sm:text-lg font-semibold">Partnership Requests</h2>
+            <p className="text-xs sm:text-sm text-white/70">Manage collaboration & partnership proposals.</p>
             <NavButton to="/admin/partnerships">View Partnerships</NavButton>
           </div>
 
-          <div className="glass-card p-6 border border-white/10 rounded-2xl space-y-4">
-            <h2 className="text-lg font-semibold">Contributions</h2>
-            <p className="text-sm text-white/70">Track donations and contribution records.</p>
+          <div className="glass-card p-4 sm:p-6 border border-white/10 rounded-2xl space-y-3 sm:space-y-4">
+            <h2 className="text-base sm:text-lg font-semibold">Contributions</h2>
+            <p className="text-xs sm:text-sm text-white/70">Track donations and contribution records.</p>
             <NavButton to="/admin/contributions">View Contributions</NavButton>
           </div>
         </div>

@@ -91,7 +91,7 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4"
         >
           {/* Blurred backdrop */}
           <div
@@ -105,7 +105,7 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 20 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto glass-card rounded-2xl border border-white/15 p-6 space-y-5 z-10"
+            className="relative w-full sm:max-w-lg max-h-[90vh] overflow-y-auto glass-card rounded-t-3xl sm:rounded-2xl border border-white/15 p-5 sm:p-6 space-y-5 z-10"
           >
             {/* Close button */}
             <button

@@ -40,6 +40,8 @@ app.use("/api/sections", require("./routes/sectionRoutes"));
 // ADDED: Admin contributions API route
 app.use("/api/admin/contributions", require("./routes/adminContributions"));
 app.use("/api/contributions", require("./routes/contribution.routes"));
+// ADDED: Admin content management API route
+app.use("/api/admin/content", require("./routes/adminContent"));
 app.use("/uploads", express.static("uploads"));
 
 const PORT = process.env.PORT || 5000;

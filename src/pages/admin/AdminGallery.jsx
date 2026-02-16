@@ -111,11 +111,11 @@ const AdminGallery = ({ onLogout }) => {
                 onChange={(e) => handleFileSelect(e.target.files)} 
             />
 
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
                 <p className="text-sm text-white/50">{images.length} Images Found</p>
                 <button 
                     onClick={() => setUploadModal(true)} 
-                    className="bg-amber-400 px-5 py-2 rounded-xl text-black font-bold text-sm hover:bg-amber-300 transition"
+                    className="bg-amber-400 px-5 py-2.5 sm:py-2 rounded-xl text-black font-bold text-sm hover:bg-amber-300 transition w-full sm:w-auto"
                 >
                     Upload New
                 </button>
@@ -124,10 +124,10 @@ const AdminGallery = ({ onLogout }) => {
             {loading ? (
                 <div className="flex justify-center py-20"><Loader2 className="animate-spin text-amber-400" /></div>
             ) : (
-                <div className="gallery-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="gallery-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                     {images.map((image) => (
-                        <div key={image._id} className="gallery-card glass-card p-3 border border-white/10 rounded-2xl group h-full">
-                            <div className="relative h-[200px] w-full mb-3 overflow-hidden rounded-xl bg-neutral-900">
+                        <div key={image._id} className="gallery-card glass-card p-2 sm:p-3 border border-white/10 rounded-2xl group h-full">
+                            <div className="relative h-[140px] sm:h-[200px] w-full mb-2 sm:mb-3 overflow-hidden rounded-xl bg-neutral-900">
                                 <img src={image.url} className="gallery-card-image h-full w-full object-cover" alt="" />
                                 {image.placement && (
                                     <div className="absolute top-2 left-2 bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 shadow-lg">
@@ -149,8 +149,8 @@ const AdminGallery = ({ onLogout }) => {
             {/* --- UPLOAD MODAL --- */}
             <AnimatePresence>
                 {uploadModal && (
-                    <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="glass-card w-full max-w-md p-6 rounded-3xl border border-white/10">
+                    <div className="fixed inset-0 z-[120] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm">
+                        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="glass-card w-full sm:max-w-md p-6 rounded-t-3xl sm:rounded-3xl border border-white/10">
                             <div className="flex justify-between mb-6">
                                 <h3 className="font-bold text-xl text-white">Upload Photos</h3>
                                 <button onClick={() => setUploadModal(false)} className="text-white/40 hover:text-white"><X size={24} /></button>
@@ -158,7 +158,7 @@ const AdminGallery = ({ onLogout }) => {
                             
                             <div 
                                 onClick={() => fileInputRef.current.click()}
-                                className="border-2 border-dashed border-white/10 rounded-2xl p-12 flex flex-col items-center justify-center cursor-pointer hover:bg-white/5 transition-all group"
+                                className="border-2 border-dashed border-white/10 rounded-2xl p-8 sm:p-12 flex flex-col items-center justify-center cursor-pointer hover:bg-white/5 transition-all group"
                             >
                                 {uploading ? (
                                     <Loader2 className="animate-spin text-amber-400 mb-4" size={40} />
@@ -178,21 +178,21 @@ const AdminGallery = ({ onLogout }) => {
             {/* --- PLACEMENT MODAL --- */}
             <AnimatePresence>
                 {placementModal && (
-                    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-                        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="glass-card w-full max-w-md p-6 border border-white/10 rounded-3xl shadow-2xl">
+                    <div className="fixed inset-0 z-[110] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md">
+                        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="glass-card w-full sm:max-w-md p-5 sm:p-6 border border-white/10 rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[85vh] overflow-y-auto">
                             <div className="flex justify-between items-center mb-6">
                                 <h3 className="font-bold text-white">Assign Placement</h3>
                                 <button onClick={() => setPlacementModal(null)}><X size={20}/></button>
                             </div>
 
                             <div className="space-y-4">
-                                <select value={selectedPage} onChange={(e) => {setSelectedPage(e.target.value); setSelectedSection(""); setSelectedSlot(null);}} className="w-full bg-neutral-900 border border-white/10 p-3 rounded-xl text-white text-sm">
+                                <select value={selectedPage} onChange={(e) => {setSelectedPage(e.target.value); setSelectedSection(""); setSelectedSlot(null);}} className="w-full bg-neutral-900 border border-white/10 p-3 rounded-xl text-white text-sm appearance-none">
                                     <option value="">Select Page</option>
                                     {pages.map(p => <option key={p.value || p} value={p.value || p}>{p.label || p}</option>)}
                                 </select>
 
                                 {selectedPage && (
-                                    <select value={selectedSection} onChange={(e) => {setSelectedSection(e.target.value); setSelectedSlot(null);}} className="w-full bg-neutral-900 border border-white/10 p-3 rounded-xl text-white text-sm">
+                                    <select value={selectedSection} onChange={(e) => {setSelectedSection(e.target.value); setSelectedSlot(null);}} className="w-full bg-neutral-900 border border-white/10 p-3 rounded-xl text-white text-sm appearance-none">
                                         <option value="">Select Section</option>
                                         {sections.map(s => <option key={s.value || s} value={s.value || s}>{s.label || s}</option>)}
                                     </select>

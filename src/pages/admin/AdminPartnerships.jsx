@@ -1,7 +1,7 @@
 ﻿// ==========================================================
 // ADMIN API ENDPOINTS
-// GET   /api/admin/partnerships        â€” Fetch all partnership requests
-// PATCH /api/admin/partnerships/:id    â€” Toggle active / inactive status
+// GET   /api/admin/partnerships        - Fetch all partnership requests
+// PATCH /api/admin/partnerships/:id    - Toggle active / inactive status
 // ==========================================================
 
 import { useNavigate } from "react-router-dom";
@@ -118,9 +118,9 @@ const AdminPartnerships = () => {
 
   // ---------- Render helpers ----------
   const StatCard = ({ label, value, color = "text-amber-200" }) => (
-    <div className="glass-card p-5 border border-white/10 rounded-2xl">
-      <p className="text-xs uppercase tracking-wide text-white/60">{label}</p>
-      <p className={`mt-2 text-3xl font-semibold ${color}`}>{value}</p>
+    <div className="glass-card p-3 sm:p-5 border border-white/10 rounded-2xl">
+      <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">{label}</p>
+      <p className={`mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold ${color}`}>{value}</p>
     </div>
   );
 
@@ -155,7 +155,7 @@ const AdminPartnerships = () => {
         {loading && (
           <div className="glass-card border border-white/10 rounded-2xl p-16 flex flex-col items-center justify-center gap-4">
             <Loader2 size={36} className="animate-spin text-emerald-300" />
-            <p className="text-white/60 text-sm">Loading partnership requestsâ€¦</p>
+            <p className="text-white/60 text-sm">Loading partnership requests…</p>
           </div>
         )}
 
@@ -171,7 +171,7 @@ const AdminPartnerships = () => {
         {!loading && !error && (
           <>
             {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
               <StatCard label="Total Requests" value={partners.length} />
               <StatCard label="Active" value={activeCount} color="text-emerald-200" />
               <StatCard label="Inactive" value={inactiveCount} color="text-white/60" />
@@ -212,7 +212,7 @@ const AdminPartnerships = () => {
 
             {/* Cards */}
             {filtered.length > 0 ? (
-              <div className="space-y-4 max-h-[650px] overflow-y-auto scrollbar-thin pr-1">
+              <div className="space-y-3 sm:space-y-4 max-h-[55vh] sm:max-h-[650px] overflow-y-auto scrollbar-thin pr-1">
                 {filtered.map((partner) => (
                   <div
                     key={partner._id}
@@ -276,11 +276,11 @@ const AdminPartnerships = () => {
                       )}
                       <div>
                         <span className="text-white/40 text-xs">Duration:</span>{" "}
-                        {partner.duration || "â€”"}
+                        {partner.duration || "—"}
                       </div>
                       <div>
                         <span className="text-white/40 text-xs">Expected Scale:</span>{" "}
-                        {partner.expectedScale || "â€”"}
+                        {partner.expectedScale || "—"}
                       </div>
                     </div>
                   </div>
