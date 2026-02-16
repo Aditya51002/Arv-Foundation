@@ -23,6 +23,7 @@ import Founder from "./pages/Founder.jsx";
 import Partners from "./pages/Partners.jsx";
 import PartnerDetail from "./pages/PartnerDetail.jsx";
 import Services from "./pages/Services.jsx";
+import Newsletter from "./pages/Newsletter.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 
@@ -73,6 +74,7 @@ const AppShell = () => {
           <Route path="/partners" element={<Partners />} />
           <Route path="/partners/:slug" element={<PartnerDetail />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/newsletter" element={<Newsletter />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 

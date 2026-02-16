@@ -3,7 +3,7 @@ import SectionHeading from "../components/SectionHeading.jsx";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import { motion } from "framer-motion";
 import { GraduationCap, Newspaper, Mail, ArrowRight, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { API_URL } from "../config";
 
 const servicesContent = {
@@ -186,6 +186,7 @@ const Services = () => {
 
   // CHANGED: Added isSubmitting to manage the async upload process
   const [isSubmitting, setIsSubmitting] = useState(false); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isInternshipFormOpen) return undefined;
@@ -335,6 +336,8 @@ const Services = () => {
                 onClick={() => {
                   if (card.id === "internship") {
                     setIsInternshipFormOpen(true);
+                  } else if (card.id === "newsletter") {
+                    navigate("/newsletter");
                   }
                 }}
                 className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black"

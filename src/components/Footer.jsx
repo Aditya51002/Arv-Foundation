@@ -17,6 +17,7 @@ const Footer = () => {
   const moreLinks = [
     { label: isHindi ? "संस्थापक" : "Founder", path: "/founder" },
     { label: isHindi ? "साथी" : "Partners", path: "/partners" },
+    { label: isHindi ? "समाचार और पत्र" : "News & Letter", path: "/newsletter" },
     { label: isHindi ? "सेवाएँ" : "Services", path: "/services" },
     { label: isHindi ? "संपर्क" : "Contact", path: "/contact" },
   ];
