@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import SectionHeading from "../components/SectionHeading.jsx";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import { motion } from "framer-motion";
-import { GraduationCap, Newspaper, Mail, ArrowRight, X } from "lucide-react";
+import { GraduationCap, Newspaper, Mail, ArrowRight, X, Award } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { API_URL } from "../config";
+import { isUserAuthed, getUserToken } from "../utils/userAuth.js";
 
 const servicesContent = {
   en: {
@@ -24,6 +25,13 @@ const servicesContent = {
         title: "News & Letter",
         text: "Stay updated with ARV Foundation's latest activities, impact stories, success highlights, and upcoming events. Our monthly newsletter delivers meaningful stories of change directly to your inbox.",
         cta: "Subscribe",
+      },
+      {
+        id: "certificate",
+        icon: Award,
+        title: "Request Certificate",
+        text: "Registered participants can request a completion certificate for their contributions to our drives and internships. Certificates are digitally verified by ARV Foundation.",
+        cta: "Request Now",
       },
     ],
     contactHeading: "Contact Us",
@@ -98,6 +106,13 @@ const servicesContent = {
         title: "समाचार और पत्र",
         text: "ARV Foundation की नवीनतम गतिविधियों, प्रभाव कहानियों, सफलता की झलकियों और आगामी कार्यक्रमों से अपडेट रहें। हमारा मासिक समाचार पत्र सीधे आपके इनबॉक्स में बदलाव की सार्थक कहानियाँ पहुँचाता है।",
         cta: "सदस्यता लें",
+      },
+      {
+        id: "certificate",
+        icon: Award,
+        title: "प्रमाणपत्र अनुरोध",
+        text: "पंजीकृत भागीदार हमारे अभियानों और इंटर्नशिप में उनके योगदान के लिए पूर्णता प्रमाणपत्र का अनुरोध कर सकते हैं। प्रमाणपत्र ARV Foundation द्वारा डिजिटल रूप से सत्यापित किए जाते हैं।",
+        cta: "प्रमाणपत्र का अनुरोध करें",
       },
     ],
     contactHeading: "हमसे संपर्क करें",
@@ -186,16 +201,20 @@ const Services = () => {
 
   // CHANGED: Added isSubmitting to manage the async upload process
   const [isSubmitting, setIsSubmitting] = useState(false); 
+  const [isCertificateFormOpen, setIsCertificateFormOpen] = useState(false);
+  const [certificateFormData, setCertificateFormData] = useState({
+    userName: "", email: "", certificateType: "Volunteer", description: ""
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isInternshipFormOpen) return undefined;
+    if (!isInternshipFormOpen && !isCertificateFormOpen) return undefined;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = previousOverflow;
     };
-  }, [isInternshipFormOpen]);
+  }, [isInternshipFormOpen, isCertificateFormOpen]);
 
   const internshipInterests = formCopy.interestsList;
 
@@ -301,6 +320,40 @@ const Services = () => {
     }
   };
 
+  const handleCertificateSubmit = async (event) => {
+    event.preventDefault();
+    if (!certificateFormData.userName || !certificateFormData.email) {
+      alert("Name and email are required");
+      return;
+    }
+    
+    setIsSubmitting(true);
+    try {
+      const token = getUserToken();
+      const response = await fetch(`${API_URL}/api/certificates/request`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(certificateFormData)
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        alert(data.message || "Failed to submit request");
+        return;
+      }
+      alert("Certificate requested successfully! We will notify you once approved.");
+      setIsCertificateFormOpen(false);
+      setCertificateFormData({ userName: "", email: "", certificateType: "Volunteer", description: "" });
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="section-shell space-y-10 pb-12">
       <SectionHeading eyebrow={content.eyebrow} title={content.title} />
@@ -317,17 +370,17 @@ const Services = () => {
               whileHover={{ y: -4, scale: 1.01 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: idx * 0.08 }}
-              className="glass-card p-6 border border-white/10 rounded-2xl space-y-4 hover:border-amber-300/50 transition-colors"
+              className="glass-card p-6 border border-slate-300 rounded-2xl space-y-4 hover:border-amber-300/50 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <div className="h-11 w-11 rounded-xl bg-white/10 border border-white/10 grid place-items-center text-amber-200">
+                <div className="h-11 w-11 rounded-xl bg-white/90 border border-slate-300 grid place-items-center text-amber-600">
                   <Icon size={20} />
                 </div>
                 <h3 className={`text-xl font-semibold ${isHindi ? "font-devanagari" : ""}`}>
                   {card.title}
                 </h3>
               </div>
-              <p className={`text-sm text-white/80 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
+              <p className={`text-sm text-slate-700 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
                 {card.text}
               </p>
               <motion.button
@@ -338,6 +391,13 @@ const Services = () => {
                     setIsInternshipFormOpen(true);
                   } else if (card.id === "newsletter") {
                     navigate("/newsletter");
+                  } else if (card.id === "certificate") {
+                    if (!isUserAuthed()) {
+                      alert(isHindi ? "प्रमाणपत्र अनुरोध करने के लिए लॉग इन करें" : "Please log in to request a certificate.");
+                      navigate("/login");
+                    } else {
+                      setIsCertificateFormOpen(true);
+                    }
                   }
                 }}
                 className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 px-4 py-2 text-sm font-semibold text-black"
@@ -350,19 +410,19 @@ const Services = () => {
       </div>
 
       {isInternshipFormOpen && (
-        <div className="fixed inset-0 z-40 flex items-start justify-center px-4 pb-8 pt-[calc(var(--navbar-height)+1rem)] bg-black/70 backdrop-blur-md">
-          <div className="relative flex w-full max-w-2xl max-h-[calc(100vh-var(--navbar-height)-2rem)] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0b1411]/85 backdrop-blur-2xl p-6 space-y-6 shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
+        <div className="fixed inset-0 z-40 flex items-start justify-center px-4 pb-8 pt-[calc(var(--navbar-height)+1rem)] bg-slate-900/40 backdrop-blur-md">
+          <div className="relative flex w-full max-w-2xl max-h-[calc(100vh-var(--navbar-height)-2rem)] flex-col overflow-hidden rounded-2xl border border-slate-300 bg-white/90 backdrop-blur-2xl p-6 space-y-6 shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h2 className={`text-lg font-semibold ${isHindi ? "font-devanagari" : ""}`}>{formCopy.title}</h2>
-                <p className={`mt-1 text-sm text-white/70 ${isHindi ? "font-devanagari" : ""}`}>
+                <p className={`mt-1 text-sm text-slate-600 ${isHindi ? "font-devanagari" : ""}`}>
                   {formCopy.subtitle}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setIsInternshipFormOpen(false)}
-                className="rounded-full p-1.5 bg-white/5 border border-white/10 text-white/70 hover:text-white"
+                className="rounded-full p-1.5 bg-white/80 border border-slate-300 text-slate-600 hover:text-slate-800"
               >
                 <X size={16} />
               </button>
@@ -371,7 +431,7 @@ const Services = () => {
             <form onSubmit={handleInternshipSubmit} className="flex-1 min-h-0 space-y-5 overflow-y-auto pr-1 overscroll-contain">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <label className="flex flex-col gap-2">
-                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                     {formCopy.labels.fullName}
                   </span>
                   <input
@@ -379,16 +439,16 @@ const Services = () => {
                     name="fullName"
                     value={internshipFormData.fullName}
                     onChange={handleInternshipInputChange}
-                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                    className={`glass border rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none ${
                       submitAttempted && !internshipFormData.fullName.trim()
                         ? "border-red-500/70"
-                        : "border-white/10"
+                        : "border-slate-300"
                     }`}
                     placeholder={formCopy.placeholders.fullName}
                   />
                 </label>
                 <label className="flex flex-col gap-2">
-                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                     {formCopy.labels.email}
                   </span>
                   <input
@@ -396,16 +456,16 @@ const Services = () => {
                     name="email"
                     value={internshipFormData.email}
                     onChange={handleInternshipInputChange}
-                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                    className={`glass border rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none ${
                       submitAttempted && !internshipFormData.email.trim()
                         ? "border-red-500/70"
-                        : "border-white/10"
+                        : "border-slate-300"
                     }`}
                     placeholder={formCopy.placeholders.email}
                   />
                 </label>
                 <label className="flex flex-col gap-2">
-                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                     {formCopy.labels.phone}
                   </span>
                   <input
@@ -413,16 +473,16 @@ const Services = () => {
                     name="phone"
                     value={internshipFormData.phone}
                     onChange={handleInternshipInputChange}
-                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                    className={`glass border rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none ${
                       submitAttempted && !internshipFormData.phone.trim()
                         ? "border-red-500/70"
-                        : "border-white/10"
+                        : "border-slate-300"
                     }`}
                     placeholder={formCopy.placeholders.phone}
                   />
                 </label>
                 <label className="flex flex-col gap-2">
-                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                     {formCopy.labels.age}
                   </span>
                   <input
@@ -430,12 +490,12 @@ const Services = () => {
                     name="age"
                     value={internshipFormData.age}
                     onChange={handleInternshipInputChange}
-                    className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
+                    className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none"
                     min="14"
                   />
                 </label>
                 <label className="md:col-span-2 flex flex-col gap-2">
-                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                     {formCopy.labels.cityState}
                   </span>
                   <input
@@ -443,10 +503,10 @@ const Services = () => {
                     name="cityState"
                     value={internshipFormData.cityState}
                     onChange={handleInternshipInputChange}
-                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                    className={`glass border rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none ${
                       submitAttempted && !internshipFormData.cityState.trim()
                         ? "border-red-500/70"
-                        : "border-white/10"
+                        : "border-slate-300"
                     }`}
                     placeholder={formCopy.placeholders.cityState}
                   />
@@ -455,7 +515,7 @@ const Services = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <label className="flex flex-col gap-2">
-                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                     {formCopy.labels.qualification}
                   </span>
                   <input
@@ -463,16 +523,16 @@ const Services = () => {
                     name="qualification"
                     value={internshipFormData.qualification}
                     onChange={handleInternshipInputChange}
-                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                    className={`glass border rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none ${
                       submitAttempted && !internshipFormData.qualification.trim()
                         ? "border-red-500/70"
-                        : "border-white/10"
+                        : "border-slate-300"
                     }`}
                     placeholder={formCopy.placeholders.qualification}
                   />
                 </label>
                 <label className="flex flex-col gap-2">
-                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                     {formCopy.labels.college}
                   </span>
                   <input
@@ -480,16 +540,16 @@ const Services = () => {
                     name="college"
                     value={internshipFormData.college}
                     onChange={handleInternshipInputChange}
-                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                    className={`glass border rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none ${
                       submitAttempted && !internshipFormData.college.trim()
                         ? "border-red-500/70"
-                        : "border-white/10"
+                        : "border-slate-300"
                     }`}
                     placeholder={formCopy.placeholders.college}
                   />
                 </label>
                 <label className="md:col-span-2 flex flex-col gap-2">
-                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                     {formCopy.labels.fieldOfStudy}
                   </span>
                   <input
@@ -497,10 +557,10 @@ const Services = () => {
                     name="fieldOfStudy"
                     value={internshipFormData.fieldOfStudy}
                     onChange={handleInternshipInputChange}
-                    className={`glass border rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                    className={`glass border rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none ${
                       submitAttempted && !internshipFormData.fieldOfStudy.trim()
                         ? "border-red-500/70"
-                        : "border-white/10"
+                        : "border-slate-300"
                     }`}
                     placeholder={formCopy.placeholders.fieldOfStudy}
                   />
@@ -511,8 +571,8 @@ const Services = () => {
                 <p
                   className={`text-xs uppercase tracking-wide ${
                     submitAttempted && selectedInterests.length === 0
-                      ? "text-red-400"
-                      : "text-white/60"
+                      ? "text-red-500"
+                      : "text-slate-500"
                   }`}
                 >
                   {formCopy.labels.interests}
@@ -528,10 +588,10 @@ const Services = () => {
                         className={`glass-card border text-left transition-all duration-200 rounded-2xl px-4 py-3 ${
                           isSelected
                             ? "border-amber-300/70 shadow-[0_0_20px_rgba(245,165,36,0.32)]"
-                            : "border-white/10"
+                            : "border-slate-300"
                         }`}
                       >
-                        <span className={`text-sm font-semibold text-white/90 ${isHindi ? "font-devanagari" : ""}`}>
+                        <span className={`text-sm font-semibold text-slate-800 ${isHindi ? "font-devanagari" : ""}`}>
                           {interest}
                         </span>
                       </button>
@@ -542,78 +602,78 @@ const Services = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <label className="flex flex-col gap-2">
-                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                     {formCopy.labels.duration}
                   </span>
                   <select
                     name="duration"
                     value={internshipFormData.duration}
                     onChange={handleInternshipInputChange}
-                    className={`glass border rounded-xl px-4 py-3 bg-[#0b1411]/80 text-white focus:border-amber-200 focus:outline-none ${
+                    className={`glass border rounded-xl px-4 py-3 bg-white/90 text-slate-800 focus:border-amber-200 focus:outline-none ${
                       submitAttempted && !internshipFormData.duration
                         ? "border-red-500/70"
-                        : "border-white/10"
+                        : "border-slate-300"
                     }`}
                   >
-                    <option value="" className="bg-[#0b1411] text-white">{formCopy.options.duration.placeholder}</option>
-                    <option value="1-month" className="bg-[#0b1411] text-white">{formCopy.options.duration.oneMonth}</option>
-                    <option value="3-months" className="bg-[#0b1411] text-white">{formCopy.options.duration.threeMonths}</option>
-                    <option value="6-months" className="bg-[#0b1411] text-white">{formCopy.options.duration.sixMonths}</option>
+                    <option value="" className="bg-white text-slate-800">{formCopy.options.duration.placeholder}</option>
+                    <option value="1-month" className="bg-white text-slate-800">{formCopy.options.duration.oneMonth}</option>
+                    <option value="3-months" className="bg-white text-slate-800">{formCopy.options.duration.threeMonths}</option>
+                    <option value="6-months" className="bg-white text-slate-800">{formCopy.options.duration.sixMonths}</option>
                   </select>
                 </label>
                 <label className="flex flex-col gap-2">
-                  <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                  <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                     {formCopy.labels.availability}
                   </span>
                   <select
                     name="availability"
                     value={internshipFormData.availability}
                     onChange={handleInternshipInputChange}
-                    className={`glass border rounded-xl px-4 py-3 bg-[#0b1411]/80 text-white focus:border-amber-200 focus:outline-none ${
+                    className={`glass border rounded-xl px-4 py-3 bg-white/90 text-slate-800 focus:border-amber-200 focus:outline-none ${
                       submitAttempted && !internshipFormData.availability
                         ? "border-red-500/70"
-                        : "border-white/10"
+                        : "border-slate-300"
                     }`}
                   >
-                    <option value="" className="bg-[#0b1411] text-white">{formCopy.options.availability.placeholder}</option>
-                    <option value="part-time" className="bg-[#0b1411] text-white">{formCopy.options.availability.partTime}</option>
-                    <option value="full-time" className="bg-[#0b1411] text-white">{formCopy.options.availability.fullTime}</option>
+                    <option value="" className="bg-white text-slate-800">{formCopy.options.availability.placeholder}</option>
+                    <option value="part-time" className="bg-white text-slate-800">{formCopy.options.availability.partTime}</option>
+                    <option value="full-time" className="bg-white text-slate-800">{formCopy.options.availability.fullTime}</option>
                   </select>
                 </label>
               </div>
 
               <label className="flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                   {formCopy.labels.motivation}
                 </span>
                 <textarea
                   name="motivation"
                   value={internshipFormData.motivation}
                   onChange={handleInternshipInputChange}
-                  className={`glass border rounded-2xl px-4 py-3 min-h-[120px] bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none ${
+                  className={`glass border rounded-2xl px-4 py-3 min-h-[120px] bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none ${
                     submitAttempted && !internshipFormData.motivation.trim()
                       ? "border-red-500/70"
-                      : "border-white/10"
+                      : "border-slate-300"
                   }`}
                   placeholder={formCopy.placeholders.motivation}
                 />
               </label>
 
               <label className="flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                   {formCopy.labels.experience}
                 </span>
                 <textarea
                   name="experience"
                   value={internshipFormData.experience}
                   onChange={handleInternshipInputChange}
-                  className="glass border border-white/10 rounded-2xl px-4 py-3 min-h-[100px] bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
+                  className="glass border border-slate-300 rounded-2xl px-4 py-3 min-h-[100px] bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none"
                   placeholder={formCopy.placeholders.experience}
                 />
               </label>
 
               <label className="flex flex-col gap-2">
-                <span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                <span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                   {formCopy.labels.resume}
                 </span>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -622,10 +682,10 @@ const Services = () => {
                     name="resume" // CHANGED: Linked correctly to multer backend field
                     accept=".pdf,.doc,.docx"
                     onChange={handleResumeChange}
-                    className="block w-full text-xs text-white/70 file:mr-3 file:rounded-full file:border-none file:bg-white/90 file:px-4 file:py-2 file:text-xs file:font-semibold file:text-black file:cursor-pointer cursor-pointer"
+                    className="block w-full text-xs text-slate-600 file:mr-3 file:rounded-full file:border-none file:bg-white/90 file:px-4 file:py-2 file:text-xs file:font-semibold file:text-black file:cursor-pointer cursor-pointer"
                   />
                   {internshipFormData.resumeName && (
-                    <span className="text-xs text-white/70 truncate">
+                    <span className="text-xs text-slate-600 truncate">
                       {internshipFormData.resumeName}
                     </span>
                   )}
@@ -633,7 +693,7 @@ const Services = () => {
               </label>
 
               {submitAttempted && (
-                <p className={`text-xs text-red-400 ${isHindi ? "font-devanagari" : ""}`}>
+                <p className={`text-xs text-red-500 ${isHindi ? "font-devanagari" : ""}`}>
                   {formCopy.error}
                 </p>
               )}
@@ -642,7 +702,7 @@ const Services = () => {
                 <button
                   type="button"
                   onClick={() => setIsInternshipFormOpen(false)}
-                  className={`px-5 py-2 rounded-full border border-white/20 text-sm text-white/80 hover:bg-white/5 ${isHindi ? "font-devanagari" : ""}`}
+                  className={`px-5 py-2 rounded-full border border-slate-400 text-sm text-slate-700 hover:bg-white/80 ${isHindi ? "font-devanagari" : ""}`}
                 >
                   {formCopy.cancel}
                 </button>
@@ -653,6 +713,55 @@ const Services = () => {
                   className="accent-gradient rounded-full px-6 py-2 text-sm font-semibold text-[#0b1411] disabled:opacity-50"
                 >
                   {isSubmitting ? (isHindi ? "जमा हो रहा है..." : "Submitting...") : formCopy.submit}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {isCertificateFormOpen && (
+        <div className="fixed inset-0 z-40 flex items-start justify-center px-4 pb-8 pt-[calc(var(--navbar-height)+1rem)] bg-slate-900/40 backdrop-blur-md">
+          <div className="relative flex w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-slate-300 bg-white/90 backdrop-blur-2xl p-6 space-y-6 shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 className={`text-lg font-semibold ${isHindi ? "font-devanagari" : ""}`}>
+                  {isHindi ? "प्रमाणपत्र का अनुरोध करें" : "Request a Certificate"}
+                </h2>
+                <p className={`mt-1 text-sm text-slate-600 ${isHindi ? "font-devanagari" : ""}`}>
+                  {isHindi ? "सत्यापन और प्रमाणपत्र निर्माण के लिए अपना विवरण दें।" : "Provide your details for verification."}
+                </p>
+              </div>
+              <button onClick={() => setIsCertificateFormOpen(false)} className="rounded-full p-1.5 bg-white/80 border border-slate-300 text-slate-600 hover:text-slate-800">
+                <X size={16} />
+              </button>
+            </div>
+            <form onSubmit={handleCertificateSubmit} className="space-y-4">
+              <label className="flex flex-col gap-2">
+                <span className="text-xs uppercase tracking-wide text-slate-500">{isHindi ? "पूरा नाम" : "Full Name"}</span>
+                <input type="text" value={certificateFormData.userName} onChange={(e) => setCertificateFormData({...certificateFormData, userName: e.target.value})} required className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800 focus:border-amber-200" />
+              </label>
+              <label className="flex flex-col gap-2">
+                <span className="text-xs uppercase tracking-wide text-slate-500">{isHindi ? "ईमेल" : "Email Address"}</span>
+                <input type="email" value={certificateFormData.email} onChange={(e) => setCertificateFormData({...certificateFormData, email: e.target.value})} required className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800 focus:border-amber-200" />
+              </label>
+              <label className="flex flex-col gap-2">
+                <span className="text-xs uppercase tracking-wide text-slate-500">{isHindi ? "प्रमाणपत्र का प्रकार" : "Certificate Type"}</span>
+                <select value={certificateFormData.certificateType} onChange={(e) => setCertificateFormData({...certificateFormData, certificateType: e.target.value})} className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/90 text-slate-800 focus:border-amber-200">
+                  <option value="Volunteer">Volunteer</option>
+                  <option value="Internship">Internship</option>
+                  <option value="Donation">Donation</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+              <label className="flex flex-col gap-2">
+                <span className="text-xs uppercase tracking-wide text-slate-500">{isHindi ? "विवरण (वैकल्पिक)" : "Description / Details (Optional)"}</span>
+                <textarea value={certificateFormData.description} onChange={(e) => setCertificateFormData({...certificateFormData, description: e.target.value})} className="glass border border-slate-300 rounded-xl px-4 py-3 min-h-[80px] bg-white/80 text-slate-800 focus:border-amber-200" placeholder="Which drive/month did you participate in?" />
+              </label>
+              <div className="flex justify-end gap-3 pt-2">
+                <button type="button" onClick={() => setIsCertificateFormOpen(false)} className="px-5 py-2 rounded-full border border-slate-400 text-sm text-slate-700 hover:bg-white/80">Cancel</button>
+                <button type="submit" disabled={isSubmitting} className="accent-gradient rounded-full px-6 py-2 text-sm font-semibold text-[#0b1411]">
+                  {isSubmitting ? "Submitting..." : "Submit Request"}
                 </button>
               </div>
             </form>

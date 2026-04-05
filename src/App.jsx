@@ -35,6 +35,7 @@ import AdminContent from "./pages/admin/AdminContent.jsx";
 import AdminInternships from "./pages/admin/AdminInternships.jsx";
 import AdminPartnerships from "./pages/admin/AdminPartnerships.jsx";
 import AdminContributions from "./pages/admin/AdminContributions.jsx";
+import AdminCertificates from "./pages/admin/AdminCertificates.jsx";
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -132,6 +133,14 @@ const AppShell = () => {
             element={
               <AdminProtectedRoute>
                 <AdminContributions />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/certificates"
+            element={
+              <AdminProtectedRoute>
+                <AdminCertificates />
               </AdminProtectedRoute>
             }
           />

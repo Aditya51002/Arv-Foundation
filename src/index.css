@@ -1,21 +1,21 @@
-﻿@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap");
 @import "tailwindcss";
 
 :root {
   font-family: "Inter", "Poppins", "Noto Sans Devanagari", system-ui, -apple-system, sans-serif;
-  color: #e7f2ec;
-  background-color: #0b1411;
+  color: #1f2937;
+  background-color: #f8fafc;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --bg: #0b1411;
-  --panel: rgba(255, 255, 255, 0.05);
-  --panel-strong: rgba(255, 255, 255, 0.12);
-  --border: rgba(255, 255, 255, 0.14);
-  --accent: #f5a524;
-  --accent-2: #79cbb8;
-  --text-dim: #b8c7be;
+  --bg: #f8fafc;
+  --panel: rgba(255, 255, 255, 0.85);
+  --panel-strong: rgba(255, 255, 255, 0.95);
+  --border: rgba(0, 0, 0, 0.08);
+  --accent: #d97706;
+  --accent-2: #059669;
+  --text-dim: #64748b;
   --navbar-height: 80px;
   /* increased top gap as a fallback to avoid headings hiding under fixed navbar */
   --page-top-gap: 8px;
@@ -28,10 +28,10 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at 20% 20%, rgba(121, 203, 184, 0.25), transparent 30%),
-    radial-gradient(circle at 80% 0%, rgba(245, 165, 36, 0.18), transparent 32%),
-    linear-gradient(135deg, #0b1411 0%, #0f1d18 40%, #0b1411 100%);
-  color: #e7f2ec;
+  background: radial-gradient(circle at 20% 20%, rgba(121, 203, 184, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 0%, rgba(245, 165, 36, 0.15), transparent 40%),
+    linear-gradient(135deg, #f8fafc 0%, #f1f5f9 40%, #f8fafc 100%);
+  color: #1f2937;
   overflow-x: hidden;
 }
 
@@ -57,8 +57,8 @@ video {
 }
 
 .shine-border {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
 }
 
 .font-devanagari {
@@ -137,7 +137,7 @@ video {
 .cta-raise:focus { outline: none; }
 .cta-raise:hover, .cta-raise:focus {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 18px 40px rgba(11,20,17,0.45);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
 }
 
 /* Small pop for social icons */
@@ -161,9 +161,9 @@ video {
   gap: 0.5rem;
   padding: 0.3rem 0.8rem;
   border-radius: 9999px;
-  background: rgba(121, 203, 184, 0.12);
-  color: #c7f7e9;
-  border: 1px solid rgba(121, 203, 184, 0.3);
+  background: rgba(121, 203, 184, 0.2);
+  color: #047857;
+  border: 1px solid rgba(121, 203, 184, 0.5);
   font-size: 0.85rem;
   letter-spacing: 0.01em;
 }
@@ -228,12 +228,12 @@ video {
 .media-thumb img { width: 100%; height: 120px; object-fit: cover; display: block; transition: transform 180ms ease; }
 .media-thumb:hover img { transform: scale(1.04); }
 
-.media-lightbox { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; background: rgba(2,6,5,0.7); }
+.media-lightbox { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; background: rgba(255,255,255,0.7); backdrop-filter: blur(8px); }
 .media-lightbox-inner { position: relative; max-width: 90%; max-height: 90%; }
-.media-lightbox-inner img { max-width: 100%; max-height: 80vh; display: block; border-radius: 0.5rem; }
-.media-close { position: absolute; right: -8px; top: -8px; background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
-.media-caption { margin-top: 8px; text-align: center; color: rgba(255,255,255,0.8); font-size: 0.9rem; }
-.media-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+.media-lightbox-inner img { max-width: 100%; max-height: 80vh; display: block; border-radius: 0.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+.media-close { position: absolute; right: -8px; top: -8px; background: rgba(0,0,0,0.8); color: #fff; border: none; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
+.media-caption { margin-top: 8px; text-align: center; color: rgba(0,0,0,0.8); font-weight: 500; font-size: 0.9rem; }
+.media-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
 .media-nav.prev { left: -32px; }
 .media-nav.next { right: -32px; }
 
@@ -330,8 +330,8 @@ video {
 /* Smooth scrollbar across all admin scrollable areas */
 .scrollbar-thin::-webkit-scrollbar { width: 5px; }
 .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
-.scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 9999px; }
-.scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 9999px; }
+.scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
 
 /* Admin gallery layout */
 .gallery-grid {

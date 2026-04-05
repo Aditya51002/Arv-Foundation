@@ -1,4 +1,30 @@
 const Contact = require("../models/Contact");
+const nodemailer = require("nodemailer");
+
+const sendWelcomeEmail = async (email, name) => {
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) return;
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+    await transporter.sendMail({
+      from: `"ARV Foundation" <${process.env.SMTP_USER}>`,
+      to: email,
+      subject: "Thank You for Reaching Out!",
+      html: `<div style="font-family: sans-serif; color: #333;">
+        <h3>Hi ${name},</h3><p>We have received your message. Our team will read it and get back to you shortly.</p>
+        <p>Thank you for supporting our mission.</p>
+        <br/><b>ARV Foundation Team</b>
+      </div>`
+    });
+  } catch (err) {
+    console.error("Email dispatch failed:", err);
+  }
+};
 
 exports.createContact = async (req, res) => {
   try {
@@ -18,6 +44,9 @@ exports.createContact = async (req, res) => {
       phone,
       message
     });
+
+    // Fire & Forget email dispatch
+    sendWelcomeEmail(email, name);
 
     res.status(201).json({
       success: true,

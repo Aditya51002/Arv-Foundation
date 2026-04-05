@@ -37,14 +37,14 @@ const Branches = () => {
                 className="glass-card p-4 rounded-2xl border border-white/8 hover:border-amber-300/50 transition-colors h-full"
               >
                 <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-lg bg-white/8 grid place-items-center text-amber-200 border border-white/6">
+                  <div className="h-10 w-10 rounded-lg bg-white/8 grid place-items-center text-amber-600 border border-white/6">
                     <Icon size={18} />
                   </div>
                   <div className="flex-1">
-                    <h4 className={`text-md font-semibold text-white ${lang === "hi" ? "font-devanagari" : ""}`}>
+                    <h4 className={`text-md font-semibold text-slate-800 ${lang === "hi" ? "font-devanagari" : ""}`}>
                       {b.title}
                     </h4>
-                    <p className={`mt-2 text-sm text-white/70 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""}`}>
+                    <p className={`mt-2 text-sm text-slate-600 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""}`}>
                       {b.description}
                     </p>
                     {/* Removed 'Learn more' link per design */}

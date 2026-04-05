@@ -91,16 +91,16 @@ const WorkGrid = () => {
               initial={{ opacity: 0, y: 20 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.4, delay: idx * 0.03 }}
-              className={`glass-card p-5 rounded-2xl border border-white/10 h-full hover:border-amber-300/50 transition-colors ${span}`}
+              className={`glass-card p-5 rounded-2xl border border-slate-300 h-full hover:border-amber-300/50 transition-colors ${span}`}
             >
               <div className="flex items-center gap-3">
-                <div className="h-11 w-11 rounded-xl bg-white/10 border border-white/10 grid place-items-center text-amber-200">
+                <div className="h-11 w-11 rounded-xl bg-white/90 border border-slate-300 grid place-items-center text-amber-600">
                   <Icon size={18} />
                 </div>
                 <h3 className={`text-lg font-semibold ${lang === "hi" ? "font-devanagari" : ""}`}>{item.title}</h3>
               </div>
               {/* short summary (2-3 lines) + read more link */}
-              <p className={`mt-3 text-sm text-white/80 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""} line-clamp-3`}>{item.description}</p>
+              <p className={`mt-3 text-sm text-slate-700 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""} line-clamp-3`}>{item.description}</p>
               <div className="mt-3">
                 <Link to={`/work/${slug}`} className="text-sm text-amber-300 hover:underline inline-flex items-center gap-2">
                   {lang === "hi" ? "और पढ़ें" : "Read more"} <ArrowRight size={14} />

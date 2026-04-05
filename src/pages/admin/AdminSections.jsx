@@ -52,17 +52,17 @@ const AdminSections = ({ onLogout }) => {
         subtitle="Control visibility and order of homepage sections."
         onLogout={onLogout}
       >
-        <div className="glass-card border border-white/10 rounded-2xl overflow-hidden">
+        <div className="glass-card border border-slate-300 rounded-2xl overflow-hidden">
           <div className="grid grid-cols-1 divide-y divide-white/10">
 
             {loading && (
-              <div className="p-6 text-sm text-white/60">
+              <div className="p-6 text-sm text-slate-500">
                 Loading sections...
               </div>
             )}
 
             {!loading && sections.length === 0 && (
-              <div className="p-6 text-sm text-white/60">
+              <div className="p-6 text-sm text-slate-500">
                 No sections found.
               </div>
             )}
@@ -74,7 +74,7 @@ const AdminSections = ({ onLogout }) => {
               >
                 <div>
                   <p className="text-sm font-semibold">{section.title}</p>
-                  <p className="text-xs text-white/60">
+                  <p className="text-xs text-slate-500">
                     Status:{" "}
                     {section.status === "active" ? "Active" : "Hidden"}
                   </p>
@@ -86,7 +86,7 @@ const AdminSections = ({ onLogout }) => {
                   <button
                     type="button"
                     onClick={() => handleToggle(section._id)}
-                    className="rounded-full border border-emerald-300/40 bg-emerald-400/10 px-3 py-1.5 text-xs font-semibold text-emerald-200 hover:bg-emerald-400/20 transition"
+                    className="rounded-full border border-emerald-300/40 bg-emerald-400/10 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-400/20 transition"
                   >
                     {section.status === "active" ? "Hide" : "Activate"}
                   </button>
@@ -95,7 +95,7 @@ const AdminSections = ({ onLogout }) => {
                   <button
                     type="button"
                     onClick={() => handleMove(section._id, "up")}
-                    className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/70 hover:text-white hover:bg-white/10 transition"
+                    className="rounded-full border border-slate-300 bg-white/80 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-800 hover:bg-white/90 transition"
                   >
                     Up
                   </button>
@@ -104,7 +104,7 @@ const AdminSections = ({ onLogout }) => {
                   <button
                     type="button"
                     onClick={() => handleMove(section._id, "down")}
-                    className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/70 hover:text-white hover:bg-white/10 transition"
+                    className="rounded-full border border-slate-300 bg-white/80 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-800 hover:bg-white/90 transition"
                   >
                     Down
                   </button>

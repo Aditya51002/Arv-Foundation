@@ -112,7 +112,7 @@ const AdminGallery = ({ onLogout }) => {
             />
 
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
-                <p className="text-sm text-white/50">{images.length} Images Found</p>
+                <p className="text-sm text-slate-500">{images.length} Images Found</p>
                 <button 
                     onClick={() => setUploadModal(true)} 
                     className="bg-amber-400 px-5 py-2.5 sm:py-2 rounded-xl text-black font-bold text-sm hover:bg-amber-300 transition w-full sm:w-auto"
@@ -126,11 +126,11 @@ const AdminGallery = ({ onLogout }) => {
             ) : (
                 <div className="gallery-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                     {images.map((image) => (
-                        <div key={image._id} className="gallery-card glass-card p-2 sm:p-3 border border-white/10 rounded-2xl group h-full">
+                        <div key={image._id} className="gallery-card glass-card p-2 sm:p-3 border border-slate-300 rounded-2xl group h-full">
                             <div className="relative h-[140px] sm:h-[200px] w-full mb-2 sm:mb-3 overflow-hidden rounded-xl bg-neutral-900">
                                 <img src={image.url} className="gallery-card-image h-full w-full object-cover" alt="" />
                                 {image.placement && (
-                                    <div className="absolute top-2 left-2 bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 shadow-lg">
+                                    <div className="absolute top-2 left-2 bg-emerald-500 text-slate-800 text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 shadow-lg">
                                         <MapPin size={10} /> 
                                         <span className="capitalize">{getSlotLabel(image.placement).replace(/\[object Object\]/g, '').replace(/-/g, ' ')}</span>
                                     </div>
@@ -138,8 +138,8 @@ const AdminGallery = ({ onLogout }) => {
                             </div>
                             <div className="flex gap-2">
                                 <button onClick={() => { setPlacementModal(image); setSelectedPage(""); setSelectedSection(""); setSelectedSlot(null); }}
-                                    className="flex-1 bg-white/10 text-white text-[10px] py-1.5 rounded-lg hover:bg-white/20">Assign</button>
-                                <button onClick={() => deleteImage(image._id).then(loadImages)} className="p-1.5 text-red-400 hover:bg-red-500/10 rounded-lg"><Trash2 size={14}/></button>
+                                    className="flex-1 bg-white/90 text-slate-800 text-[10px] py-1.5 rounded-lg hover:bg-slate-200">Assign</button>
+                                <button onClick={() => deleteImage(image._id).then(loadImages)} className="p-1.5 text-red-500 hover:bg-red-500/10 rounded-lg"><Trash2 size={14}/></button>
                             </div>
                         </div>
                     ))}
@@ -149,26 +149,26 @@ const AdminGallery = ({ onLogout }) => {
             {/* --- UPLOAD MODAL --- */}
             <AnimatePresence>
                 {uploadModal && (
-                    <div className="fixed inset-0 z-[120] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm">
-                        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="glass-card w-full sm:max-w-md p-6 rounded-t-3xl sm:rounded-3xl border border-white/10">
+                    <div className="fixed inset-0 z-[120] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/40 backdrop-blur-sm">
+                        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="glass-card w-full sm:max-w-md p-6 rounded-t-3xl sm:rounded-3xl border border-slate-300">
                             <div className="flex justify-between mb-6">
-                                <h3 className="font-bold text-xl text-white">Upload Photos</h3>
-                                <button onClick={() => setUploadModal(false)} className="text-white/40 hover:text-white"><X size={24} /></button>
+                                <h3 className="font-bold text-xl text-slate-800">Upload Photos</h3>
+                                <button onClick={() => setUploadModal(false)} className="text-slate-400 hover:text-slate-800"><X size={24} /></button>
                             </div>
                             
                             <div 
                                 onClick={() => fileInputRef.current.click()}
-                                className="border-2 border-dashed border-white/10 rounded-2xl p-8 sm:p-12 flex flex-col items-center justify-center cursor-pointer hover:bg-white/5 transition-all group"
+                                className="border-2 border-dashed border-slate-300 rounded-2xl p-8 sm:p-12 flex flex-col items-center justify-center cursor-pointer hover:bg-white/80 transition-all group"
                             >
                                 {uploading ? (
                                     <Loader2 className="animate-spin text-amber-400 mb-4" size={40} />
                                 ) : (
-                                    <Upload className="text-white/20 group-hover:text-amber-400 transition-colors mb-4" size={40} />
+                                    <Upload className="text-slate-300 group-hover:text-amber-400 transition-colors mb-4" size={40} />
                                 )}
-                                <p className="text-sm text-white/60 font-medium">
+                                <p className="text-sm text-slate-500 font-medium">
                                     {uploading ? "Uploading to Server..." : "Click to browse images"}
                                 </p>
-                                <p className="text-[10px] text-white/30 mt-1 uppercase tracking-widest">Max 10MB per file</p>
+                                <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest">Max 10MB per file</p>
                             </div>
                         </motion.div>
                     </div>
@@ -179,20 +179,20 @@ const AdminGallery = ({ onLogout }) => {
             <AnimatePresence>
                 {placementModal && (
                     <div className="fixed inset-0 z-[110] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md">
-                        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="glass-card w-full sm:max-w-md p-5 sm:p-6 border border-white/10 rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[85vh] overflow-y-auto">
+                        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="glass-card w-full sm:max-w-md p-5 sm:p-6 border border-slate-300 rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[85vh] overflow-y-auto">
                             <div className="flex justify-between items-center mb-6">
-                                <h3 className="font-bold text-white">Assign Placement</h3>
+                                <h3 className="font-bold text-slate-800">Assign Placement</h3>
                                 <button onClick={() => setPlacementModal(null)}><X size={20}/></button>
                             </div>
 
                             <div className="space-y-4">
-                                <select value={selectedPage} onChange={(e) => {setSelectedPage(e.target.value); setSelectedSection(""); setSelectedSlot(null);}} className="w-full bg-neutral-900 border border-white/10 p-3 rounded-xl text-white text-sm appearance-none">
+                                <select value={selectedPage} onChange={(e) => {setSelectedPage(e.target.value); setSelectedSection(""); setSelectedSlot(null);}} className="w-full bg-neutral-900 border border-slate-300 p-3 rounded-xl text-slate-800 text-sm appearance-none">
                                     <option value="">Select Page</option>
                                     {pages.map(p => <option key={p.value || p} value={p.value || p}>{p.label || p}</option>)}
                                 </select>
 
                                 {selectedPage && (
-                                    <select value={selectedSection} onChange={(e) => {setSelectedSection(e.target.value); setSelectedSlot(null);}} className="w-full bg-neutral-900 border border-white/10 p-3 rounded-xl text-white text-sm appearance-none">
+                                    <select value={selectedSection} onChange={(e) => {setSelectedSection(e.target.value); setSelectedSlot(null);}} className="w-full bg-neutral-900 border border-slate-300 p-3 rounded-xl text-slate-800 text-sm appearance-none">
                                         <option value="">Select Section</option>
                                         {sections.map(s => <option key={s.value || s} value={s.value || s}>{s.label || s}</option>)}
                                     </select>
@@ -212,7 +212,7 @@ const AdminGallery = ({ onLogout }) => {
                                                     className={`p-2 rounded-lg text-xs border transition-all ${
                                                         selectedSlot === val 
                                                         ? "bg-amber-400 text-black border-amber-400 font-bold" 
-                                                        : "bg-white/5 text-white/50 border-white/10 hover:border-white/30"
+                                                        : "bg-white/80 text-slate-500 border-slate-300 hover:border-white/30"
                                                     } ${taken ? "opacity-20 cursor-not-allowed" : ""}`}
                                                 >
                                                     {lbl} {taken && "(In Use)"}

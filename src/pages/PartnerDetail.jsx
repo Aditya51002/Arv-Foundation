@@ -86,18 +86,18 @@ const PartnerDetail = () => {
 		<div className="section-shell space-y-8 pb-12">
 			<SectionHeading title={partner.title} />
 
-			<div className="glass-card p-6 rounded-2xl border border-white/10">
-				<p className="text-white/80 leading-relaxed">{partner.content}</p>
+			<div className="glass-card p-6 rounded-2xl border border-slate-300">
+				<p className="text-slate-700 leading-relaxed">{partner.content}</p>
 			</div>
 
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				{[0, 1, 2].map((index) => (
-					<div key={index} className="glass-card p-4 rounded-2xl border border-white/10">
-						<div className="aspect-video bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
+					<div key={index} className="glass-card p-4 rounded-2xl border border-slate-300">
+						<div className="aspect-video bg-white/90 rounded-lg flex items-center justify-center overflow-hidden">
 							{slotImages[index] ? (
 								<img src={slotImages[index]} alt={`${partner.title} ${index + 1}`} className="w-full h-full object-cover" />
 							) : (
-								<ImagePlus size={28} className="text-white/30" />
+								<ImagePlus size={28} className="text-slate-400" />
 							)}
 						</div>
 					</div>

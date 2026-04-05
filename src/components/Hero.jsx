@@ -146,7 +146,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
-            className={`text-lg text-white/80 max-w-2xl ${lang === "hi" ? "font-devanagari" : ""}`}
+            className={`text-lg text-slate-700 max-w-2xl ${lang === "hi" ? "font-devanagari" : ""}`}
           >
             {loading ? t?.hero?.intro || "The ARV Foundation is..." : dynamicContent["home:hero:intro"]}
           </motion.p>
@@ -165,7 +165,7 @@ const Hero = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setVolunteerOpen(true)}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 py-3 font-semibold"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white/90 px-5 py-3 font-semibold"
             >
               {t.hero.volunteer}
             </motion.button>
@@ -179,7 +179,7 @@ const Hero = () => {
                   whileHover={{ y: -4 }}
                   className="glass-card p-3 flex items-center gap-3"
                 >
-                  <div className="h-10 w-10 rounded-lg bg-white/10 border border-white/10 grid place-items-center text-amber-200">
+                  <div className="h-10 w-10 rounded-lg bg-white/90 border border-slate-300 grid place-items-center text-amber-600">
                     <Icon size={18} />
                   </div>
                   <p className={`text-sm font-semibold ${lang === "hi" ? "font-devanagari" : ""}`}>{area.title}</p>
@@ -207,28 +207,28 @@ const Hero = () => {
             onTouchMove={handleSnapshotMove}
             onFocus={handleSnapshotFocus}
             onBlur={handleSnapshotBlur}
-            className="glass-card relative overflow-hidden p-6 border border-white/10"
+            className="glass-card relative overflow-hidden p-6 border border-slate-300"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/0" />
             <div className="relative space-y-4">
               <p className="pill w-fit">Since 2017</p>
               <h3 className="text-2xl font-semibold">ARV Impact Snapshot</h3>
-              <div className="grid grid-cols-2 gap-3 text-sm text-white/80">
-                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
-                  <p className="text-3xl font-bold text-amber-300"><AnimatedCounter to={50000} suffix="+" duration={1400} /></p>
-                  <p className="text-white/70">Meals & Clothes</p>
+              <div className="grid grid-cols-2 gap-3 text-sm text-slate-700">
+                <div className="rounded-xl bg-white/80 border border-slate-300 p-3">
+                  <p className="text-3xl font-bold text-amber-600"><AnimatedCounter to={50000} suffix="+" duration={1400} /></p>
+                  <p className="text-slate-600">Meals & Clothes</p>
                 </div>
-                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
-                  <p className="text-3xl font-bold text-emerald-200"><AnimatedCounter to={120} suffix="+" duration={1400} /></p>
-                  <p className="text-white/70">Health & Education Drives</p>
+                <div className="rounded-xl bg-white/80 border border-slate-300 p-3">
+                  <p className="text-3xl font-bold text-emerald-700"><AnimatedCounter to={120} suffix="+" duration={1400} /></p>
+                  <p className="text-slate-600">Health & Education Drives</p>
                 </div>
-                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
-                  <p className="text-3xl font-bold text-amber-200"><AnimatedCounter to={15} duration={1200} /></p>
-                  <p className="text-white/70">Core Programs</p>
+                <div className="rounded-xl bg-white/80 border border-slate-300 p-3">
+                  <p className="text-3xl font-bold text-amber-600"><AnimatedCounter to={15} duration={1200} /></p>
+                  <p className="text-slate-600">Core Programs</p>
                 </div>
-                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
-                  <p className="text-3xl font-bold text-emerald-200"><AnimatedCounter to={100} suffix="+" duration={1400} /></p>
-                  <p className="text-white/70">Volunteers</p>
+                <div className="rounded-xl bg-white/80 border border-slate-300 p-3">
+                  <p className="text-3xl font-bold text-emerald-700"><AnimatedCounter to={100} suffix="+" duration={1400} /></p>
+                  <p className="text-slate-600">Volunteers</p>
                 </div>
               </div>
             </div>

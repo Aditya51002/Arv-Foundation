@@ -45,7 +45,7 @@ const OngoingDrives = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="glass-card p-5 rounded-2xl border border-white/10 hover:border-amber-300/50 transition-all group"
+        className="glass-card p-5 rounded-2xl border border-slate-300 hover:border-amber-300/50 transition-all group"
       >
         {drive.image && (
           <div className="w-full h-40 overflow-hidden rounded-xl mb-4">
@@ -64,17 +64,17 @@ const OngoingDrives = () => {
             {isOngoing ? "Ongoing Drive" : "Past Drive"}
           </span>
         </div>
-        <h3 className="text-lg font-bold text-white mb-2">{drive.category}</h3>
-        <p className="text-sm text-white/75 leading-relaxed mb-4 line-clamp-3">
+        <h3 className="text-lg font-bold text-slate-800 mb-2">{drive.category}</h3>
+        <p className="text-sm text-slate-800/75 leading-relaxed mb-4 line-clamp-3">
           {drive.description}
         </p>
         
-        <div className="space-y-2 pt-3 border-t border-white/5">
-          <div className="flex items-center gap-2 text-xs text-white/60">
+        <div className="space-y-2 pt-3 border-t border-slate-200">
+          <div className="flex items-center gap-2 text-xs text-slate-500">
             <MapPin size={14} className="text-emerald-400 flex-shrink-0" />
             <span className="truncate">{drive.location}</span>
           </div>
-          <div className="flex items-center gap-2 text-xs text-white/60">
+          <div className="flex items-center gap-2 text-xs text-slate-500">
             <Clock size={14} className="text-emerald-400 flex-shrink-0" />
             <span>{formattedDate}</span>
           </div>
@@ -87,7 +87,7 @@ const OngoingDrives = () => {
     return (
       <div className="py-20 text-center">
         <Loader2 className="animate-spin mx-auto text-amber-400 mb-4" size={32} />
-        <p className="text-white/40">Loading drives from database...</p>
+        <p className="text-slate-400">Loading drives from database...</p>
       </div>
     );
   }
@@ -102,7 +102,7 @@ const OngoingDrives = () => {
 
         {ongoingDrives.length > 0 && (
           <div className="mb-16">
-            <h3 className="text-xl font-semibold mb-6 text-emerald-300">Present Drives</h3>
+            <h3 className="text-xl font-semibold mb-6 text-emerald-600">Present Drives</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {ongoingDrives.map((drive) => (
                 <DriveCard key={drive._id} drive={drive} isOngoing={true} />
@@ -113,7 +113,7 @@ const OngoingDrives = () => {
 
         {pastDrives.length > 0 && (
           <div>
-            <h3 className="text-xl font-semibold mb-6 text-white/60">Past Drives</h3>
+            <h3 className="text-xl font-semibold mb-6 text-slate-500">Past Drives</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-80">
               {pastDrives.map((drive) => (
                 <DriveCard key={drive._id} drive={drive} isOngoing={false} />
@@ -123,8 +123,8 @@ const OngoingDrives = () => {
         )}
 
         {drives.length === 0 && (
-          <div className="glass-card p-10 rounded-3xl border border-white/5 text-center mb-16">
-             <p className="text-white/60 italic">No drives are currently published.</p>
+          <div className="glass-card p-10 rounded-3xl border border-slate-200 text-center mb-16">
+             <p className="text-slate-500 italic">No drives are currently published.</p>
           </div>
         )}
       </div>

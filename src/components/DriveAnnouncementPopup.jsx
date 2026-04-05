@@ -77,7 +77,7 @@ const DriveAnnouncementPopup = () => {
             animate={{ backdropFilter: "blur(8px)" }}
             exit={{ backdropFilter: "blur(0px)" }}
             transition={{ duration: 0.4 }}
-            className="absolute inset-0 z-0 bg-black/70"
+            className="absolute inset-0 z-0 bg-slate-900/40"
             onClick={handleClose}
           />
 
@@ -87,7 +87,7 @@ const DriveAnnouncementPopup = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.85, y: 40 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="relative w-full max-w-md z-10 overflow-hidden rounded-2xl border border-white/15 shadow-2xl"
+            className="relative w-full max-w-md z-10 overflow-hidden rounded-2xl border border-slate-300 shadow-2xl"
             style={{
               background: "linear-gradient(135deg, rgba(20,20,30,0.95) 0%, rgba(15,25,20,0.95) 100%)",
             }}
@@ -98,7 +98,7 @@ const DriveAnnouncementPopup = () => {
             {/* Close button */}
             <button
               onClick={handleClose}
-              className="absolute top-3 right-3 z-20 p-1.5 rounded-full bg-white/10 border border-white/10 text-white/60 hover:text-white hover:bg-white/20 transition"
+              className="absolute top-3 right-3 z-20 p-1.5 rounded-full bg-white/90 border border-slate-300 text-slate-500 hover:text-slate-800 hover:bg-slate-200 transition"
             >
               <X size={16} />
             </button>
@@ -125,18 +125,18 @@ const DriveAnnouncementPopup = () => {
                     Active Drive Announcement
                   </span>
                 </div>
-                <h2 className="text-xl font-bold text-white">{drive.category}</h2>
+                <h2 className="text-xl font-bold text-slate-800">{drive.category}</h2>
               </div>
 
-              <p className="text-sm text-white/75 leading-relaxed">{drive.description}</p>
+              <p className="text-sm text-slate-800/75 leading-relaxed">{drive.description}</p>
 
               <div className="flex flex-col gap-2 text-sm">
-                <div className="flex items-center gap-2 text-white/60">
-                  <MapPin size={14} className="text-emerald-300 flex-shrink-0" />
+                <div className="flex items-center gap-2 text-slate-500">
+                  <MapPin size={14} className="text-emerald-600 flex-shrink-0" />
                   <span>{drive.location}</span>
                 </div>
-                <div className="flex items-center gap-2 text-white/60">
-                  <Clock size={14} className="text-emerald-300 flex-shrink-0" />
+                <div className="flex items-center gap-2 text-slate-500">
+                  <Clock size={14} className="text-emerald-600 flex-shrink-0" />
                   <span>{formattedDate}</span>
                 </div>
               </div>

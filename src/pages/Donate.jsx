@@ -142,11 +142,11 @@ const Donate = () => {
               transition={{ duration: 0.45, delay: idx * 0.06 }}
               onClick={() => handleContributionToggle(card.id)}
               className={`glass-card p-6 border text-left transition-all duration-200 ${
-                isSelected ? "border-amber-300/70 shadow-[0_0_25px_rgba(245,165,36,0.2)]" : "border-white/10"
+                isSelected ? "border-amber-300/70 shadow-[0_0_25px_rgba(245,165,36,0.2)]" : "border-slate-300"
               }`}
             >
               <div className="flex items-start gap-3">
-                <div className={`h-11 w-11 rounded-xl grid place-items-center ${isSelected ? "bg-amber-300/20 text-amber-200" : "bg-white/10 text-amber-200"} border border-white/10`}>
+                <div className={`h-11 w-11 rounded-xl grid place-items-center ${isSelected ? "bg-amber-300/20 text-amber-600" : "bg-white/90 text-amber-600"} border border-slate-300`}>
                   <Icon size={20} />
                 </div>
                 <div className="space-y-2">
@@ -154,7 +154,7 @@ const Donate = () => {
                     <h3 className="text-xl font-semibold">{card.title}</h3>
                     {isSelected && <Check size={16} className="text-amber-300" />}
                   </div>
-                  <p className={`text-sm text-white/80 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""}`}>{card.text}</p>
+                  <p className={`text-sm text-slate-700 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""}`}>{card.text}</p>
                 </div>
               </div>
             </motion.button>
@@ -163,39 +163,39 @@ const Donate = () => {
       </div>
 
       {/* Form Section */}
-      <form onSubmit={handleSubmit} className="glass-card p-6 border border-white/10 space-y-6">
+      <form onSubmit={handleSubmit} className="glass-card p-6 border border-slate-300 space-y-6">
         <h2 className="text-lg font-semibold">{lang === "hi" ? "योगदान विवरण" : "Contribution Details"}</h2>
 
         <div className="grid gap-4 md:grid-cols-3">
           <label className="flex flex-col gap-2">
-            <span className="text-xs uppercase tracking-wide text-white/60">{lang === "hi" ? "पूरा नाम" : "Full Name"}</span>
+            <span className="text-xs uppercase tracking-wide text-slate-500">{lang === "hi" ? "पूरा नाम" : "Full Name"}</span>
             <input
               type="text"
               value={formData.name}
               onChange={handleInputChange("name")}
-              className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white"
+              className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800"
               placeholder={lang === "hi" ? "अपना नाम दर्ज करें" : "Enter your name"}
               required
             />
           </label>
           <label className="flex flex-col gap-2">
-            <span className="text-xs uppercase tracking-wide text-white/60">{lang === "hi" ? "ईमेल" : "Email Address"}</span>
+            <span className="text-xs uppercase tracking-wide text-slate-500">{lang === "hi" ? "ईमेल" : "Email Address"}</span>
             <input
               type="email"
               value={formData.email}
               onChange={handleInputChange("email")}
-              className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white"
+              className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800"
               placeholder="you@example.com"
               required
             />
           </label>
           <label className="flex flex-col gap-2">
-            <span className="text-xs uppercase tracking-wide text-white/60">{lang === "hi" ? "फ़ोन" : "Phone Number"}</span>
+            <span className="text-xs uppercase tracking-wide text-slate-500">{lang === "hi" ? "फ़ोन" : "Phone Number"}</span>
             <input
               type="tel"
               value={formData.phone}
               onChange={handleInputChange("phone")}
-              className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white"
+              className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800"
               placeholder="+91 90000 00000"
               required
             />
@@ -203,11 +203,11 @@ const Donate = () => {
         </div>
 
         <label className="flex flex-col gap-2">
-          <span className="text-xs uppercase tracking-wide text-white/60">{lang === "hi" ? "आप कैसे मदद करना चाहेंगे?" : "How would you like to help us?"}</span>
+          <span className="text-xs uppercase tracking-wide text-slate-500">{lang === "hi" ? "आप कैसे मदद करना चाहेंगे?" : "How would you like to help us?"}</span>
           <textarea
             value={formData.message}
             onChange={handleInputChange("message")}
-            className="glass border border-white/10 rounded-2xl px-4 py-3 min-h-[140px] bg-white/5 text-white"
+            className="glass border border-slate-300 rounded-2xl px-4 py-3 min-h-[140px] bg-white/80 text-slate-800"
             placeholder={lang === "hi" ? "योगदान के बारे में हमें बताएं..." : "Tell us about the contribution you have in mind..."}
             required
           />

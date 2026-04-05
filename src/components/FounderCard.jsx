@@ -21,17 +21,17 @@ const FounderCard = () => {
             <div className="absolute right-0 bottom-0 h-32 w-32 rounded-full bg-emerald-300/25 blur-3xl" />
             <div className="relative space-y-5">
               <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-2xl bg-white/10 border border-white/15 grid place-items-center text-amber-200">
+                <div className="h-12 w-12 rounded-2xl bg-white/90 border border-slate-300 grid place-items-center text-amber-600">
                   <ShieldCheck size={22} />
                 </div>
                 <div>
-                  <p className="text-sm uppercase tracking-[0.2em] text-white/60">Founder Message</p>
+                  <p className="text-sm uppercase tracking-[0.2em] text-slate-500">Founder Message</p>
                   <p className="text-xl font-semibold">ARV Foundation</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <Quote className="text-amber-300" size={24} />
-                <p className={`text-lg leading-relaxed text-white/85 ${lang === "hi" ? "font-devanagari" : ""}`}>{t.founderMessage}</p>
+                <p className={`text-lg leading-relaxed text-slate-800/85 ${lang === "hi" ? "font-devanagari" : ""}`}>{t.founderMessage}</p>
               </div>
             </div>
           </div>
@@ -42,7 +42,7 @@ const FounderCard = () => {
           <div className="glass-card p-6 md:p-8 relative overflow-hidden">
             <div className="relative space-y-4">
               <h4 className="text-lg font-semibold">Founder — About</h4>
-              <p className={`text-sm text-white/80 ${lang === "hi" ? "font-devanagari" : ""}`}>
+              <p className={`text-sm text-slate-700 ${lang === "hi" ? "font-devanagari" : ""}`}>
                 {t.founderMessage} {/* fallback: reuse founderMessage until a dedicated bio is provided */}
               </p>
               <a href="/founder" className="inline-block mt-3 text-amber-300 hover:underline">

@@ -11,7 +11,7 @@ export default function QuickDonate({ open, onClose }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm z-[9999]"
+        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm z-[9999]"
         onClick={onClose}
       />
 
@@ -19,14 +19,14 @@ export default function QuickDonate({ open, onClose }) {
         initial={{ scale: 0.98, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.98, opacity: 0 }}
-        className="relative w-full max-w-xl p-6 bg-slate-900/90 backdrop-blur-md rounded-lg shadow-2xl border border-white/10 z-[10000]"
+        className="relative w-full max-w-xl p-6 bg-slate-900/90 backdrop-blur-md rounded-lg shadow-2xl border border-slate-300 z-[10000]"
       >
-        <button onClick={onClose} className="absolute top-4 right-4 text-white/80">
+        <button onClick={onClose} className="absolute top-4 right-4 text-slate-700">
           <X />
         </button>
 
         <h3 className="text-2xl font-semibold mb-2">Quick Donate</h3>
-        <p className="text-sm text-white/80 mb-4">Choose an amount to donate instantly.</p>
+        <p className="text-sm text-slate-700 mb-4">Choose an amount to donate instantly.</p>
 
         <div className="flex gap-3 mb-4">
           {[250, 500, 1000].map((amt) => (
@@ -43,9 +43,9 @@ export default function QuickDonate({ open, onClose }) {
           ))}
         </div>
 
-        <div className="mt-2 text-sm text-white/70">Or enter a custom amount</div>
+        <div className="mt-2 text-sm text-slate-600">Or enter a custom amount</div>
         <div className="flex gap-2 mt-2">
-          <input className="flex-1 rounded-lg bg-white/5 border border-white/10 p-2 text-white" placeholder="Amount (₹)" />
+          <input className="flex-1 rounded-lg bg-white/80 border border-slate-300 p-2 text-slate-800" placeholder="Amount (₹)" />
           <button
             onClick={() => {
               alert("Custom donate clicked — implement payment flow.");

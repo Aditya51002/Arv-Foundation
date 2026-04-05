@@ -71,22 +71,22 @@ const ContactSection = () => {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.5 }}
-        className="glass-card p-6 border border-white/10"
+        className="glass-card p-6 border border-slate-300"
       >
         <h3 className="text-xl font-semibold mb-3">
           {lang === "hi" ? "संपर्क" : "Contact"}
         </h3>
 
-        <p className="text-white/75 mb-4">
+        <p className="text-slate-800/75 mb-4">
           {lang === "hi"
             ? "हमसे जुड़ें, दान करें या स्वयंसेवक बनें।"
             : "Reach out to collaborate, donate, or volunteer with us."}
         </p>
 
-        <div className="space-y-3 text-sm text-white/80">
+        <div className="space-y-3 text-sm text-slate-700">
           <div className="flex items-center gap-2">
             <Mail size={16} className="text-amber-300" />
-            <a href="mailto:arvcreation@gmail.com" className="hover:text-white">
+            <a href="mailto:arvcreation@gmail.com" className="hover:text-slate-800">
               {t.contact.email}
             </a>
           </div>
@@ -110,50 +110,50 @@ const ContactSection = () => {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.5 }}
-        className="glass-card p-6 border border-white/10 grid gap-4"
+        className="glass-card p-6 border border-slate-300 grid gap-4"
       >
         <div className="grid gap-3">
-          <label className="text-sm text-white/70">{form.name}</label>
+          <label className="text-sm text-slate-600">{form.name}</label>
           <input
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white"
+            className="rounded-lg border border-slate-300 bg-white/80 px-3 py-2 text-slate-800"
             placeholder={form.name}
           />
         </div>
 
         <div className="grid gap-3">
-          <label className="text-sm text-white/70">{form.email}</label>
+          <label className="text-sm text-slate-600">{form.email}</label>
           <input
             name="email"
             type="email"
             value={formData.email}
             onChange={handleChange}
-            className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white"
+            className="rounded-lg border border-slate-300 bg-white/80 px-3 py-2 text-slate-800"
             placeholder={form.email}
           />
         </div>
 
         <div className="grid gap-3">
-          <label className="text-sm text-white/70">{form.phone}</label>
+          <label className="text-sm text-slate-600">{form.phone}</label>
           <input
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white"
+            className="rounded-lg border border-slate-300 bg-white/80 px-3 py-2 text-slate-800"
             placeholder={form.phone}
           />
         </div>
 
         <div className="grid gap-3">
-          <label className="text-sm text-white/70">{form.message}</label>
+          <label className="text-sm text-slate-600">{form.message}</label>
           <textarea
             name="message"
             rows={4}
             value={formData.message}
             onChange={handleChange}
-            className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white"
+            className="rounded-lg border border-slate-300 bg-white/80 px-3 py-2 text-slate-800"
             placeholder={form.message}
           />
         </div>

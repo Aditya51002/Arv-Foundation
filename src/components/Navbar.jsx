@@ -100,11 +100,11 @@ const Navbar = () => {
       className="fixed top-0 left-0 right-0 z-50"
     >
       <div className="section-shell pt-3 sm:pt-4">
-        <div className="glass rounded-2xl px-3 py-3 sm:px-4 lg:px-6 lg:py-4 border border-white/10">
+        <div className="glass rounded-2xl px-3 py-3 sm:px-4 lg:px-6 lg:py-4 border border-slate-300">
           <div className="flex items-center justify-between gap-3">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-full overflow-hidden border border-white/15 bg-transparent flex items-center justify-center p-0 logo-parallax">
+              <div className="h-12 w-12 rounded-full overflow-hidden border border-slate-300 bg-transparent flex items-center justify-center p-0 logo-parallax">
                 <img
                   src="/ngo-logo.jpeg"
                   alt="ARV Foundation logo"
@@ -112,7 +112,7 @@ const Navbar = () => {
                 />
               </div>
               <div className="leading-tight">
-                <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-white/70">ARV</p>
+                <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-slate-600">ARV</p>
                 <p className="text-base sm:text-lg font-semibold">Foundation</p>
               </div>
             </Link>
@@ -135,9 +135,9 @@ const Navbar = () => {
                         onClick={() =>
                           setDropdownOpen((prev) => (prev === link.key ? null : link.key))
                         }
-                        className={`inline-flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${dropdownOpen === link.key || location.pathname.startsWith("/services")
-                            ? "text-white bg-white/10 border border-white/10"
-                            : "text-white/70 hover:bg-white/5"
+                        className={`inline-flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-full transition hover:text-slate-800 ${dropdownOpen === link.key || location.pathname.startsWith("/services")
+                            ? "text-slate-800 bg-white/90 border border-slate-300"
+                            : "text-slate-600 hover:bg-white/80"
                           }`}
                       >
                         {link.label}
@@ -154,14 +154,14 @@ const Navbar = () => {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -6 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute top-full left-0 mt-2 w-48 rounded-xl glass border border-white/10 py-1 shadow-xl z-50"
+                            className="absolute top-full left-0 mt-2 w-48 rounded-xl glass border border-slate-300 py-1 shadow-xl z-50"
                           >
                             {link.dropdown.map((sub) => (
                               <Link
                                 key={sub.path}
                                 to={sub.path}
                                 onClick={() => setDropdownOpen(null)}
-                                className="block px-4 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white transition"
+                                className="block px-4 py-2 text-sm text-slate-700 hover:bg-white/90 hover:text-slate-800 transition"
                               >
                                 {sub.label}
                               </Link>
@@ -174,9 +174,9 @@ const Navbar = () => {
                     /* Normal link */
                     <Link
                       to={link.path}
-                      className={`px-3 py-2 text-sm font-medium rounded-full transition hover:text-white ${isActive(link.path)
-                          ? "text-white bg-white/10 border border-white/10"
-                          : "text-white/70 hover:bg-white/5"
+                      className={`px-3 py-2 text-sm font-medium rounded-full transition hover:text-slate-800 ${isActive(link.path)
+                          ? "text-slate-800 bg-white/90 border border-slate-300"
+                          : "text-slate-600 hover:bg-white/80"
                         }`}
                     >
                       {link.label}
@@ -222,7 +222,7 @@ const Navbar = () => {
               {isLoggedIn ? (
                 <button
                   onClick={handleLogout}
-                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition cta-raise"
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white/90 px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-800 hover:bg-slate-100 transition cta-raise"
                 >
                   <LogOut size={15} className="icon-pop" />
                   <span>{lang === "hi" ? "लॉग आउट" : "Logout"}</span>
@@ -230,7 +230,7 @@ const Navbar = () => {
               ) : (
                 <Link
                   to="/login"
-                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/15 transition cta-raise"
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white/90 px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-800 hover:bg-slate-100 transition cta-raise"
                 >
                   <LogIn size={15} className="icon-pop" />
                   <span>{lang === "hi" ? "लॉगिन" : "Login"}</span>
@@ -240,7 +240,7 @@ const Navbar = () => {
               {/* Mobile menu toggle */}
               <button
                 onClick={() => setOpen((v) => !v)}
-                className="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/10 border border-white/10 cta-raise"
+                className="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/90 border border-slate-300 cta-raise"
               >
                 {open ? <X size={20} className="icon-pop" /> : <Menu size={20} className="icon-pop" />}
               </button>
@@ -264,7 +264,7 @@ const Navbar = () => {
                           onClick={() =>
                             setDropdownOpen((prev) => (prev === link.key ? null : link.key))
                           }
-                          className="w-full flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5"
+                          className="w-full flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-white/80"
                         >
                           {link.label}
                           <ChevronDown
@@ -288,7 +288,7 @@ const Navbar = () => {
                                     setOpen(false);
                                     setDropdownOpen(null);
                                   }}
-                                  className="block rounded-lg px-3 py-2 text-sm text-white/60 hover:bg-white/5 hover:text-white"
+                                  className="block rounded-lg px-3 py-2 text-sm text-slate-500 hover:bg-white/80 hover:text-slate-800"
                                 >
                                   {sub.label}
                                 </Link>
@@ -302,7 +302,7 @@ const Navbar = () => {
                         key={link.key}
                         to={link.path}
                         onClick={() => setOpen(false)}
-                        className={`rounded-lg px-3 py-2 text-sm font-medium ${isActive(link.path) ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5"
+                        className={`rounded-lg px-3 py-2 text-sm font-medium ${isActive(link.path) ? "bg-white/90 text-slate-800" : "text-slate-600 hover:bg-white/80"
                           }`}
                       >
                         {link.label}
@@ -327,7 +327,7 @@ const Navbar = () => {
                         setOpen(false);
                         handleLogout();
                       }}
-                      className="w-full text-left rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
+                      className="w-full text-left rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-white/80 flex items-center gap-2"
                     >
                       <LogOut size={15} className="icon-pop" />
                       {lang === "hi" ? "लॉग आउट" : "Logout"}
@@ -336,7 +336,7 @@ const Navbar = () => {
                     <Link
                       to="/login"
                       onClick={() => setOpen(false)}
-                      className="rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 flex items-center gap-2"
+                      className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-white/80 flex items-center gap-2"
                     >
                       <LogIn size={15} className="icon-pop" />
                       {lang === "hi" ? "लॉगिन" : "Login"}

@@ -23,11 +23,11 @@ const Gallery = () => {
 
     return (
         <section className="section-shell py-16 px-4">
-            <h2 className="text-3xl font-bold text-center mb-10 text-white">Impact Gallery</h2>
+            <h2 className="text-3xl font-bold text-center mb-10 text-slate-800">Impact Gallery</h2>
             <div className="flex justify-center gap-2 mb-8 flex-wrap">
                 {categories.map(cat => (
                     <button key={cat} onClick={() => setFilter(cat)} 
-                        className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase transition ${filter === cat ? "bg-amber-400 text-black" : "bg-white/5 text-white/50 border border-white/5"}`}>
+                        className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase transition ${filter === cat ? "bg-amber-400 text-black" : "bg-white/80 text-slate-500 border border-slate-200"}`}>
                         {cat}
                     </button>
                 ))}
@@ -36,7 +36,7 @@ const Gallery = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {filtered.map((img) => (
                     <motion.div key={img._id} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-                        className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group bg-neutral-900 border border-white/10"
+                        className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group bg-neutral-900 border border-slate-300"
                     >
                         <img src={img.url} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="" />
                         
@@ -48,8 +48,8 @@ const Gallery = () => {
                             </p>
                             
                             {/* Zoom icon still only shows on hover for a clean look */}
-                            <div className="absolute top-4 right-4 p-2 bg-white/10 rounded-full border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <ZoomIn size={14} className="text-white" />
+                            <div className="absolute top-4 right-4 p-2 bg-white/90 rounded-full border border-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <ZoomIn size={14} className="text-slate-800" />
                             </div>
                         </div>
                     </motion.div>

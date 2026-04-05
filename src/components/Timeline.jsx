@@ -26,9 +26,9 @@ const Timeline = ({ className = "section-shell" }) => {
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.5, delay: idx * 0.08 }}
                 >
-                  <time className="text-sm text-white/70 font-medium">{item.year}</time>
+                  <time className="text-sm text-slate-600 font-medium">{item.year}</time>
                   <h3 className="text-lg font-semibold mt-1">{item.title}</h3>
-                  <p className="text-sm text-white/75 mt-1">{item.desc}</p>
+                  <p className="text-sm text-slate-800/75 mt-1">{item.desc}</p>
                 </motion.div>
               </li>
             ))}

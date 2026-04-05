@@ -99,17 +99,17 @@ const AdminDrives = () => {
       >
         {/* Stats */}
         <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6">
-          <div className="glass-card p-3 sm:p-5 border border-white/10 rounded-2xl">
-            <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Total Drives</p>
-            <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-amber-200">{drives.length}</p>
+          <div className="glass-card p-3 sm:p-5 border border-slate-300 rounded-2xl">
+            <p className="text-[10px] sm:text-xs uppercase tracking-wide text-slate-500">Total Drives</p>
+            <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-amber-600">{drives.length}</p>
           </div>
-          <div className="glass-card p-3 sm:p-5 border border-white/10 rounded-2xl">
-            <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Active Drives</p>
-            <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-emerald-200">{activeDrives.length}</p>
+          <div className="glass-card p-3 sm:p-5 border border-slate-300 rounded-2xl">
+            <p className="text-[10px] sm:text-xs uppercase tracking-wide text-slate-500">Active Drives</p>
+            <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-emerald-700">{activeDrives.length}</p>
           </div>
-          <div className="glass-card p-3 sm:p-5 border border-white/10 rounded-2xl">
-            <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Inactive</p>
-            <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-white/60">{drives.length - activeDrives.length}</p>
+          <div className="glass-card p-3 sm:p-5 border border-slate-300 rounded-2xl">
+            <p className="text-[10px] sm:text-xs uppercase tracking-wide text-slate-500">Inactive</p>
+            <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-slate-500">{drives.length - activeDrives.length}</p>
           </div>
         </div>
 
@@ -119,7 +119,7 @@ const AdminDrives = () => {
           <button
             type="button"
             onClick={() => setDriveModalOpen(true)}
-            className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-emerald-200 hover:bg-emerald-500/20 transition"
+            className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-emerald-700 hover:bg-emerald-500/20 transition"
           >
             <Plus size={16} />
             <span className="hidden sm:inline">Add New Drive</span>
@@ -134,7 +134,7 @@ const AdminDrives = () => {
               <div
                 key={drive._id}
                 className={`glass-card p-4 border rounded-2xl flex flex-col sm:flex-row gap-4 items-start ${
-                  drive.active ? "border-emerald-400/30" : "border-white/10 opacity-60"
+                  drive.active ? "border-emerald-400/30" : "border-slate-300 opacity-60"
                 }`}
               >
                 {drive.image && (
@@ -148,13 +148,13 @@ const AdminDrives = () => {
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="pill text-xs">{drive.category}</span>
                     {drive.active && (
-                      <span className="text-xs text-emerald-300 bg-emerald-400/10 px-2 py-0.5 rounded-full">
+                      <span className="text-xs text-emerald-600 bg-emerald-400/10 px-2 py-0.5 rounded-full">
                         Active
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-white/80 line-clamp-2">{drive.description}</p>
-                  <div className="flex items-center gap-4 text-xs text-white/50">
+                  <p className="text-sm text-slate-700 line-clamp-2">{drive.description}</p>
+                  <div className="flex items-center gap-4 text-xs text-slate-500">
                     <span className="flex items-center gap-1">
                       <MapPin size={12} /> {drive.location}
                     </span>
@@ -171,10 +171,10 @@ const AdminDrives = () => {
                   <button
                     onClick={() => handleToggleDrive(drive._id)}
                     title={drive.active ? "Deactivate" : "Activate"}
-                    className="p-2 rounded-lg hover:bg-white/10 transition text-white/60 hover:text-white"
+                    className="p-2 rounded-lg hover:bg-white/90 transition text-slate-500 hover:text-slate-800"
                   >
                     {drive.active ? (
-                      <ToggleRight size={20} className="text-emerald-300" />
+                      <ToggleRight size={20} className="text-emerald-600" />
                     ) : (
                       <ToggleLeft size={20} />
                     )}
@@ -182,7 +182,7 @@ const AdminDrives = () => {
                   <button
                     onClick={() => handleDeleteDrive(drive._id)}
                     title="Delete drive"
-                    className="p-2 rounded-lg hover:bg-red-500/10 transition text-white/60 hover:text-red-400"
+                    className="p-2 rounded-lg hover:bg-red-500/10 transition text-slate-500 hover:text-red-500"
                   >
                     <Trash2 size={16} />
                   </button>
@@ -192,13 +192,13 @@ const AdminDrives = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-4">
-              <MapPin size={24} className="text-white/40" />
+            <div className="w-16 h-16 rounded-full bg-white/80 border border-slate-300 flex items-center justify-center mx-auto mb-4">
+              <MapPin size={24} className="text-slate-400" />
             </div>
-            <p className="text-white/60 mb-2">No drives published yet</p>
+            <p className="text-slate-500 mb-2">No drives published yet</p>
             <button
               onClick={() => setDriveModalOpen(true)}
-              className="text-emerald-300 hover:text-emerald-200 text-sm font-semibold"
+              className="text-emerald-600 hover:text-emerald-700 text-sm font-semibold"
             >
               Create your first drive
             </button>

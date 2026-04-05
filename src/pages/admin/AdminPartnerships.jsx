@@ -117,9 +117,9 @@ const AdminPartnerships = () => {
   const inactiveCount = partners.length - activeCount;
 
   // ---------- Render helpers ----------
-  const StatCard = ({ label, value, color = "text-amber-200" }) => (
-    <div className="glass-card p-3 sm:p-5 border border-white/10 rounded-2xl">
-      <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">{label}</p>
+  const StatCard = ({ label, value, color = "text-amber-600" }) => (
+    <div className="glass-card p-3 sm:p-5 border border-slate-300 rounded-2xl">
+      <p className="text-[10px] sm:text-xs uppercase tracking-wide text-slate-500">{label}</p>
       <p className={`mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold ${color}`}>{value}</p>
     </div>
   );
@@ -131,8 +131,8 @@ const AdminPartnerships = () => {
         className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold
           ${
             isActive
-              ? "bg-emerald-400/15 text-emerald-300 border border-emerald-400/30 shadow-[0_0_8px_rgba(52,211,153,0.25)]"
-              : "bg-white/5 text-white/50 border border-white/10"
+              ? "bg-emerald-400/15 text-emerald-600 border border-emerald-400/30 shadow-[0_0_8px_rgba(52,211,153,0.25)]"
+              : "bg-white/80 text-slate-500 border border-slate-300"
           }`}
       >
         <span
@@ -153,17 +153,17 @@ const AdminPartnerships = () => {
       >
         {/* -------- Loading -------- */}
         {loading && (
-          <div className="glass-card border border-white/10 rounded-2xl p-16 flex flex-col items-center justify-center gap-4">
-            <Loader2 size={36} className="animate-spin text-emerald-300" />
-            <p className="text-white/60 text-sm">Loading partnership requests…</p>
+          <div className="glass-card border border-slate-300 rounded-2xl p-16 flex flex-col items-center justify-center gap-4">
+            <Loader2 size={36} className="animate-spin text-emerald-600" />
+            <p className="text-slate-500 text-sm">Loading partnership requests…</p>
           </div>
         )}
 
         {/* -------- Error -------- */}
         {!loading && error && (
           <div className="glass-card border border-red-400/30 rounded-2xl p-8 flex flex-col items-center gap-3">
-            <AlertCircle size={32} className="text-red-400" />
-            <p className="text-red-300 text-sm">{error}</p>
+            <AlertCircle size={32} className="text-red-500" />
+            <p className="text-red-600 text-sm">{error}</p>
           </div>
         )}
 
@@ -173,8 +173,8 @@ const AdminPartnerships = () => {
             {/* Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
               <StatCard label="Total Requests" value={partners.length} />
-              <StatCard label="Active" value={activeCount} color="text-emerald-200" />
-              <StatCard label="Inactive" value={inactiveCount} color="text-white/60" />
+              <StatCard label="Active" value={activeCount} color="text-emerald-700" />
+              <StatCard label="Inactive" value={inactiveCount} color="text-slate-500" />
             </div>
 
             {/* Search + Filter bar */}
@@ -182,30 +182,30 @@ const AdminPartnerships = () => {
               <div className="relative flex-1 min-w-[200px] max-w-md">
                 <Search
                   size={16}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
                 />
                 <input
                   type="text"
                   placeholder="Search by organization, contact, emailâ€¦"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-white/5 pl-9 pr-4 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-400/40 transition"
+                  className="w-full rounded-xl border border-slate-300 bg-white/80 pl-9 pr-4 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-emerald-400/40 transition"
                 />
               </div>
 
               <div className="relative">
                 <Filter
                   size={14}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
                 />
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="appearance-none rounded-xl border border-white/10 bg-white/5 pl-8 pr-8 py-2 text-sm text-white focus:outline-none focus:border-emerald-400/40 transition cursor-pointer"
+                  className="appearance-none rounded-xl border border-slate-300 bg-white/80 pl-8 pr-8 py-2 text-sm text-slate-800 focus:outline-none focus:border-emerald-400/40 transition cursor-pointer"
                 >
-                  <option value="all" className="bg-[#0b1411]">All</option>
-                  <option value="active" className="bg-[#0b1411]">Active</option>
-                  <option value="inactive" className="bg-[#0b1411]">Inactive</option>
+                  <option value="all" className="bg-white">All</option>
+                  <option value="active" className="bg-white">Active</option>
+                  <option value="inactive" className="bg-white">Inactive</option>
                 </select>
               </div>
             </div>
@@ -219,16 +219,16 @@ const AdminPartnerships = () => {
                     className={`glass-card border rounded-2xl p-5 space-y-3 transition ${
                       partner.status === "active"
                         ? "border-emerald-400/30"
-                        : "border-white/10 opacity-70"
+                        : "border-slate-300 opacity-70"
                     }`}
                   >
                     {/* Header row */}
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="space-y-1">
-                        <h3 className="text-base font-semibold text-white/90">
+                        <h3 className="text-base font-semibold text-slate-800">
                           {partner.organizationName}
                         </h3>
-                        <p className="text-xs text-white/50">
+                        <p className="text-xs text-slate-500">
                           Contact: {partner.contactPerson} &middot;{" "}
                           {partner.email} &middot; {partner.phone}
                         </p>
@@ -242,10 +242,10 @@ const AdminPartnerships = () => {
                               ? "Set Inactive"
                               : "Set Active"
                           }
-                          className="p-2 rounded-lg hover:bg-white/10 transition text-white/60 hover:text-white"
+                          className="p-2 rounded-lg hover:bg-white/90 transition text-slate-500 hover:text-slate-800"
                         >
                           {partner.status === "active" ? (
-                            <ToggleRight size={22} className="text-emerald-300" />
+                            <ToggleRight size={22} className="text-emerald-600" />
                           ) : (
                             <ToggleLeft size={22} />
                           )}
@@ -259,7 +259,7 @@ const AdminPartnerships = () => {
                         {partner.focusCategories.map((cat, idx) => (
                           <span
                             key={idx}
-                            className="rounded-full bg-emerald-500/10 border border-emerald-400/20 px-3 py-0.5 text-xs text-emerald-200"
+                            className="rounded-full bg-emerald-500/10 border border-emerald-400/20 px-3 py-0.5 text-xs text-emerald-700"
                           >
                             {cat}
                           </span>
@@ -268,18 +268,18 @@ const AdminPartnerships = () => {
                     )}
 
                     {/* Details */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 text-sm text-white/70">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 text-sm text-slate-600">
                       {partner.description && (
-                        <p className="sm:col-span-2 lg:col-span-3 text-white/60 text-xs leading-relaxed">
+                        <p className="sm:col-span-2 lg:col-span-3 text-slate-500 text-xs leading-relaxed">
                           {partner.description}
                         </p>
                       )}
                       <div>
-                        <span className="text-white/40 text-xs">Duration:</span>{" "}
+                        <span className="text-slate-400 text-xs">Duration:</span>{" "}
                         {partner.duration || "—"}
                       </div>
                       <div>
-                        <span className="text-white/40 text-xs">Expected Scale:</span>{" "}
+                        <span className="text-slate-400 text-xs">Expected Scale:</span>{" "}
                         {partner.expectedScale || "—"}
                       </div>
                     </div>
@@ -288,11 +288,11 @@ const AdminPartnerships = () => {
               </div>
             ) : (
               /* No data */
-              <div className="glass-card border border-white/10 rounded-2xl py-16 flex flex-col items-center gap-3">
-                <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                  <Inbox size={28} className="text-white/30" />
+              <div className="glass-card border border-slate-300 rounded-2xl py-16 flex flex-col items-center gap-3">
+                <div className="w-16 h-16 rounded-full bg-white/80 border border-slate-300 flex items-center justify-center">
+                  <Inbox size={28} className="text-slate-400" />
                 </div>
-                <p className="text-white/50 text-sm">
+                <p className="text-slate-500 text-sm">
                   No partnership requests found.
                 </p>
               </div>

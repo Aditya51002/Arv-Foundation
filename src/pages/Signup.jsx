@@ -43,16 +43,16 @@ const Signup = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="w-full max-w-md glass-card p-6 sm:p-8 border border-white/10 rounded-2xl space-y-6"
+                className="w-full max-w-md glass-card p-6 sm:p-8 border border-slate-300 rounded-2xl space-y-6"
             >
                 <div className="text-center space-y-2">
-                    <div className="h-14 w-14 mx-auto rounded-2xl bg-white/10 border border-white/10 grid place-items-center text-amber-200">
+                    <div className="h-14 w-14 mx-auto rounded-2xl bg-white/90 border border-slate-300 grid place-items-center text-amber-600">
                         <User size={28} />
                     </div>
                     <h2 className={`text-xl sm:text-2xl font-semibold ${isHindi ? "font-devanagari" : ""}`}>
                         {isHindi ? "साइन अप करें" : "Sign Up"}
                     </h2>
-                    <p className={`text-xs sm:text-sm text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+                    <p className={`text-xs sm:text-sm text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                         {isHindi
                             ? "नया खाता बनाएँ"
                             : "Create a new account"}
@@ -61,7 +61,7 @@ const Signup = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
-                        <label className="text-sm text-white/70 flex items-center gap-2">
+                        <label className="text-sm text-slate-600 flex items-center gap-2">
                             <User size={14} />
                             {isHindi ? "उपयोगकर्ता नाम" : "Username"}
                         </label>
@@ -71,13 +71,13 @@ const Signup = () => {
                             value={form.username}
                             onChange={handleChange}
                             required
-                            className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition"
+                            className="w-full rounded-lg border border-slate-300 bg-white/80 px-4 py-2.5 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition"
                             placeholder={isHindi ? "आपका नाम" : "Your Name"}
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm text-white/70 flex items-center gap-2">
+                        <label className="text-sm text-slate-600 flex items-center gap-2">
                             <Mail size={14} />
                             {isHindi ? "ईमेल" : "Email"}
                         </label>
@@ -87,13 +87,13 @@ const Signup = () => {
                             value={form.email}
                             onChange={handleChange}
                             required
-                            className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition"
+                            className="w-full rounded-lg border border-slate-300 bg-white/80 px-4 py-2.5 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition"
                             placeholder={isHindi ? "आपका ईमेल" : "you@example.com"}
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm text-white/70 flex items-center gap-2">
+                        <label className="text-sm text-slate-600 flex items-center gap-2">
                             <Phone size={14} />
                             {isHindi ? "फ़ोन नंबर" : "Phone Number"}
                         </label>
@@ -105,13 +105,13 @@ const Signup = () => {
                             required
                             minLength={10}
                             maxLength={10}
-                            className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition"
+                            className="w-full rounded-lg border border-slate-300 bg-white/80 px-4 py-2.5 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition"
                             placeholder="+91 xxxxxxxxxx"
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm text-white/70 flex items-center gap-2">
+                        <label className="text-sm text-slate-600 flex items-center gap-2">
                             <Lock size={14} />
                             {isHindi ? "पासवर्ड" : "Password"}
                         </label>
@@ -122,13 +122,13 @@ const Signup = () => {
                                 value={form.password}
                                 onChange={handleChange}
                                 required
-                                className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition pr-10"
+                                className="w-full rounded-lg border border-slate-300 bg-white/80 px-4 py-2.5 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition pr-10"
                                 placeholder="••••••••"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword((v) => !v)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white/80"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700"
                             >
                                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                             </button>
@@ -145,11 +145,11 @@ const Signup = () => {
                     </motion.button>
                 </form>
 
-                <p className={`text-center text-xs text-white/50 ${isHindi ? "font-devanagari" : ""}`}>
+                <p className={`text-center text-xs text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
                     {isHindi
                         ? "क्या आपके पास पहले से एक खाता मौजूद है? "
                         : "Already have an account? "}
-                    <Link to="/login" className="text-amber-200 hover:underline">
+                    <Link to="/login" className="text-amber-600 hover:underline">
                         {isHindi ? "लॉग इन करें" : "Login"}
                     </Link>
                 </p>

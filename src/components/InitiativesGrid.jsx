@@ -43,18 +43,18 @@ const InitiativesGrid = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.45, delay: idx * 0.06 }}
-              className="glass-card p-5 rounded-2xl border border-white/10 h-full hover:border-amber-300/50 transition-colors"
+              className="glass-card p-5 rounded-2xl border border-slate-300 h-full hover:border-amber-300/50 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <div className="h-11 w-11 rounded-xl bg-white/10 border border-white/10 grid place-items-center text-amber-200">
+                <div className="h-11 w-11 rounded-xl bg-white/90 border border-slate-300 grid place-items-center text-amber-600">
                   <Icon size={18} />
                 </div>
-                <h3 className={`text-lg font-semibold text-white ${lang === "hi" ? "font-devanagari" : ""}`}>
+                <h3 className={`text-lg font-semibold text-slate-800 ${lang === "hi" ? "font-devanagari" : ""}`}>
                   {item.title}
                 </h3>
               </div>
 
-              <p className={`mt-2 text-sm text-white/75 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""}`}>
+              <p className={`mt-2 text-sm text-slate-800/75 leading-relaxed ${lang === "hi" ? "font-devanagari" : ""}`}>
                 {item.description}
               </p>
 

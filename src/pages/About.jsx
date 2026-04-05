@@ -53,7 +53,7 @@ const AboutImages = ({ section }) => {
       {[0, 1, 2].map((n) => (
         <div
           key={n}
-          className="aspect-square rounded-xl border border-dashed border-white/20 bg-white/5 grid place-items-center text-white/30 overflow-hidden"
+          className="aspect-square rounded-xl border border-dashed border-slate-400 bg-white/80 grid place-items-center text-slate-400 overflow-hidden"
         >
           {slotImages[n] ? (
             <img src={slotImages[n]} alt={`${section} ${n + 1}`} className="w-full h-full object-cover" />
@@ -97,11 +97,11 @@ const About = () => {
               whileHover={{ y: -4, scale: 1.01 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: idx * 0.07 }}
-              className="glass-card p-6 border border-white/10 rounded-2xl space-y-4 hover:border-amber-300/50 transition-colors"
+              className="glass-card p-6 border border-slate-300 rounded-2xl space-y-4 hover:border-amber-300/50 transition-colors"
             >
               {/* Header */}
               <div className="flex items-center gap-3">
-                <div className="h-11 w-11 rounded-xl bg-white/10 border border-white/10 grid place-items-center text-amber-200">
+                <div className="h-11 w-11 rounded-xl bg-white/90 border border-slate-300 grid place-items-center text-amber-600">
                   <Icon size={20} />
                 </div>
                 <h3 className={`text-xl font-semibold ${isHindi ? "font-devanagari" : ""}`}>
@@ -110,7 +110,7 @@ const About = () => {
               </div>
 
               {/* Body */}
-              <p className={`text-sm text-white/80 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
+              <p className={`text-sm text-slate-700 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
                 {card.body}
               </p>
 

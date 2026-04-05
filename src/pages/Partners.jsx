@@ -267,7 +267,7 @@ const Partners = () => {
 		<div className="section-shell space-y-8 pb-12">
 			<SectionHeading eyebrow={t.eyebrow} title={t.title} />
 
-			<p className={`text-white/80 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>{t.lede}</p>
+			<p className={`text-slate-700 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>{t.lede}</p>
 
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				{t.benefits.map((item) => {
@@ -280,27 +280,27 @@ const Partners = () => {
 								initial={{ opacity: 0, y: 20 }}
 								viewport={{ once: true, margin: "-50px" }}
 								transition={{ duration: 0.4 }}
-								className="glass-card p-5 rounded-2xl border border-white/10 h-full hover:border-amber-300/50 transition-colors"
+								className="glass-card p-5 rounded-2xl border border-slate-300 h-full hover:border-amber-300/50 transition-colors"
 							>
 								<div className="flex items-center gap-3">
-									<div className="h-11 w-11 rounded-xl bg-white/10 border border-white/10 grid place-items-center text-amber-200">
+									<div className="h-11 w-11 rounded-xl bg-white/90 border border-slate-300 grid place-items-center text-amber-600">
 										<Icon size={18} />
 									</div>
 									<h3 className={`text-lg font-semibold ${isHindi ? "font-devanagari" : ""}`}>{item.title}</h3>
 								</div>
-								<p className={`mt-2 text-sm text-white/75 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>{item.desc}</p>
+								<p className={`mt-2 text-sm text-slate-800/75 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>{item.desc}</p>
 							</motion.div>
 						</Link>
 					);
 				})}
 			</div>
 
-			<div className="glass-card rounded-2xl border border-white/10 p-6 space-y-4">
+			<div className="glass-card rounded-2xl border border-slate-300 p-6 space-y-4">
 				<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
 					<div className="space-y-1">
 						<span className="badge inline-flex">{t.stepsTitle}</span>
 						<h3 className={`text-xl font-semibold ${isHindi ? "font-devanagari" : ""}`}>{t.title}</h3>
-						<p className={`text-sm text-white/75 ${isHindi ? "font-devanagari" : ""}`}>
+						<p className={`text-sm text-slate-800/75 ${isHindi ? "font-devanagari" : ""}`}>
 							arvcreation@gmail.com • +91-73514 88967
 						</p>
 					</div>
@@ -308,12 +308,12 @@ const Partners = () => {
 
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-3">
 					{t.steps.map((step, idx) => (
-						<div key={step} className="rounded-xl border border-white/10 bg-white/5 p-3">
-							<div className="flex items-center gap-2 text-sm font-semibold text-amber-200">
-							<span className="h-6 w-6 rounded-full bg-white/10 grid place-items-center text-xs border border-white/15">{idx + 1}</span>
+						<div key={step} className="rounded-xl border border-slate-300 bg-white/80 p-3">
+							<div className="flex items-center gap-2 text-sm font-semibold text-amber-600">
+							<span className="h-6 w-6 rounded-full bg-white/90 grid place-items-center text-xs border border-slate-300">{idx + 1}</span>
 								<span>{t.stepLabel} {idx + 1}</span>
 							</div>
-							<p className={`mt-2 text-sm text-white/80 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>{step}</p>
+							<p className={`mt-2 text-sm text-slate-700 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>{step}</p>
 						</div>
 					))}
 				</div>
@@ -322,18 +322,18 @@ const Partners = () => {
 					<div>
 						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
 							<h4 className={`text-lg font-semibold ${isHindi ? "font-devanagari" : ""}`}>{t.formTitle}</h4>
-							<span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+							<span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
 								{selectedCategories.length}{" "}
 								{selectedCategories.length === 1 ? t.selectedSingular : t.selectedPlural}
 							</span>
 						</div>
-						<p className={`mt-1 text-sm text-white/70 ${isHindi ? "font-devanagari" : ""}`}>
+						<p className={`mt-1 text-sm text-slate-600 ${isHindi ? "font-devanagari" : ""}`}>
 							{t.formIntro}
 						</p>
 					</div>
 
 					<div className="space-y-3">
-						<p className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+						<p className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
 							{t.categoriesLabel}
 						</p>
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -348,15 +348,15 @@ const Partners = () => {
 										className={`glass-card border text-left transition-all duration-200 rounded-2xl px-4 py-3 ${
 											isSelected
 												? "border-amber-300/70 shadow-[0_0_25px_rgba(245,165,36,0.35)]"
-												: "border-white/10"
+												: "border-slate-300"
 										}`}
 										aria-pressed={isSelected}
 									>
 										<div className="flex items-center justify-between gap-3">
-											<span className={`text-sm font-semibold text-white/90 ${isHindi ? "font-devanagari" : ""}`}>{label}</span>
+											<span className={`text-sm font-semibold text-slate-800 ${isHindi ? "font-devanagari" : ""}`}>{label}</span>
 											{isSelected && <Check size={16} className="text-amber-300" />}
 										</div>
-										<span className={`mt-1 block text-xs text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+										<span className={`mt-1 block text-xs text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
 											{isSelected ? t.selectedTag : t.unselectedTag}
 										</span>
 									</button>
@@ -367,7 +367,7 @@ const Partners = () => {
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<label className="flex flex-col gap-2">
-							<span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+							<span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
 								{t.labels.organizationName}
 							</span>
 							<input
@@ -375,13 +375,13 @@ const Partners = () => {
 								name="organizationName"
 								value={formData.organizationName}
 								onChange={handleInputChange}
-								className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
+								className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none"
 								placeholder={t.placeholders.organizationName}
 								required
 							/>
 						</label>
 						<label className="flex flex-col gap-2">
-							<span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+							<span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
 								{t.labels.contactName}
 							</span>
 							<input
@@ -389,13 +389,13 @@ const Partners = () => {
 								name="contactName"
 								value={formData.contactName}
 								onChange={handleInputChange}
-								className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
+								className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none"
 								placeholder={t.placeholders.contactName}
 								required
 							/>
 						</label>
 						<label className="flex flex-col gap-2">
-							<span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+							<span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
 								{t.labels.email}
 							</span>
 							<input
@@ -403,13 +403,13 @@ const Partners = () => {
 								name="email"
 								value={formData.email}
 								onChange={handleInputChange}
-								className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
+								className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none"
 								placeholder={t.placeholders.email}
 								required
 							/>
 						</label>
 						<label className="flex flex-col gap-2">
-							<span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+							<span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
 								{t.labels.phone}
 							</span>
 							<input
@@ -417,13 +417,13 @@ const Partners = () => {
 								name="phone"
 								value={formData.phone}
 								onChange={handleInputChange}
-								className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
+								className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none"
 								placeholder={t.placeholders.phone}
 								required
 							/>
 						</label>
 						<label className="md:col-span-2 flex flex-col gap-2">
-							<span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+							<span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
 								{t.labels.location}
 							</span>
 							<input
@@ -431,7 +431,7 @@ const Partners = () => {
 								name="location"
 								value={formData.location}
 								onChange={handleInputChange}
-								className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
+								className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none"
 								placeholder={t.placeholders.location}
 								required
 							/>
@@ -439,14 +439,14 @@ const Partners = () => {
 					</div>
 
 					<label className="flex flex-col gap-2">
-						<span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+						<span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
 							{t.labels.offerDetails}
 						</span>
 						<textarea
 							name="offerDetails"
 							value={formData.offerDetails}
 							onChange={handleInputChange}
-							className="glass border border-white/10 rounded-2xl px-4 py-3 min-h-[140px] bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
+							className="glass border border-slate-300 rounded-2xl px-4 py-3 min-h-[140px] bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none"
 							placeholder={t.placeholders.offerDetails}
 							required
 						></textarea>
@@ -454,7 +454,7 @@ const Partners = () => {
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<label className="flex flex-col gap-2">
-							<span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+							<span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
 								{t.labels.duration}
 							</span>
 							<input
@@ -462,12 +462,12 @@ const Partners = () => {
 								name="duration"
 								value={formData.duration}
 								onChange={handleInputChange}
-								className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
+								className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none"
 								placeholder={t.placeholders.duration}
 							/>
 						</label>
 						<label className="flex flex-col gap-2">
-							<span className={`text-xs uppercase tracking-wide text-white/60 ${isHindi ? "font-devanagari" : ""}`}>
+							<span className={`text-xs uppercase tracking-wide text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>
 								{t.labels.capacity}
 							</span>
 							<input
@@ -475,7 +475,7 @@ const Partners = () => {
 								name="capacity"
 								value={formData.capacity}
 								onChange={handleInputChange}
-								className="glass border border-white/10 rounded-xl px-4 py-3 bg-white/5 text-white placeholder:text-white/40 focus:border-amber-200 focus:outline-none"
+								className="glass border border-slate-300 rounded-xl px-4 py-3 bg-white/80 text-slate-800 placeholder:text-slate-400 focus:border-amber-200 focus:outline-none"
 								placeholder={t.placeholders.capacity}
 							/>
 						</label>
@@ -486,7 +486,7 @@ const Partners = () => {
   className={`w-full rounded-2xl px-6 py-3 font-semibold text-base transition focus:outline-none ${
     isReadyToSubmit && !submitting
       ? "accent-gradient text-[#0b1411]"
-      : "bg-white/10 text-white/40 cursor-not-allowed"
+      : "bg-white/90 text-slate-400 cursor-not-allowed"
   }`}
   disabled={!isReadyToSubmit || submitting}
 >

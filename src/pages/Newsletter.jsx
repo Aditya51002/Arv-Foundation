@@ -14,7 +14,7 @@ const Newsletter = () => {
         <SectionHeading title={isHindi ? "समाचार और पत्र" : "News & Letter"} />
       </div>
 
-      <p className="text-white/80 mb-6">
+      <p className="text-slate-700 mb-6">
         {isHindi
           ? "ARV Foundation की नवीनतम गतिविधियों, प्रभाव कहानियों, सफलता की झलकियों और आगामी कार्यक्रमों से अपडेट रहें।"
           : "Stay updated with ARV Foundation's latest activities, impact stories, success highlights, and upcoming events."}
@@ -24,7 +24,7 @@ const Newsletter = () => {
         {placeholders.map((p) => (
           <div
             key={p.id}
-            className="h-40 rounded-2xl border border-white/8 bg-white/2 flex items-center justify-center text-white/40"
+            className="h-40 rounded-2xl border border-white/8 bg-white/2 flex items-center justify-center text-slate-400"
           >
             <div className="text-center">
               <div className="mb-2 text-sm">{isHindi ? "छवि" : "Image"} {p.id}</div>

@@ -22,6 +22,8 @@ import {
   getContentFields, 
   getContentLabel 
 } from "../../data/contentSlots.js";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const AdminContent = ({ onLogout }) => {
   // State management
@@ -178,34 +180,34 @@ const AdminContent = ({ onLogout }) => {
     >
       {/* Stats Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
-        <div className="glass-card p-3 sm:p-4 border border-white/10 rounded-2xl">
-          <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Total Content</p>
-          <p className="mt-1 text-xl sm:text-2xl font-semibold text-amber-200">{stats.total}</p>
+        <div className="glass-card p-3 sm:p-4 border border-slate-300 rounded-2xl">
+          <p className="text-[10px] sm:text-xs uppercase tracking-wide text-slate-500">Total Content</p>
+          <p className="mt-1 text-xl sm:text-2xl font-semibold text-amber-600">{stats.total}</p>
         </div>
-        <div className="glass-card p-3 sm:p-4 border border-white/10 rounded-2xl">
-          <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Filled</p>
-          <p className="mt-1 text-xl sm:text-2xl font-semibold text-emerald-200">{stats.filled}</p>
+        <div className="glass-card p-3 sm:p-4 border border-slate-300 rounded-2xl">
+          <p className="text-[10px] sm:text-xs uppercase tracking-wide text-slate-500">Filled</p>
+          <p className="mt-1 text-xl sm:text-2xl font-semibold text-emerald-700">{stats.filled}</p>
         </div>
-        <div className="glass-card p-3 sm:p-4 border border-white/10 rounded-2xl">
-          <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Empty</p>
-          <p className="mt-1 text-xl sm:text-2xl font-semibold text-red-200">{stats.empty}</p>
+        <div className="glass-card p-3 sm:p-4 border border-slate-300 rounded-2xl">
+          <p className="text-[10px] sm:text-xs uppercase tracking-wide text-slate-500">Empty</p>
+          <p className="mt-1 text-xl sm:text-2xl font-semibold text-red-600">{stats.empty}</p>
         </div>
-        <div className="glass-card p-3 sm:p-4 border border-white/10 rounded-2xl">
-          <p className="text-[10px] sm:text-xs uppercase tracking-wide text-white/60">Complete</p>
-          <p className="mt-1 text-xl sm:text-2xl font-semibold text-white/90">{stats.percentage}%</p>
+        <div className="glass-card p-3 sm:p-4 border border-slate-300 rounded-2xl">
+          <p className="text-[10px] sm:text-xs uppercase tracking-wide text-slate-500">Complete</p>
+          <p className="mt-1 text-xl sm:text-2xl font-semibold text-slate-800">{stats.percentage}%</p>
         </div>
       </div>
 
       {/* Filters */}
       <div className="space-y-3 sm:space-y-0 sm:flex sm:flex-wrap sm:items-center sm:gap-3 mb-4 sm:mb-6">
         <div className="relative flex-1 min-w-0 sm:max-w-md">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             placeholder="Search content..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-white/5 pl-9 pr-4 py-2.5 sm:py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-400/40 transition"
+            className="w-full rounded-xl border border-slate-300 bg-white/80 pl-9 pr-4 py-2.5 sm:py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-emerald-400/40 transition"
           />
         </div>
         
@@ -213,7 +215,7 @@ const AdminContent = ({ onLogout }) => {
           <select 
             value={selectedPage} 
             onChange={(e) => { setSelectedPage(e.target.value); setSelectedSection(""); }}
-            className="flex-1 sm:flex-none rounded-xl border border-white/10 bg-white/5 px-3 sm:px-4 py-2.5 sm:py-2 text-sm text-white focus:outline-none focus:border-emerald-400/40 transition appearance-none"
+            className="flex-1 sm:flex-none rounded-xl border border-slate-300 bg-white/80 px-3 sm:px-4 py-2.5 sm:py-2 text-sm text-slate-800 focus:outline-none focus:border-emerald-400/40 transition appearance-none"
           >
             <option value="">All Pages</option>
             {pages.map(page => (
@@ -225,7 +227,7 @@ const AdminContent = ({ onLogout }) => {
             <select 
               value={selectedSection} 
               onChange={(e) => setSelectedSection(e.target.value)}
-              className="flex-1 sm:flex-none rounded-xl border border-white/10 bg-white/5 px-3 sm:px-4 py-2.5 sm:py-2 text-sm text-white focus:outline-none focus:border-emerald-400/40 transition appearance-none"
+              className="flex-1 sm:flex-none rounded-xl border border-slate-300 bg-white/80 px-3 sm:px-4 py-2.5 sm:py-2 text-sm text-slate-800 focus:outline-none focus:border-emerald-400/40 transition appearance-none"
             >
               <option value="">All Sections</option>
               {getContentSections(selectedPage).map(section => (
@@ -237,7 +239,7 @@ const AdminContent = ({ onLogout }) => {
           <button
             onClick={() => handleReset(selectedPage || null)}
             disabled={saving}
-            className="inline-flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-xl border border-red-400/30 bg-red-500/10 text-red-200 hover:bg-red-500/20 transition disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-xl border border-red-400/30 bg-red-500/10 text-red-600 hover:bg-red-500/20 transition disabled:opacity-50"
           >
             <RotateCcw size={14} />
             Reset {selectedPage ? selectedPage : "All"}
@@ -251,7 +253,7 @@ const AdminContent = ({ onLogout }) => {
           <Loader2 className="animate-spin text-amber-400" size={32} />
         </div>
       ) : (
-        <div className="glass-card border border-white/10 rounded-2xl overflow-hidden">
+        <div className="glass-card border border-slate-300 rounded-2xl overflow-hidden">
           <div className="max-h-[60vh] sm:max-h-[600px] overflow-y-auto scrollbar-thin">
             {filteredContent.length > 0 ? (
               <div className="divide-y divide-white/5">
@@ -267,24 +269,24 @@ const AdminContent = ({ onLogout }) => {
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <TypeIcon size={14} className="text-white/40 shrink-0" />
-                            <h3 className="text-sm font-semibold text-white/90 truncate">
+                            <TypeIcon size={14} className="text-slate-400 shrink-0" />
+                            <h3 className="text-sm font-semibold text-slate-800 truncate">
                               {label}
                             </h3>
                             {hasContent ? (
                               <CheckCircle size={12} className="text-emerald-400 shrink-0" />
                             ) : (
-                              <AlertCircle size={12} className="text-red-400 shrink-0" />
+                              <AlertCircle size={12} className="text-red-500 shrink-0" />
                             )}
                           </div>
-                          <p className="text-xs text-white/50 mb-2">{key}</p>
-                          <div className="text-sm text-white/70 line-clamp-2">
+                          <p className="text-xs text-slate-500 mb-2">{key}</p>
+                          <div className="text-sm text-slate-600 line-clamp-2">
                             {hasContent ? item.value : "No content set"}
                           </div>
                         </div>
                         <button
                           onClick={() => handleEdit(key)}
-                          className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-xl border border-emerald-400/30 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 transition"
+                          className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-xl border border-emerald-400/30 bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 transition"
                         >
                           <Edit3 size={12} />
                           Edit
@@ -296,8 +298,8 @@ const AdminContent = ({ onLogout }) => {
               </div>
             ) : (
               <div className="py-16 flex flex-col items-center gap-3">
-                <AlertCircle size={32} className="text-white/30" />
-                <p className="text-white/50 text-sm">No content found matching your filters</p>
+                <AlertCircle size={32} className="text-slate-400" />
+                <p className="text-slate-500 text-sm">No content found matching your filters</p>
               </div>
             )}
           </div>
@@ -307,21 +309,21 @@ const AdminContent = ({ onLogout }) => {
       {/* Edit Modal */}
       <AnimatePresence>
         {editModal && (
-          <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm">
+          <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/40 backdrop-blur-sm">
             <motion.div
               initial={{ y: 40, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 40, opacity: 0 }}
-              className="glass-card w-full sm:max-w-2xl max-h-[85vh] overflow-y-auto p-5 sm:p-6 rounded-t-3xl sm:rounded-3xl border border-white/10"
+              className="glass-card w-full sm:max-w-2xl max-h-[85vh] overflow-y-auto p-5 sm:p-6 rounded-t-3xl sm:rounded-3xl border border-slate-300"
             >
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <h3 className="font-bold text-xl text-white mb-1">Edit Content</h3>
-                  <p className="text-sm text-white/60">{editModal.label}</p>
+                  <h3 className="font-bold text-xl text-slate-800 mb-1">Edit Content</h3>
+                  <p className="text-sm text-slate-500">{editModal.label}</p>
                 </div>
                 <button
                   onClick={() => setEditModal(null)}
-                  className="p-1 rounded-lg hover:bg-white/10 transition text-white/60"
+                  className="p-1 rounded-lg hover:bg-white/90 transition text-slate-500"
                 >
                   <X size={20} />
                 </button>
@@ -334,33 +336,31 @@ const AdminContent = ({ onLogout }) => {
                     type="text"
                     value={editModal.value}
                     onChange={(e) => setEditModal(prev => ({ ...prev, value: e.target.value }))}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-400/40 transition"
+                    className="w-full rounded-xl border border-slate-300 bg-white/80 px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-emerald-400/40 transition"
                     placeholder="Enter content..."
                   />
                 ) : (
-                  <textarea
-                    ref={textareaRef}
-                    value={editModal.value}
-                    onChange={(e) => setEditModal(prev => ({ ...prev, value: e.target.value }))}
-                    rows={6}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-400/40 transition resize-none"
-                    placeholder="Enter content..."
-                    style={{ height: 'auto', minHeight: '120px' }}
-                  />
+                  <div className="bg-white/80 rounded-xl border border-slate-300 text-slate-800 [&_.ql-editor]:min-h-[150px] [&_.ql-toolbar]:border-slate-300 [&_.ql-container]:border-slate-300">
+                    <ReactQuill
+                      theme="snow"
+                      value={editModal.value}
+                      onChange={(val) => setEditModal(prev => ({ ...prev, value: val }))}
+                    />
+                  </div>
                 )}
 
                 <div className="flex justify-end gap-3">
                   <button
                     onClick={() => setEditModal(null)}
                     disabled={saving}
-                    className="px-6 py-2 text-sm font-semibold rounded-xl border border-white/15 bg-white/10 text-white/80 hover:bg-white/15 transition disabled:opacity-50"
+                    className="px-6 py-2 text-sm font-semibold rounded-xl border border-slate-300 bg-white/90 text-slate-700 hover:bg-slate-100 transition disabled:opacity-50"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="inline-flex items-center gap-2 px-6 py-2 text-sm font-semibold rounded-xl bg-emerald-500 text-white hover:bg-emerald-600 transition disabled:opacity-50"
+                    className="inline-flex items-center gap-2 px-6 py-2 text-sm font-semibold rounded-xl bg-emerald-500 text-slate-800 hover:bg-emerald-600 transition disabled:opacity-50"
                   >
                     {saving ? (
                       <Loader2 size={14} className="animate-spin" />
@@ -385,8 +385,8 @@ const AdminContent = ({ onLogout }) => {
             exit={{ x: 300, opacity: 0 }}
             className={`fixed bottom-6 right-6 z-50 glass-card border rounded-xl px-5 py-3 text-sm font-medium shadow-lg ${
               toast.type === 'error' 
-                ? 'border-red-400/30 text-red-200' 
-                : 'border-emerald-400/30 text-emerald-200'
+                ? 'border-red-400/30 text-red-600' 
+                : 'border-emerald-400/30 text-emerald-700'
             }`}
           >
             {toast.message}

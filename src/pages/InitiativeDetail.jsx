@@ -44,7 +44,7 @@ const InitiativeDetail = () => {
 
   return (
     <div className="section-shell space-y-8 pb-12">
-      <Link to="/initiatives" className="inline-flex items-center gap-2 text-sm text-amber-200 hover:text-amber-100 transition">
+      <Link to="/initiatives" className="inline-flex items-center gap-2 text-sm text-amber-600 hover:text-amber-100 transition">
         <ArrowLeft size={16} />
         {isHindi ? "सभी पहल" : "All Initiatives"}
       </Link>
@@ -55,17 +55,17 @@ const InitiativeDetail = () => {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="glass-card p-6 md:p-8 border border-white/10 rounded-2xl space-y-5"
+        className="glass-card p-6 md:p-8 border border-slate-300 rounded-2xl space-y-5"
       >
         <div className="flex items-center gap-3 mb-2">
-          <div className="h-12 w-12 rounded-xl bg-white/10 border border-white/10 grid place-items-center text-amber-200">
+          <div className="h-12 w-12 rounded-xl bg-white/90 border border-slate-300 grid place-items-center text-amber-600">
             <Icon size={22} />
           </div>
           <h3 className={`text-2xl font-semibold ${isHindi ? "font-devanagari" : ""}`}>{item.title}</h3>
         </div>
 
         {paragraphs.map((para, i) => (
-          <p key={i} className={`text-sm md:text-base text-white/80 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
+          <p key={i} className={`text-sm md:text-base text-slate-700 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
             {para}
           </p>
         ))}
@@ -76,8 +76,8 @@ const InitiativeDetail = () => {
               key={n}
               className={`aspect-video rounded-xl border ${
                 slotImages[n]
-                  ? "border-white/10 overflow-hidden"
-                  : "border-dashed border-white/20 bg-white/5 grid place-items-center text-white/30"
+                  ? "border-slate-300 overflow-hidden"
+                  : "border-dashed border-slate-400 bg-white/80 grid place-items-center text-slate-400"
               }`}
             >
               {slotImages[n] ? (

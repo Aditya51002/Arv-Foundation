@@ -83,14 +83,14 @@ const StorySection = ({ leftImage = null, rightImage = null, leftLabel = "Before
           className="absolute top-0 bottom-0 -translate-x-1/2 flex items-center justify-center"
           style={{ left: `${pos}%`, width: 28 }}
         >
-          <div className="h-14 w-14 rounded-full bg-white/10 border border-white/20 grid place-items-center shadow-lg">
+          <div className="h-14 w-14 rounded-full bg-white/90 border border-slate-400 grid place-items-center shadow-lg">
             <div className="h-1 w-6 bg-white/40 rounded" />
           </div>
         </div>
 
           {/* Labels inside slider */}
-          <div className="absolute left-4 bottom-4 bg-white/5 px-3 py-1 rounded text-sm">{leftLabel}</div>
-          <div className="absolute right-4 bottom-4 bg-white/5 px-3 py-1 rounded text-sm">{rightLabel}</div>
+          <div className="absolute left-4 bottom-4 bg-white/80 px-3 py-1 rounded text-sm">{leftLabel}</div>
+          <div className="absolute right-4 bottom-4 bg-white/80 px-3 py-1 rounded text-sm">{rightLabel}</div>
         </div>
       </ParallaxSection>
 

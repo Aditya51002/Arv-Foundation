@@ -95,7 +95,7 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
         >
           {/* Blurred backdrop */}
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
             onClick={handleClose}
           />
 
@@ -105,20 +105,20 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 20 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="relative w-full sm:max-w-lg max-h-[90vh] overflow-y-auto glass-card rounded-t-3xl sm:rounded-2xl border border-white/15 p-5 sm:p-6 space-y-5 z-10"
+            className="relative w-full sm:max-w-lg max-h-[90vh] overflow-y-auto glass-card rounded-t-3xl sm:rounded-2xl border border-slate-300 p-5 sm:p-6 space-y-5 z-10"
           >
             {/* Close button */}
             <button
               onClick={handleClose}
-              className="absolute top-4 right-4 text-white/60 hover:text-white transition"
+              className="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition"
             >
               <X size={20} />
             </button>
 
             {/* Header */}
             <div className="space-y-1">
-              <h2 className="text-xl font-semibold text-white">Publish New Drive</h2>
-              <p className="text-sm text-white/60">
+              <h2 className="text-xl font-semibold text-slate-800">Publish New Drive</h2>
+              <p className="text-sm text-slate-500">
                 Fill in the details to announce an ongoing drive on the website.
               </p>
             </div>
@@ -130,18 +130,18 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
                 className="flex flex-col items-center justify-center py-10 space-y-3"
               >
                 <div className="h-16 w-16 rounded-full bg-emerald-400/20 border border-emerald-400/30 grid place-items-center">
-                  <svg className="h-8 w-8 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <p className="text-lg font-semibold text-emerald-200">Drive Published!</p>
-                <p className="text-sm text-white/60">Visitors will now see this announcement.</p>
+                <p className="text-lg font-semibold text-emerald-700">Drive Published!</p>
+                <p className="text-sm text-slate-500">Visitors will now see this announcement.</p>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Drive Type */}
                 <div className="space-y-1.5">
-                  <label className="text-sm text-white/70 flex items-center gap-2">
+                  <label className="text-sm text-slate-600 flex items-center gap-2">
                     <Tag size={14} /> Drive Type
                   </label>
                   <select
@@ -149,13 +149,13 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
                     value={form.category}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition appearance-none cursor-pointer"
+                    className="w-full rounded-lg border border-slate-300 bg-white/80 px-4 py-2.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition appearance-none cursor-pointer"
                   >
-                    <option value="" disabled className="bg-neutral-900 text-white/50">
+                    <option value="" disabled className="bg-neutral-900 text-slate-500">
                       Select drive type...
                     </option>
                     {DRIVE_CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat} className="bg-neutral-900 text-white">
+                      <option key={cat} value={cat} className="bg-neutral-900 text-slate-800">
                         {cat}
                       </option>
                     ))}
@@ -164,7 +164,7 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
 
                 {/* Location */}
                 <div className="space-y-1.5">
-                  <label className="text-sm text-white/70 flex items-center gap-2">
+                  <label className="text-sm text-slate-600 flex items-center gap-2">
                     <MapPin size={14} /> Location
                   </label>
                   <input
@@ -174,13 +174,13 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
                     onChange={handleChange}
                     required
                     placeholder="e.g. Civil Lines, Prayagraj"
-                    className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition"
+                    className="w-full rounded-lg border border-slate-300 bg-white/80 px-4 py-2.5 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition"
                   />
                 </div>
 
                 {/* Date & Time */}
                 <div className="space-y-1.5">
-                  <label className="text-sm text-white/70 flex items-center gap-2">
+                  <label className="text-sm text-slate-600 flex items-center gap-2">
                     <Clock size={14} /> Date & Time
                   </label>
                   <input
@@ -189,13 +189,13 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
                     value={form.dateTime}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition [color-scheme:dark]"
+                    className="w-full rounded-lg border border-slate-300 bg-white/80 px-4 py-2.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition [color-scheme:dark]"
                   />
                 </div>
 
                 {/* Description */}
                 <div className="space-y-1.5">
-                  <label className="text-sm text-white/70 flex items-center gap-2">
+                  <label className="text-sm text-slate-600 flex items-center gap-2">
                     <FileText size={14} /> Drive Description
                   </label>
                   <textarea
@@ -205,13 +205,13 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
                     required
                     rows={3}
                     placeholder="Describe the drive, its purpose, and how people can participate..."
-                    className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition resize-none"
+                    className="w-full rounded-lg border border-slate-300 bg-white/80 px-4 py-2.5 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300/50 transition resize-none"
                   />
                 </div>
 
                 {/* Image Upload */}
                 <div className="space-y-1.5">
-                  <label className="text-sm text-white/70 flex items-center gap-2">
+                  <label className="text-sm text-slate-600 flex items-center gap-2">
                     <ImageIcon size={14} /> Upload Image
                   </label>
                   <input
@@ -223,7 +223,7 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
                   />
                   <div
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full rounded-lg border border-dashed border-white/20 bg-white/5 p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-white/10 transition min-h-[100px]"
+                    className="w-full rounded-lg border border-dashed border-slate-400 bg-white/80 p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-white/90 transition min-h-[100px]"
                   >
                     {imagePreview ? (
                       <img
@@ -233,8 +233,8 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
                       />
                     ) : (
                       <>
-                        <Upload size={24} className="text-white/40" />
-                        <p className="text-sm text-white/50">Click to upload an image</p>
+                        <Upload size={24} className="text-slate-400" />
+                        <p className="text-sm text-slate-500">Click to upload an image</p>
                       </>
                     )}
                   </div>
