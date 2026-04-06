@@ -4,11 +4,7 @@
 // Content is stored in JSON files for easy editing and backup
 // ==========================================================
 
-const fs = require('fs').promises;
-const path = require('path');
-
-// Content storage file
-const CONTENT_FILE = path.join(__dirname, '../data/content.json');
+const Content = require("../models/Content");
 
 // Default content from the original data files
 const DEFAULT_CONTENT = {
@@ -348,36 +344,18 @@ const DEFAULT_CONTENT = {
   },
 };
 
-// Initialize content file if it doesn't exist
-const initializeContentFile = async () => {
-  try {
-    await fs.access(CONTENT_FILE);
-  } catch (error) {
-    // File doesn't exist, create it with default content
-    await fs.writeFile(CONTENT_FILE, JSON.stringify(DEFAULT_CONTENT, null, 2));
-    console.log('Content file initialized with default data');
-  }
-};
+// ========== DATABASE INITIALIZATION HELPER ==========
 
-// Read content from file
-const readContentFile = async () => {
-  try {
-    await initializeContentFile();
-    const data = await fs.readFile(CONTENT_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error reading content file:', error);
-    return DEFAULT_CONTENT;
-  }
-};
-
-// Write content to file
-const writeContentFile = async (content) => {
-  try {
-    await fs.writeFile(CONTENT_FILE, JSON.stringify(content, null, 2));
-  } catch (error) {
-    console.error('Error writing content file:', error);
-    throw new Error('Failed to save content');
+const initializeDatabaseIfEmpty = async () => {
+  const count = await Content.countDocuments();
+  if (count === 0) {
+    const docsToInsert = Object.entries(DEFAULT_CONTENT).map(([key, data]) => ({
+      key,
+      value: data.value,
+      type: data.type
+    }));
+    await Content.insertMany(docsToInsert);
+    console.log('Content database seeded with default data');
   }
 };
 
@@ -386,10 +364,22 @@ const writeContentFile = async (content) => {
 // GET /api/admin/content
 const getAllContent = async (req, res) => {
   try {
-    const content = await readContentFile();
+    await initializeDatabaseIfEmpty();
+    const allDocs = await Content.find({});
+
+    // Map array into a dictionary object expecting the exact identical structure of the legacy JSON
+    const contentPayload = {};
+    for (let doc of allDocs) {
+      contentPayload[doc.key] = {
+        value: doc.value,
+        type: doc.type,
+        updatedAt: doc.updatedAt
+      };
+    }
+
     res.json({
       success: true,
-      content: content,
+      content: contentPayload,
       message: 'Content retrieved successfully'
     });
   } catch (error) {
@@ -415,16 +405,11 @@ const updateContent = async (req, res) => {
       });
     }
 
-    const content = await readContentFile();
-    
-    // Update the content
-    content[key] = {
-      value: value,
-      type: type,
-      updatedAt: new Date().toISOString()
-    };
-
-    await writeContentFile(content);
+    await Content.findOneAndUpdate(
+      { key: key },
+      { value: value, type: type },
+      { upsert: true, new: true } // Creates it organically if it didn't exist unexpectedly
+    );
 
     res.json({
       success: true,
@@ -453,22 +438,25 @@ const batchUpdateContent = async (req, res) => {
       });
     }
 
-    const content = await readContentFile();
     let updatedCount = 0;
+    const bulkOps = [];
 
-    // Process each update
     for (const update of updates) {
       if (update.contentKey && update.value !== undefined) {
-        content[update.contentKey] = {
-          value: update.value,
-          type: update.type || 'text',
-          updatedAt: new Date().toISOString()
-        };
+        bulkOps.push({
+          updateOne: {
+            filter: { key: update.contentKey },
+            update: { $set: { value: update.value, type: update.type || 'text' } },
+            upsert: true
+          }
+        });
         updatedCount++;
       }
     }
 
-    await writeContentFile(content);
+    if (bulkOps.length > 0) {
+      await Content.bulkWrite(bulkOps);
+    }
 
     res.json({
       success: true,
@@ -492,21 +480,26 @@ const resetContent = async (req, res) => {
     
     if (page) {
       // Reset specific page content
-      const content = await readContentFile();
       const pagePrefix = `${page}:`;
-      
       let resetCount = 0;
+      const bulkOps = [];
+
       for (const [key, defaultValue] of Object.entries(DEFAULT_CONTENT)) {
         if (key.startsWith(pagePrefix)) {
-          content[key] = {
-            ...defaultValue,
-            updatedAt: new Date().toISOString()
-          };
+          bulkOps.push({
+            updateOne: {
+              filter: { key: key },
+              update: { $set: { value: defaultValue.value, type: defaultValue.type } },
+              upsert: true
+            }
+          });
           resetCount++;
         }
       }
 
-      await writeContentFile(content);
+      if (bulkOps.length > 0) {
+        await Content.bulkWrite(bulkOps);
+      }
 
       res.json({
         success: true,
@@ -515,19 +508,14 @@ const resetContent = async (req, res) => {
       });
     } else {
       // Reset all content to defaults
-      const resetContent = { ...DEFAULT_CONTENT };
-      
-      // Update all timestamps
-      for (const key of Object.keys(resetContent)) {
-        resetContent[key].updatedAt = new Date().toISOString();
-      }
-
-      await writeContentFile(resetContent);
+      // Rather than a massive iteration, we wipe the collection and trigger the normal re-seed
+      await Content.deleteMany({});
+      await initializeDatabaseIfEmpty();
 
       res.json({
         success: true,
         message: 'All content reset to defaults',
-        resetCount: Object.keys(resetContent).length
+        resetCount: Object.keys(DEFAULT_CONTENT).length
       });
     }
   } catch (error) {

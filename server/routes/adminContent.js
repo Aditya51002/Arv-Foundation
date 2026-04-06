@@ -24,11 +24,11 @@ router.use(protectAdmin);
 // Get all content data
 router.get('/', getAllContent);
 
-// Update specific content by key
-router.put('/:key', updateContent);
-
 // Batch update content
 router.put('/batch', batchUpdateContent);
+
+// Update specific content by key
+router.put('/:key', updateContent);
 
 // Reset all content to defaults
 router.post('/reset', resetContent);

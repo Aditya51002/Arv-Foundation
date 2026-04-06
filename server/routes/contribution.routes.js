@@ -2,9 +2,22 @@ const express = require("express");
 const router = express.Router();
 const Contribution = require("../models/Contribution");
 const nodemailer = require("nodemailer");
+const { body } = require('express-validator');
+const { validate } = require('../middleware/validate');
+const { formLimiter } = require('../middleware/rateLimiter');
 
 // POST: /api/contributions
-router.post("/", async (req, res) => {
+router.post("/", 
+  formLimiter,
+  [
+    body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 100 }),
+    body('email').isEmail().withMessage('Valid email is required').normalizeEmail(),
+    body('phone').trim().notEmpty().isLength({ max: 20 }),
+    body('message').trim().notEmpty().isLength({ max: 2000 }),
+    body('types').isArray({ min: 1 }).withMessage('At least one contribution type is required')
+  ],
+  validate,
+  async (req, res) => {
   try {
     const { name, email, phone, message, types } = req.body;
 
@@ -106,13 +119,17 @@ router.post("/", async (req, res) => {
       `
     };
 
-    // 5. Execute Emails
-    await transporter.sendMail(adminMailOptions);
-    await transporter.sendMail(donorMailOptions);
+    // 5. Execute Emails (Non-fatal if SMTP fails)
+    try {
+      await transporter.sendMail(adminMailOptions);
+      await transporter.sendMail(donorMailOptions);
+    } catch (mailErr) {
+      console.warn("Mail dispatch failed, but contribution was saved:", mailErr.message);
+    }
 
     res.status(201).json({ 
       success: true, 
-      message: "Contribution recorded and emails dispatched successfully." 
+      message: "Contribution recorded successfully." 
     });
 
   } catch (err) {

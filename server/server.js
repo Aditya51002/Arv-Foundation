@@ -61,6 +61,10 @@ async function connectToMongo() {
 
 connectToMongo();
 
+// Global Rate Limiting for all APIs
+const { apiLimiter } = require('./middleware/rateLimiter');
+app.use("/api", apiLimiter);
+
 // Routes
 app.use("/api/admin/images", require("./routes/adminImageRoutes"));
 app.use("/api/images", require("./routes/imageRoutes"));

@@ -24,9 +24,13 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    
+    // Save raw file for Submission
+    setForm((prev) => ({ ...prev, image: file }));
+
+    // Preview via reader
     const reader = new FileReader();
     reader.onloadend = () => {
-      setForm((prev) => ({ ...prev, image: reader.result }));
       setImagePreview(reader.result);
     };
     reader.readAsDataURL(file);
@@ -40,13 +44,21 @@ const AddDriveModal = ({ open, onClose, onPublished }) => {
       // CHANGED: Use adminToken to match Login logic
       const token = localStorage.getItem("adminToken");
 
-      const res = await fetch(`${API_URL}/api/drives`, {
+      const formData = new FormData();
+      formData.append("category", form.category);
+      formData.append("location", form.location);
+      formData.append("description", form.description);
+      formData.append("dateTime", form.dateTime);
+      if (form.image) {
+        formData.append("image", form.image);
+      }
+
+      const res = await fetch(`${API_URL}/api/admin/drives`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify(form)
+        body: formData
       });
 
       const data = await res.json();

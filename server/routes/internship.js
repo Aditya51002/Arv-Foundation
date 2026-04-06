@@ -1,29 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
 const nodemailer = require("nodemailer");
-const cloudinary = require("cloudinary").v2;
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const InternshipApplication = require("../models/InternshipApplication");
+const { uploadResume } = require("../middleware/uploadMiddleware");
+const { body } = require('express-validator');
+const { validate } = require('../middleware/validate');
+const { formLimiter } = require('../middleware/rateLimiter');
 
-// 1. Cloudinary Config
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// 2. Cloudinary Storage (Replaces diskStorage)
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: "internship_resumes",
-    allowed_formats: ["pdf", "doc", "docx"],
-    resource_type: "raw", // MUST be "raw" for PDFs
-  },
-});
-
-const upload = multer({ storage });
 console.log("Email User:", process.env.EMAIL_USER);
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -40,7 +23,21 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-router.post("/apply", upload.single("resume"), async (req, res) => {
+router.post("/apply", 
+  formLimiter,
+  uploadResume.single("resume"), 
+  [
+    body('fullName').trim().notEmpty().isLength({ max: 100 }),
+    body('email').isEmail().normalizeEmail(),
+    body('phone').trim().notEmpty().isLength({ max: 20 }),
+    body('city').trim().notEmpty().isLength({ max: 100 }),
+    body('college').trim().notEmpty().isLength({ max: 150 }),
+    body('fieldOfStudy').trim().notEmpty().isLength({ max: 150 }),
+    // areasOfInterest is a JSON string because it's multipart/form-data
+    body('areasOfInterest').trim().notEmpty().isLength({ max: 1000 })
+  ],
+  validate,
+  async (req, res) => {
   try {
     const resumeUrl = req.file ? req.file.path : null;
     const newApplication = new InternshipApplication({
@@ -50,24 +47,28 @@ router.post("/apply", upload.single("resume"), async (req, res) => {
     });
 
     await newApplication.save();
-    // Notify Applicant
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: newApplication.email,
-      subject: "Application Received - ARV Foundation",
-      html: `<p>Hi ${newApplication.fullName}, we have received your application. We will review your resume (<a href="${resumeUrl}">link</a>) soon.</p>`,
-    });
-    await transporter.sendMail({
-  from: process.env.EMAIL_USER,
-  to: process.env.EMAIL_USER, // Or the client's office email
-  subject: "New Internship Applicant!",
-  html: `
-    <h3>New Application Received</h3>
-    <p><strong>Name:</strong> ${newApplication.fullName}</p>
-    <p><strong>Email:</strong> ${newApplication.email}</p>
-    <p><strong>Resume:</strong> <a href="${resumeUrl}">Click here to view PDF</a></p>
-  `,
-});
+    // Notify Applicant (Non-fatal if SMTP fails)
+    try {
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: newApplication.email,
+        subject: "Application Received - ARV Foundation",
+        html: `<p>Hi ${newApplication.fullName}, we have received your application. We will review your resume (<a href="${resumeUrl}">link</a>) soon.</p>`,
+      });
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: process.env.EMAIL_USER,
+        subject: "New Internship Applicant!",
+        html: `
+          <h3>New Application Received</h3>
+          <p><strong>Name:</strong> ${newApplication.fullName}</p>
+          <p><strong>Email:</strong> ${newApplication.email}</p>
+          <p><strong>Resume:</strong> <a href="${resumeUrl}">Click here to view PDF</a></p>
+        `,
+      });
+    } catch (mailErr) {
+      console.warn("Mail dispatch failed, but internship application was saved:", mailErr.message);
+    }
     res.status(201).json({ message: "Success" });
   } catch (error) {
     console.error(error);

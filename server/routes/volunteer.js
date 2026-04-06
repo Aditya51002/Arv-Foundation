@@ -2,9 +2,20 @@ const express = require("express");
 const router = express.Router();
 const Volunteer = require("../models/Volunteer");
 const nodemailer = require("nodemailer");
+const { body } = require('express-validator');
+const { validate } = require('../middleware/validate');
+const { formLimiter } = require('../middleware/rateLimiter');
 
 // POST /api/volunteer
-router.post("/", async (req, res) => {
+router.post("/", 
+  formLimiter,
+  [
+    body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 100 }),
+    body('email').isEmail().withMessage('Valid email is required').normalizeEmail(),
+    body('message').optional().trim().isLength({ max: 1000 })
+  ],
+  validate,
+  async (req, res) => {
   try {
     const { name, email, message } = req.body;
 
@@ -87,11 +98,15 @@ router.post("/", async (req, res) => {
       `,
     };
 
-    // 7. Send Emails
-    await transporter.sendMail(adminMailOptions);
-    await transporter.sendMail(welcomeMailOptions);
+    // 7. Send Emails (Non-fatal if email configuration fails)
+    try {
+      await transporter.sendMail(adminMailOptions);
+      await transporter.sendMail(welcomeMailOptions);
+    } catch (mailErr) {
+      console.warn("Mail dispatch failed, but submission was saved:", mailErr.message);
+    }
 
-    res.status(201).json({ message: "Volunteer submitted successfully and emails sent." });
+    res.status(201).json({ message: "Volunteer submitted successfully." });
   } catch (err) {
     console.error("Volunteer Error:", err);
     res.status(500).json({ message: "Server Error" });

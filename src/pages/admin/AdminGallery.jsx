@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, X, Trash2, MapPin, Loader2, Unlink } from "lucide-react";
 import AdminLayout from "../../components/AdminLayout.jsx";
@@ -7,7 +7,7 @@ import AdminLayout from "../../components/AdminLayout.jsx";
 import { fetchAllImages, uploadImages, deleteImage, assignImagePlacement } from "../../utils/imageApi.js";
 import { getPages, getSections, getSlots, makePlacementKey, getSlotLabel } from "../../data/imageSlots.js";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB limit
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB limit
 
 const AdminGallery = ({ onLogout }) => {
     const [images, setImages] = useState([]);
@@ -39,35 +39,37 @@ const AdminGallery = ({ onLogout }) => {
         if (!files || files.length === 0) return;
         
         const validFiles = Array.from(files).filter(file => file.size <= MAX_FILE_SIZE);
-        if (validFiles.length === 0) return alert("Files must be under 10MB");
+        if (validFiles.length === 0) return alert("Files must be under 5MB");
+		if (!files || files.length === 0) return;
+		setUploading(true);
 
-        setUploading(true);
-        try {
-            const imageDataPromises = validFiles.map(file => {
-                return new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                        resolve({
-                            url: reader.result, // Base64 for the API
-                            filename: file.name,
-                            size: file.size,
-                            title: file.name.replace(/\.[^/.]+$/, "")
-                        });
-                    };
-                    reader.readAsDataURL(file);
-                });
-            });
+		try {
+			const formData = new FormData();
+			Array.from(files).forEach((file) => {
+				formData.append("images", file);
+			});
 
-            const imageDataArray = await Promise.all(imageDataPromises);
-            await uploadImages(imageDataArray); 
-            setUploadModal(false);
-            await loadImages();
-        } catch (err) {
-            alert("Upload failed: " + err.message);
-        } finally {
-            setUploading(false);
-        }
-    };
+      // Directly hit the uploadImages via API to preserve FormData
+      const token = localStorage.getItem("adminToken");
+      const res = await fetch("http://localhost:5000/api/admin/images", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Upload failed");
+
+			setUploadModal(false);
+			await loadImages();
+		} catch (err) {
+			console.error("Upload failed:", err);
+			alert("Failed to upload images. Make sure the server is running.");
+		} finally {
+			setUploading(false);
+		}
+	};
 
     const handleAssignPlacement = async () => {
         if (!placementModal?._id || !selectedPage || !selectedSection || !selectedSlot) {
@@ -168,7 +170,7 @@ const AdminGallery = ({ onLogout }) => {
                                 <p className="text-sm text-slate-500 font-medium">
                                     {uploading ? "Uploading to Server..." : "Click to browse images"}
                                 </p>
-                                <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest">Max 10MB per file</p>
+                                <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest">Max 5MB per file</p>
                             </div>
                         </motion.div>
                     </div>

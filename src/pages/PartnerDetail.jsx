@@ -93,9 +93,9 @@ const PartnerDetail = () => {
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				{[0, 1, 2].map((index) => (
 					<div key={index} className="glass-card p-4 rounded-2xl border border-slate-300">
-						<div className="aspect-video bg-white/90 rounded-lg flex items-center justify-center overflow-hidden">
+						<div className="relative aspect-video bg-white/90 rounded-lg flex items-center justify-center overflow-hidden">
 							{slotImages[index] ? (
-								<img src={slotImages[index]} alt={`${partner.title} ${index + 1}`} className="w-full h-full object-cover" />
+								<img src={slotImages[index]} alt={`${partner.title} ${index + 1}`} className="absolute inset-0 w-full h-full object-cover" />
 							) : (
 								<ImagePlus size={28} className="text-slate-400" />
 							)}

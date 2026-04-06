@@ -53,10 +53,10 @@ const AboutImages = ({ section }) => {
       {[0, 1, 2].map((n) => (
         <div
           key={n}
-          className="aspect-square rounded-xl border border-dashed border-slate-400 bg-white/80 grid place-items-center text-slate-400 overflow-hidden"
+          className="relative aspect-square rounded-xl border border-dashed border-slate-400 bg-white/80 grid place-items-center text-slate-400 overflow-hidden"
         >
           {slotImages[n] ? (
-            <img src={slotImages[n]} alt={`${section} ${n + 1}`} className="w-full h-full object-cover" />
+            <img src={slotImages[n]} alt={`${section} ${n + 1}`} className="absolute inset-0 w-full h-full object-cover" />
           ) : (
             <ImagePlus size={24} />
           )}

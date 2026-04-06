@@ -38,7 +38,7 @@ const Gallery = () => {
                     <motion.div key={img._id} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
                         className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group bg-neutral-900 border border-slate-300"
                     >
-                        <img src={img.url} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="" />
+                        <img src={img.url} className="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="" />
                         
                         {/* THE FIX: Removed opacity-0 so text shows EVERYTIME */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent flex flex-col justify-end p-4">

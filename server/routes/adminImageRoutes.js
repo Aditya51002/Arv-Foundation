@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Image = require("../models/Image");
 const protectAdmin = require("../middleware/adminMiddleware");
+const { uploadImage } = require("../middleware/uploadMiddleware");
 
 // GET all images (admin)
 router.get("/", protectAdmin, async (req, res) => {
@@ -14,12 +15,22 @@ router.get("/", protectAdmin, async (req, res) => {
 });
 
 // POST upload images
-// In routes/adminImageRoutes.js
-router.post("/", protectAdmin, async (req, res) => {
+router.post("/", protectAdmin, uploadImage.array("images", 20), async (req, res) => {
   try {
-    // Access the 'images' array from the wrapper object sent by the frontend
-    const images = await Image.insertMany(req.body.images);
-    res.status(201).json(images);
+    if (!req.files || req.files.length === 0) {
+       return res.status(400).json({ message: "No images provided" });
+    }
+    
+    // Map uploaded multer files (Cloudinary urls) to our Document structure
+    const imageDocs = req.files.map(file => ({
+      url: file.path, 
+      filename: file.filename, // public_id from Cloudinary
+      size: file.size,
+      title: file.originalname.replace(/\.[^/.]+$/, ""),
+    }));
+
+    const savedImages = await Image.insertMany(imageDocs);
+    res.status(201).json(savedImages);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

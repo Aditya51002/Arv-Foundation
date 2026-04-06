@@ -254,6 +254,13 @@ const Services = () => {
 
   const handleResumeChange = (event) => {
     const file = event.target.files?.[0];
+    
+    // Add 1MB limit check
+    if (file && file.size > 1 * 1024 * 1024) {
+      alert("Resume file must be under 1MB.");
+      event.target.value = ""; // Clear the input
+      return;
+    }
 
     setInternshipFormData((prev) => ({
       ...prev,
@@ -690,6 +697,7 @@ const Services = () => {
                     </span>
                   )}
                 </div>
+                <p className="text-[10px] text-slate-400 mx-1 mt-1 transition">Max file size: 1MB</p>
               </label>
 
               {submitAttempted && (

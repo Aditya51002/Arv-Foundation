@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Drive = require("../models/Drive");
 const protectAdmin = require("../middleware/adminMiddleware");
+const { uploadImage } = require("../middleware/uploadMiddleware");
 
 // ─────────────────────────────
 // 🔓 PUBLIC ROUTES (No Token)
@@ -51,10 +52,14 @@ router.get("/", protectAdmin, async (req, res) => {
 /** * @desc Create a new drive
  * Access: POST /api/admin/drives/
  */
-router.post("/", protectAdmin, async (req, res) => {
+router.post("/", protectAdmin, uploadImage.single("image"), async (req, res) => {
   try {
     const drive = new Drive({
-      ...req.body,
+      category: req.body.category,
+      location: req.body.location,
+      description: req.body.description,
+      dateTime: req.body.dateTime,
+      image: req.file ? req.file.path : null, // Cloudinary URL
       createdBy: req.adminId // From protectAdmin middleware
     });
     await drive.save();

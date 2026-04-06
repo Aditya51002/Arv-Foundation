@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-
 const protectUser = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -11,7 +10,9 @@ const protectUser = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.user; // contains { id: ... } from login
+    // Support both Normal User tokens ({ user: {id} }) and Admin tokens ({ id, role })
+    req.user = decoded.user || { id: decoded.id, role: decoded.role }; 
+    if (!req.user || !req.user.id) throw new Error("Invalid payload format");
     next();
   } catch (err) {
     return res.status(401).json({ message: "Invalid or expired token" });

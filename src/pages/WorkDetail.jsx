@@ -248,14 +248,14 @@ const WorkDetail = () => {
           {[0, 1, 2].map((n) => (
             <div
               key={n}
-              className={`aspect-video rounded-xl border ${
+              className={`relative aspect-video rounded-xl border ${
                 slotImages[n]
                   ? "border-slate-300 overflow-hidden"
                   : "border-dashed border-slate-400 bg-white/80 grid place-items-center text-slate-400"
               }`}
             >
               {slotImages[n] ? (
-                <img src={slotImages[n]} alt={`${pageContent.heading} ${n + 1}`} className="w-full h-full object-cover" />
+                <img src={slotImages[n]} alt={`${pageContent.heading} ${n + 1}`} className="absolute inset-0 w-full h-full object-cover" />
               ) : (
                 <ImagePlus size={28} />
               )}
