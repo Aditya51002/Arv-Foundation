@@ -4,7 +4,7 @@ const path = require("path");
 const jwt = require("jsonwebtoken");
 
 const BASE_URL = process.env.API_BASE_URL || "http://localhost:5000";
-const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey123";
+const JWT_SECRET = process.env.JWT_SECRET || "test-only-jwt-secret-change-me";
 
 const ASSETS_DIR = path.join(__dirname, "..", "tmp_test_assets");
 const IMAGE_PATH = path.join(ASSETS_DIR, "test.png");
