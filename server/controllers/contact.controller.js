@@ -2,13 +2,13 @@ const Contact = require("../models/Contact");
 const nodemailer = require("nodemailer");
 
 const sendWelcomeEmail = async (email, name) => {
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) return;
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) return;
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
     await transporter.sendMail({

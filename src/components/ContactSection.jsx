@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { Mail, Phone, MessageCircle } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
-import { useState } from "react"; // ✅ added
-
+import { useState } from "react";
+import { API_URL } from "../config";
 const ContactSection = () => {
   const { t, lang } = useLanguage();
   const form = t.contact.form;
@@ -35,7 +35,7 @@ const ContactSection = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/contact", {
+      const res = await fetch(`${API_URL}/api/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

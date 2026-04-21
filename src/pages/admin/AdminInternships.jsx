@@ -1,4 +1,4 @@
-﻿// ==========================================================
+// ==========================================================
 // ADMIN API ENDPOINTS
 // GET    /api/admin/internships        - Fetch all applications
 // DELETE /api/admin/internships/:id    - Delete an application
@@ -43,7 +43,7 @@ const AdminInternships = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("adminToken");
-        const res = await fetch(`http://localhost:5000/api/admin/internships`, {
+        const res = await fetch(`${API_URL}/api/admin/internships`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -70,20 +70,25 @@ const AdminInternships = () => {
   const confirmDelete = (id) => setDeleteTarget(id);
   const cancelDelete = () => setDeleteTarget(null);
 
-  const handleDeleteInternship = (id) => {
-    // ================= BACKEND INTEGRATION =================
-    // DELETE /api/admin/internships/:id
-    // const token = localStorage.getItem("adminToken");
-    // await fetch(`${API_URL}/api/admin/internships/${id}`, {
-    //   method: "DELETE",
-    //   headers: { Authorization: `Bearer ${token}` },
-    // });
-    // =======================================================
+  const handleDeleteInternship = async (id) => {
+    try {
+      const token = localStorage.getItem("adminToken");
+      const res = await fetch(`${API_URL}/api/admin/internships/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    // Temporary UI removal
-    setInternships((prev) => prev.filter((item) => item._id !== id));
-    setDeleteTarget(null);
-    showToast("Application deleted successfully.");
+      if (!res.ok) {
+        throw new Error("Failed to delete application on server");
+      }
+
+      setInternships((prev) => prev.filter((item) => item._id !== id));
+      setDeleteTarget(null);
+      showToast("Application deleted successfully.");
+    } catch (err) {
+      showToast(err.message || "An error occurred while deleting.");
+      setDeleteTarget(null);
+    }
   };
 
   // ---------- Toast ----------

@@ -3,6 +3,7 @@ import { useLanguage } from "../context/LanguageContext.jsx";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Mail, Lock, User, Eye, EyeOff, Phone } from "lucide-react";
+import { API_URL } from '../config';
 import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
@@ -19,9 +20,11 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/auth/signup', {
+            const response = await fetch(`${API_URL}/api/auth/signup`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(form)
             });
             const data = await response.json();

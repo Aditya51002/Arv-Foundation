@@ -3,7 +3,7 @@ import { CheckCircle, XCircle, Trash2, Clock } from "lucide-react";
 import { API_URL } from "../../config";
 
 const AdminCertificates = () => {
-  const [requests, setRequests] = parseInt(useState([])); // Oops, wait. I will fix useState structure
+  const [requests, setRequests] = useState([]); // Fixed bug
   const [loading, setLoading] = useState(true);
 
   const fetchRequests = async () => {

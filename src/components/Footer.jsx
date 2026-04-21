@@ -35,7 +35,7 @@ const Footer = () => {
       <div className="mx-auto max-w-7xl px-6 py-6">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
 
-          {/* Brand & About */}
+        {/* Brand & About */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold text-slate-800 tracking-wide">ARV Foundation</h3>
             <p className="text-sm leading-relaxed text-slate-500">
@@ -43,6 +43,31 @@ const Footer = () => {
                 ? "शिक्षा, स्वास्थ्य, भोजन, आश्रय और पर्यावरण पहलों के माध्यम से वंचित समुदायों के उत्थान के लिए समर्पित।"
                 : "Dedicated to uplifting underprivileged communities through education, healthcare, food, shelter & environmental initiatives."}
             </p>
+
+            <form
+                className="mt-4 flex max-w-sm items-center gap-1 overflow-hidden rounded-full border border-slate-300 bg-white/80 p-1 pl-4 drop-shadow-sm focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400 transition"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  // Minimal redirect to newsletter page holding email
+                  const formData = new FormData(e.currentTarget);
+                  window.location.href = `/newsletter?email=${encodeURIComponent(formData.get("email"))}`;
+                }}
+              >
+                <input
+                  type="email"
+                  name="email"
+                  placeholder={isHindi ? "न्यूज़लेटर की सदस्यता लें..." : "Subscribe to newsletter..."}
+                  required
+                  className="w-full bg-transparent text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="rounded-full bg-slate-800 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-emerald-600"
+                >
+                  {isHindi ? "शामिल हों" : "Join"}
+                </button>
+              </form>
+
             {/* Social icons */}
             <div className="flex gap-3 pt-2">
               {socialLinks.map(({ icon: Icon, href, label }) => (

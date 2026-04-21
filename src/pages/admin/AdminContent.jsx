@@ -22,8 +22,7 @@ import {
   getContentFields, 
   getContentLabel 
 } from "../../data/contentSlots.js";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+
 
 const AdminContent = ({ onLogout }) => {
   // State management
@@ -340,13 +339,12 @@ const AdminContent = ({ onLogout }) => {
                     placeholder="Enter content..."
                   />
                 ) : (
-                  <div className="bg-white/80 rounded-xl border border-slate-300 text-slate-800 [&_.ql-editor]:min-h-[150px] [&_.ql-toolbar]:border-slate-300 [&_.ql-container]:border-slate-300">
-                    <ReactQuill
-                      theme="snow"
-                      value={editModal.value}
-                      onChange={(val) => setEditModal(prev => ({ ...prev, value: val }))}
-                    />
-                  </div>
+                  <textarea
+                    value={editModal.value}
+                    onChange={(e) => setEditModal(prev => ({ ...prev, value: e.target.value }))}
+                    rows={8}
+                    className="w-full rounded-xl border border-slate-300 bg-white/80 px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-emerald-400/40 transition"
+                  />
                 )}
 
                 <div className="flex justify-end gap-3">

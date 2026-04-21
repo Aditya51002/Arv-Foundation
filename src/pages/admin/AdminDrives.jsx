@@ -1,6 +1,7 @@
-﻿import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { logoutAdmin } from "../../utils/adminAuth.js";
+import { API_URL } from "../../config.js";
 import AdminLayout from "../../components/AdminLayout.jsx";
 import AddDriveModal from "../../components/AddDriveModal.jsx";
 import { MapPin, Clock, Trash2, ToggleLeft, ToggleRight, Plus } from "lucide-react";
@@ -21,7 +22,7 @@ const AdminDrives = () => {
       // CHANGED: Use adminToken to match Login logic
       const token = localStorage.getItem("adminToken");
 
-      const res = await fetch("http://localhost:5000/api/drives", {
+      const res = await fetch(`${API_URL}/api/drives`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -53,7 +54,7 @@ const AdminDrives = () => {
     try {
       // CHANGED: Use adminToken
       const token = localStorage.getItem("adminToken");
-      const res = await fetch(`http://localhost:5000/api/drives/${id}`, {
+      const res = await fetch(`${API_URL}/api/drives/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -73,7 +74,7 @@ const AdminDrives = () => {
     try {
       // CHANGED: Use adminToken
       const token = localStorage.getItem("adminToken");
-      const res = await fetch(`http://localhost:5000/api/drives/toggle/${id}`, {
+      const res = await fetch(`${API_URL}/api/drives/toggle/${id}`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
       });

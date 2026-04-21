@@ -1,4 +1,4 @@
-﻿const express = require("express");
+const express = require("express");
 const router = express.Router();
 const InternshipApplication = require("../models/InternshipApplication");
 const protectAdmin = require("../middleware/adminMiddleware");
@@ -32,6 +32,21 @@ router.get("/", protectAdmin, async (_req, res) => {
   } catch (err) {
     return res.status(500).json({
       message: err.message || "Failed to fetch internship applications",
+    });
+  }
+});
+
+// DELETE /api/admin/internships/:id
+router.delete("/:id", protectAdmin, async (req, res) => {
+  try {
+    const deleted = await InternshipApplication.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ message: "Internship application not found" });
+    }
+    return res.status(200).json({ message: "Internship application deleted successfully" });
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message || "Failed to delete internship application",
     });
   }
 });

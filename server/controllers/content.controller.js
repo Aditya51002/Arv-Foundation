@@ -5,6 +5,7 @@
 // ==========================================================
 
 const Content = require("../models/Content");
+const DOMPurify = require('isomorphic-dompurify');
 
 // Default content from the original data files
 const DEFAULT_CONTENT = {
@@ -396,7 +397,11 @@ const getAllContent = async (req, res) => {
 const updateContent = async (req, res) => {
   try {
     const { key } = req.params;
-    const { value, type = 'text' } = req.body;
+    let { value, type = 'text' } = req.body;
+
+    if (value) {
+      value = DOMPurify.sanitize(value);
+    }
 
     if (!key || value === undefined) {
       return res.status(400).json({
@@ -443,10 +448,11 @@ const batchUpdateContent = async (req, res) => {
 
     for (const update of updates) {
       if (update.contentKey && update.value !== undefined) {
+        const sanitizedValue = DOMPurify.sanitize(update.value);
         bulkOps.push({
           updateOne: {
             filter: { key: update.contentKey },
-            update: { $set: { value: update.value, type: update.type || 'text' } },
+            update: { $set: { value: sanitizedValue, type: update.type || 'text' } },
             upsert: true
           }
         });

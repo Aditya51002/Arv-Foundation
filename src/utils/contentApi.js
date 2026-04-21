@@ -5,7 +5,8 @@
  */
 
 // API base URL - using localhost for development, replace with your server URL
-const API_BASE = "http://localhost:5000";
+import { API_URL } from "../config";
+const API_BASE = API_URL;
 
 /**
  * Fetch all content data from the server

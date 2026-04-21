@@ -59,7 +59,10 @@ router.post('/signup', authLimiter, [
             getSecret(),
             { expiresIn: '1h' },
             (err, token) => {
-                if (err) throw err;
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ message: 'Token generation failed' });
+                }
                 res.status(201).json({ token, user: { id: user.id, username: user.username, email: user.email } });
             }
         );
@@ -106,7 +109,10 @@ router.post('/login', authLimiter, [
             getSecret(),
             { expiresIn: '1h' },
             (err, token) => {
-                if (err) throw err;
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ message: 'Token generation failed' });
+                }
                 res.json({ token, user: { id: user.id, username: user.username, email: user.email } });
             }
         );

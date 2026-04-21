@@ -3,8 +3,15 @@ const router = express.Router();
 const Admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 
+const rateLimit = require("express-rate-limit");
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { message: "Too many login attempts, please try again later" }
+});
+
 // ADMIN LOGIN
-router.post("/login", async (req, res) => {
+router.post("/login", loginLimiter, async (req, res) => {
   try {
     const { email, password } = req.body;
 

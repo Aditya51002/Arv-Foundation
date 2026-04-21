@@ -93,6 +93,8 @@ app.use("/api/admin/contributions", require("./routes/adminContributions"));
 app.use("/api/contributions", require("./routes/contribution.routes"));
 // ADDED: Admin content management API route
 app.use("/api/admin/content", require("./routes/adminContent"));
+app.use("/api/content", require("./routes/publicContent")); // Added public read endpoint
+app.use("/api/newsletter", require("./routes/newsletter")); // Added newsletter route
 app.use("/uploads", express.static("uploads"));
 
 const PORT = process.env.PORT || 5000;

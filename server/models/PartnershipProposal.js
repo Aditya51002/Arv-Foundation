@@ -10,6 +10,7 @@ const partnershipSchema = new mongoose.Schema({
   duration: { type: String },
   capacity: { type: String },
   partnershipTypes: { type: [String], required: true },
+  status: { type: String, enum: ['active', 'inactive'], default: 'active' },
   createdAt: { type: Date, default: Date.now }
 });
 

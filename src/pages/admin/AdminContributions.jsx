@@ -1,4 +1,4 @@
-﻿// ==========================================================
+// ==========================================================
 // ADMIN API ENDPOINTS
 // GET /api/admin/contributions - Fetch all contributions / donations
 // ==========================================================
@@ -41,7 +41,7 @@ const AdminContributions = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("adminToken");
-        const res = await fetch(`http://localhost:5000/api/admin/contributions`, {
+        const res = await fetch(`${API_URL}/api/admin/contributions`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();

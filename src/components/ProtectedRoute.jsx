@@ -4,7 +4,7 @@ const ProtectedRoute = ({ children, role = "user" }) => {
   const location = useLocation();
 
   // Choose token key based on role
-  const tokenKey = role === "admin" ? "adminToken" : "token";
+  const tokenKey = role === "admin" ? "adminToken" : "arv_user_token";
   const token = localStorage.getItem(tokenKey);
 
   if (!token) {

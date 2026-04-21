@@ -1,4 +1,4 @@
-﻿// ==========================================================
+// ==========================================================
 // ADMIN API ENDPOINTS
 // GET   /api/admin/partnerships        - Fetch all partnership requests
 // PATCH /api/admin/partnerships/:id    - Toggle active / inactive status
@@ -42,7 +42,7 @@ const AdminPartnerships = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("adminToken");
-        const res = await fetch(`http://localhost:5000/api/admin/partnerships`, {
+        const res = await fetch(`${API_URL}/api/admin/partnerships`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -65,29 +65,40 @@ const AdminPartnerships = () => {
     navigate("/admin/login", { replace: true });
   };
 
-  // ---------- Toggle Status ----------
-  const handleToggleStatus = (id) => {
+  const handleToggleStatus = async (id) => {
+    const parent = partners.find(p => p._id === id);
+    if (!parent) return;
+    const newStatus = parent.status === "active" ? "inactive" : "active";
+
+    // Optimistic Update
     setPartners((prev) =>
       prev.map((p) =>
-        p._id === id
-          ? { ...p, status: p.status === "active" ? "inactive" : "active" }
-          : p
+        p._id === id ? { ...p, status: newStatus } : p
       )
     );
 
-    // ================= BACKEND INTEGRATION =================
-    // PATCH /api/admin/partnerships/:id
-    // Body: { status: "active" or "inactive" }
-    // const token = localStorage.getItem("adminToken");
-    // await fetch(`${API_URL}/api/admin/partnerships/${id}`, {
-    //   method: "PATCH",
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ status: newStatus }),
-    // });
-    // =======================================================
+    try {
+      const token = localStorage.getItem("adminToken");
+      const res = await fetch(`${API_URL}/api/admin/partnerships/${id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update status on server");
+    } catch (err) {
+      // Revert optimistic update
+      setPartners((prev) =>
+        prev.map((p) =>
+          p._id === id ? { ...p, status: parent.status } : p
+        )
+      );
+      setError("Failed to update status: " + err.message);
+      setTimeout(() => setError(null), 3000);
+    }
   };
 
   // ---------- Search + Filter ----------

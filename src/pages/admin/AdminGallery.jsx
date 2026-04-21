@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, X, Trash2, MapPin, Loader2, Unlink } from "lucide-react";
 import AdminLayout from "../../components/AdminLayout.jsx";
+import { API_URL } from "../../config.js";
 
 // API & Utilities
 import { fetchAllImages, uploadImages, deleteImage, assignImagePlacement } from "../../utils/imageApi.js";
@@ -51,7 +52,7 @@ const AdminGallery = ({ onLogout }) => {
 
       // Directly hit the uploadImages via API to preserve FormData
       const token = localStorage.getItem("adminToken");
-      const res = await fetch("http://localhost:5000/api/admin/images", {
+      const res = await fetch(`${API_URL}/api/admin/images`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
