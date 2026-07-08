@@ -13,7 +13,10 @@ const AdminCertificates = () => {
         headers: { Authorization: `Bearer ${adminToken}` }
       });
       const data = await res.json();
-      setRequests(data);
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to load certificate requests");
+      }
+      setRequests(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -28,7 +31,7 @@ const AdminCertificates = () => {
   const updateStatus = async (id, status) => {
     try {
       const adminToken = localStorage.getItem("adminToken");
-      await fetch(`${API_URL}/api/admin/certificates/${id}/status`, {
+      const res = await fetch(`${API_URL}/api/admin/certificates/${id}/status`, {
         method: "PATCH",
         headers: { 
           "Content-Type": "application/json",
@@ -36,9 +39,15 @@ const AdminCertificates = () => {
         },
         body: JSON.stringify({ status })
       });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to update certificate request");
+      }
+      alert(data.message || "Certificate request updated successfully");
       fetchRequests();
     } catch (err) {
       console.error(err);
+      alert(err.message || "Failed to update certificate request");
     }
   };
 
@@ -46,13 +55,19 @@ const AdminCertificates = () => {
     if (!window.confirm("Are you sure you want to delete this?")) return;
     try {
       const adminToken = localStorage.getItem("adminToken");
-      await fetch(`${API_URL}/api/admin/certificates/${id}`, {
+      const res = await fetch(`${API_URL}/api/admin/certificates/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${adminToken}` }
       });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to delete certificate request");
+      }
+      alert(data.message || "Certificate request deleted successfully");
       fetchRequests();
     } catch (err) {
       console.error(err);
+      alert(err.message || "Failed to delete certificate request");
     }
   };
 

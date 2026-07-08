@@ -236,8 +236,10 @@ const Partners = () => {
       body: JSON.stringify(payload),
     });
 
+    const data = await response.json();
+
     if (response.ok) {
-      alert("✅ Partnership proposal submitted successfully!");
+      alert(data.message || "Partnership proposal submitted successfully!");
       // Reset form
       setFormData({
         organizationName: "",
@@ -251,12 +253,11 @@ const Partners = () => {
       });
       setSelectedCategories([]);
     } else {
-      const error = await response.json();
-      alert("❌ Submission failed: " + error.message);
+      alert("Submission failed: " + (data.message || "Please check the form and try again."));
     }
   } catch (err) {
     console.error(err);
-    alert("❌ Something went wrong. Please try again.");
+    alert("Something went wrong. Please try again.");
   } finally {
     setSubmitting(false); // unlock the form
   }

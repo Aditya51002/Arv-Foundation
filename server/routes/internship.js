@@ -30,7 +30,7 @@ router.post("/apply",
     body('fullName').trim().notEmpty().isLength({ max: 100 }),
     body('email').isEmail().normalizeEmail(),
     body('phone').trim().notEmpty().isLength({ max: 20 }),
-    body('city').trim().notEmpty().isLength({ max: 100 }),
+    body('cityState').trim().notEmpty().isLength({ max: 100 }),
     body('college').trim().notEmpty().isLength({ max: 150 }),
     body('fieldOfStudy').trim().notEmpty().isLength({ max: 150 }),
     // areasOfInterest is a JSON string because it's multipart/form-data
@@ -69,10 +69,10 @@ router.post("/apply",
     } catch (mailErr) {
       console.warn("Mail dispatch failed, but internship application was saved:", mailErr.message);
     }
-    res.status(201).json({ message: "Success" });
+    res.status(201).json({ success: true, message: "Application submitted successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 });
 

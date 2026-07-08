@@ -22,7 +22,7 @@ const AdminDrives = () => {
       // CHANGED: Use adminToken to match Login logic
       const token = localStorage.getItem("adminToken");
 
-      const res = await fetch(`${API_URL}/api/drives`, {
+      const res = await fetch(`${API_URL}/api/admin/drives`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -54,12 +54,13 @@ const AdminDrives = () => {
     try {
       // CHANGED: Use adminToken
       const token = localStorage.getItem("adminToken");
-      const res = await fetch(`${API_URL}/api/drives/${id}`, {
+      const res = await fetch(`${API_URL}/api/admin/drives/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
       if (res.ok) {
+        alert(data.message || "Drive deleted successfully");
         refreshDrives();
       } else {
         console.error(data.message);
@@ -74,12 +75,13 @@ const AdminDrives = () => {
     try {
       // CHANGED: Use adminToken
       const token = localStorage.getItem("adminToken");
-      const res = await fetch(`${API_URL}/api/drives/toggle/${id}`, {
+      const res = await fetch(`${API_URL}/api/admin/drives/toggle/${id}`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
       if (res.ok) {
+        alert("Drive status updated successfully");
         refreshDrives();
       } else {
         console.error(data.message);

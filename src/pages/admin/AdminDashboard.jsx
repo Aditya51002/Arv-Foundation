@@ -23,12 +23,14 @@ const AdminDashboard = () => {
     const fetchDrives = async () => {
       try {
         const token = localStorage.getItem("adminToken"); // Using the fixed adminToken key
-        const res = await fetch(`${API_URL}/api/drives`, {
+        const res = await fetch(`${API_URL}/api/admin/drives`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
         if (res.ok) {
           setDrives(data);
+        } else {
+          console.error(data.message || "Failed to fetch drives for dashboard");
         }
       } catch (err) {
         console.error("Failed to fetch drives for dashboard", err);
@@ -144,4 +146,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-

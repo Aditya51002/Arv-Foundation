@@ -306,7 +306,7 @@ const Services = () => {
         return;
       }
 
-      alert("Application submitted successfully!");
+      alert(data.message || "Application submitted successfully!");
       
       // CHANGED: Reset form fully after success
       setIsInternshipFormOpen(false);
@@ -350,7 +350,7 @@ const Services = () => {
         alert(data.message || "Failed to submit request");
         return;
       }
-      alert("Certificate requested successfully! We will notify you once approved.");
+      alert(data.message || "Certificate requested successfully! We will notify you once approved.");
       setIsCertificateFormOpen(false);
       setCertificateFormData({ userName: "", email: "", certificateType: "Volunteer", description: "" });
     } catch (error) {

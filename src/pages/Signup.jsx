@@ -11,6 +11,8 @@ const Signup = () => {
     const isHindi = lang === "hi";
     const [showPassword, setShowPassword] = useState(false);
     const [form, setForm] = useState({ username: "", email: "", phone: "", password: "" });
+    const [status, setStatus] = useState({ type: "", message: "" });
+    const [submitting, setSubmitting] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -19,6 +21,8 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setStatus({ type: "", message: "" });
+        setSubmitting(true);
         try {
             const response = await fetch(`${API_URL}/api/auth/signup`, {
                 method: 'POST',
@@ -29,14 +33,19 @@ const Signup = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                console.log("Signup success:", data);
-                navigate('/login');
+                setStatus({ type: "success", message: "Account created successfully. Redirecting to login..." });
+                setTimeout(() => navigate('/login'), 800);
             } else {
-                alert(data.message || "Signup failed");
+                const validationMessage = Array.isArray(data.errors)
+                    ? data.errors.map((error) => error.msg).join(", ")
+                    : data.message;
+                setStatus({ type: "error", message: validationMessage || "Signup failed" });
             }
         } catch (error) {
             console.error("Signup error:", error);
-            alert("Error connecting to server");
+            setStatus({ type: "error", message: "Error connecting to server" });
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -140,12 +149,19 @@ const Signup = () => {
 
                     <motion.button
                         type="submit"
+                        disabled={submitting}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 py-2.5 text-sm font-semibold text-black shadow-lg"
+                        className="w-full rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300 py-2.5 text-sm font-semibold text-black shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
                     >
-                        {isHindi ? "साइन अप" : "Sign Up"}
+                        {submitting ? "Creating account..." : isHindi ? "साइन अप" : "Sign Up"}
                     </motion.button>
+
+                    {status.message && (
+                        <p className={`text-xs ${status.type === "success" ? "text-emerald-700" : "text-red-500"}`}>
+                            {status.message}
+                        </p>
+                    )}
                 </form>
 
                 <p className={`text-center text-xs text-slate-500 ${isHindi ? "font-devanagari" : ""}`}>

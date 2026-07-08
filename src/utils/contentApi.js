@@ -14,13 +14,9 @@ const API_BASE = API_URL;
  */
 export const fetchAllContent = async () => {
   try {
-    const token = localStorage.getItem("adminToken");
-    if (!token) throw new Error("Admin authentication required");
-
-    const response = await fetch(`${API_BASE}/api/admin/content`, {
+    const response = await fetch(`${API_BASE}/api/content`, {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });

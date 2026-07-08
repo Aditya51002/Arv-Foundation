@@ -106,7 +106,7 @@ const Donate = () => {
       const result = await response.json();
 
       if (response.ok) {
-        setConfirmation(lang === "hi" ? "धन्यवाद! हम जल्द आपसे संपर्क करेंगे।" : "Thank you! Our team will connect with you soon.");
+        setConfirmation(lang === "hi" ? "धन्यवाद! हम जल्द आपसे संपर्क करेंगे।" : result.message || "Thank you! Our team will connect with you soon.");
         // Reset form and selections
         setFormData(prev => ({ ...prev, message: "" }));
         setSelectedContributions([]);

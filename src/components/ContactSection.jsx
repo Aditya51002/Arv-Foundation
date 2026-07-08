@@ -49,7 +49,7 @@ const ContactSection = () => {
         throw new Error(data.message || "Failed to send message");
       }
 
-      alert("Message sent successfully ✅");
+      alert(data.message || "Message sent successfully");
 
       setFormData({
         name: "",

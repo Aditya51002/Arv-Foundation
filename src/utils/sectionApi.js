@@ -17,8 +17,8 @@ export const fetchSections = async () => {
 };
 
 export const toggleSection = async (id) => {
-  const res = await fetch(`${API_BASE}/toggle/${id}`, {
-    method: "PATCH", // Or PUT, depending on your backend route
+  const res = await fetch(`${API_BASE}/${id}/toggle`, {
+    method: "PUT",
     headers: authHeaders(),
   });
   if (!res.ok) throw new Error("Failed to toggle section");
@@ -26,8 +26,8 @@ export const toggleSection = async (id) => {
 };
 
 export const moveSection = async (id, direction) => {
-  const res = await fetch(`${API_BASE}/move`, {
-    method: "POST",
+  const res = await fetch(`${API_BASE}/${id}/move`, {
+    method: "PUT",
     headers: authHeaders(),
     body: JSON.stringify({ id, direction }),
   });

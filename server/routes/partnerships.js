@@ -10,12 +10,14 @@ router.post("/",
   formLimiter,
   [
     body('organizationName').trim().notEmpty().isLength({ max: 150 }),
-    body('contactPerson').trim().notEmpty().isLength({ max: 100 }),
+    body('contactName').trim().notEmpty().isLength({ max: 100 }),
     body('email').isEmail().normalizeEmail(),
     body('phone').trim().notEmpty().isLength({ max: 20 }),
     body('location').trim().notEmpty().isLength({ max: 200 }),
-    body('focusCategories').isArray({ min: 1 }),
-    body('description').trim().notEmpty().isLength({ max: 3000 })
+    body('partnershipTypes').isArray({ min: 1 }),
+    body('offerDetails').trim().notEmpty().isLength({ max: 3000 }),
+    body('duration').optional({ checkFalsy: true }).trim().isLength({ max: 100 }),
+    body('capacity').optional({ checkFalsy: true }).trim().isLength({ max: 100 })
   ],
   validate,
   async (req, res) => {
@@ -47,10 +49,10 @@ router.post("/",
       console.warn("Mail dispatch failed, but partnership proposal was saved:", mailErr.message);
     }
 
-    res.status(201).json({ message: "Proposal submitted successfully" });
+    res.status(201).json({ success: true, message: "Proposal submitted successfully" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 });
 

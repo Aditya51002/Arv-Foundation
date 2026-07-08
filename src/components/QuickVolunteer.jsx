@@ -29,15 +29,16 @@ export default function QuickVolunteer({ open, onClose }) {
         body: JSON.stringify({ name, email, message }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Failed to send data");
+        throw new Error(data.message || "Failed to send data");
       }
 
       alert(
         isHindi
           ? "धन्यवाद — हम जल्द ही संपर्क करेंगे।"
-          : "Thanks — we'll be in touch."
+          : data.message || "Thanks. We'll be in touch."
       );
 
       // Reset the form

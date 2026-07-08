@@ -14,8 +14,9 @@ const loginLimiter = rateLimit({
 router.post("/login", loginLimiter, async (req, res) => {
   try {
     const { email, password } = req.body;
+    const cleanEmail = email.trim().toLowerCase();
 
-    const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ email: cleanEmail });
     if (!admin) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
